@@ -12,13 +12,17 @@ use websocket::{Message, OwnedMessage};
 const CONNECTION: &'static str = "ws://0.0.0.0:8080/ws";
 
 fn main() {
-    let mut rng = rand::thread_rng();
-    let random_id = Alphanumeric.sample_string(&mut rng, 32);
-    let random_name = Alphanumeric.sample_string(&mut rng, 5);
+    let args: Vec<String> = std::env::args().collect();
+
+    let (user_id, user_name) = if args.len() == 3 {
+        (args[1].to_owned(), args[2].to_owned())
+    } else {
+        (Alphanumeric.sample_string(&mut rand::thread_rng(), 32), Alphanumeric.sample_string(&mut rand::thread_rng(), 5))
+    };
 
     let addr = format!(
         "ws://0.0.0.0:8080/ws?user_id={}&user_name={}",
-        &random_id, &random_name
+        &user_id, &user_name
     );
     println!("Connecting to {}", addr);
 
