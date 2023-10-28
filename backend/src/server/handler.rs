@@ -94,7 +94,7 @@ impl Handler<Connect> for ChatServer {
         log::info!("[CONNECT] {}: join entry room", msg.user_name.clone());
 
         self.unicast_message(
-            &format!("/json {}", json_string),
+            &format!("!json {}", json_string),
             &user_id,
         );
     }
@@ -279,12 +279,12 @@ impl Handler<Ack> for ChatServer {
         });
 
         log::info!("[ACK] {}: received successfully ", user_name);
-        self.multicast_message(&room_id, &format!("/res_ack {}", user_id), "");
+        self.multicast_message(&room_id, &format!("!ack {}", user_id), "");
 
         let room = self.rooms.get(&room_id).unwrap();
         if room.ack_stack.len() >= room.max_cap {
             log::info!("[CONFIRM] : all ack complete!");
-            self.multicast_message(&room_id, "/confirm", "");
+            self.multicast_message(&room_id, "!confirm_ack", "");
 
             self.rooms.entry(room_id).and_modify(|e| {
                 e.ack_stack.clear();
@@ -328,7 +328,7 @@ impl Handler<AckCancel> for ChatServer {
             e.ack_stack.remove(&user_id);
         });
 
-        self.multicast_message(&room_id, &format!("/res_rm_ack {}", user_id), "");
+        self.multicast_message(&room_id, &format!("!rm_ack {}", user_id), "");
         log::info!("[ACK_CANCEL] {}: canceled successfully ", user_name);
     }
 }
@@ -398,7 +398,7 @@ impl Handler<Scenario> for ChatServer {
 
         let json_string = serde_json::to_string(&ret).unwrap();
 
-        self.multicast_message(&room_id, &format!("/res_sce {}", json_string), "");
+        self.multicast_message(&room_id, &format!("!sce {}", json_string), "");
     }
 }
 
@@ -444,12 +444,12 @@ impl Handler<JoinScenario> for ChatServer {
             participant: RoomUserInfo { user_id: user_id.clone(), user_name: user_name.clone() },
         };
         let json_string = serde_json::to_string(&ret).unwrap();
-        self.multicast_message(&room_id, &format!("/res_join_sce {}", json_string), "");
+        self.multicast_message(&room_id, &format!("!join_sce {}", json_string), "");
 
         if let Some(room) = self.rooms.get(&room_id) {
             if room.ack_stack.len() >= room.max_cap {
                 log::info!("[CONFIRM_SCENARIO] : all member joined!");
-                self.multicast_message(&room_id, "/confirm_sce", "");
+                self.multicast_message(&room_id, "!confirm_join_sce", "");
 
                 self.rooms.entry(room_id).and_modify(|e| {
                     e.ack_stack.clear();
@@ -482,13 +482,13 @@ impl Handler<Hand> for ChatServer {
         } = msg;
 
         if self.rooms.get(&room_id).unwrap().users.get(&dst_user_id).is_none() {
-            self.unicast_message( &format!("/err target is not exist"), &src_user_id);
+            self.unicast_message( &format!("!err: target is not exist"), &src_user_id);
             log::warn!("[HAND] {}: target is not exist ", &user_name);
             return;
         }
 
         log::debug!("[HAND] {}: hand {} to {}", &user_name ,&item_id, &dst_user_id);
-        self.unicast_message(&format!("/hand_recv {} {}", item_id ,&src_user_id), &dst_user_id);
+        self.unicast_message(&format!("!hand_recv {} {}", item_id ,&src_user_id), &dst_user_id);
     }
 }
 
@@ -529,7 +529,7 @@ impl Handler<Select> for ChatServer {
         if let Some(room) = self.rooms.get(&room_id) {
             if room.character_map.len() >= room.max_cap {
                 log::info!("[CONFIRM_SELECT] : all character confirmed!");
-                self.multicast_message(&room_id, "!confirm_character", "");
+                self.multicast_message(&room_id, "!confirm_select", "");
 
                 self.rooms.entry(room_id).and_modify(|e| {
                     e.ack_stack.clear();
