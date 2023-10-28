@@ -49,7 +49,7 @@ impl ChatServer {
     }
 
     fn unicast_message(&self, message: &str, target_user_id: &str) {
-        if let Some(addr) = self.sessions.get(target_user_id) {
+        if let Some(addr) = self.sessions.get(&target_user_id.to_owned()) {
             addr.do_send(Message(message.to_owned()));
         }
     }

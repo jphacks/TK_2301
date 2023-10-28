@@ -5,7 +5,7 @@ use log::info;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{auth::ENTRY_ROOM_UUID, server::room::RoomUserInfo};
+use crate::{auth::ENTRY_ROOM_UUID, server::room::{RoomUserInfo, Ballot}};
 use super::{ChatServer, Room};
 
 #[derive(Message)]
@@ -488,7 +488,6 @@ impl Handler<Hand> for ChatServer {
         }
 
         log::debug!("[HAND] {}: hand {} to {}", &user_name ,&item_id, &dst_user_id);
-
         self.unicast_message(&format!("/hand_recv {} {}", item_id ,&src_user_id), &dst_user_id);
     }
 }
@@ -534,6 +533,57 @@ impl Handler<Select> for ChatServer {
 
                 self.rooms.entry(room_id).and_modify(|e| {
                     e.ack_stack.clear();
+                });
+            }
+        }
+    }
+}
+
+#[derive(Message, Debug)]
+#[rtype(result = "()")]
+pub struct Vote {
+    pub room_id: Uuid,
+    pub user_id: String,
+    pub user_name: String,
+    pub character_name: String,
+    pub link_user_id: String,
+}
+
+impl Handler<Vote> for ChatServer {
+    type Result = ();
+
+    fn handle(&mut self, msg: Vote, _: &mut Context<Self>) {
+        let Vote {
+            room_id,
+            user_id,
+            user_name,
+            link_user_id,
+            character_name,
+        } = msg;
+
+        if self.rooms.get(&room_id).unwrap().vote_box.contains_key(&user_id) {
+            log::warn!("[SELECT] {}: already voted {} ({})", &user_name, &character_name, &link_user_id);
+            self.unicast_message( "!error: already voted character", &user_id);
+            return;
+        }
+
+        self.rooms.entry(room_id).and_modify(|e| {
+            e.vote_box.insert(user_id.clone(), Ballot {
+                character_name: character_name.clone(),
+                link_user_id: link_user_id.clone(),
+            });
+        });
+
+        log::info!("[VOTE] {}: voted {} ({})", &user_name, &character_name, &link_user_id);
+        self.multicast_message(&room_id, &format!("!vote {} {}", &character_name, &user_id), "");
+
+        if let Some(room) = self.rooms.get(&room_id) {
+            if room.vote_box.len() >= room.max_cap {
+                log::info!("[VOTE] : confirmed!");
+                self.multicast_message(&room_id, "!confirm_vote", "");
+
+                self.rooms.entry(room_id).and_modify(|e| {
+                    e.vote_box.clear();
                 });
             }
         }

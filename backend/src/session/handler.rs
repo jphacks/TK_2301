@@ -4,7 +4,7 @@ use actix::prelude::*;
 use actix_web_actors::ws;
 use uuid::Uuid;
 
-use crate::server::handler::{Ack, AckCancel, ClientMessage, Create, Join, JoinScenario, ListRooms, Message, Scenario, SetNum, Hand, Select};
+use crate::server::handler::{Ack, AckCancel, ClientMessage, Create, Join, JoinScenario, ListRooms, Message, Scenario, SetNum, Hand, Select, Vote};
 
 use super::WsChatSession;
 
@@ -209,7 +209,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                         }
                         "/select" => {
                             if v.len() != 2 {
-                                ctx.text("error: expected arguments is 3");
+                                ctx.text("error: expected arguments is 2");
                                 return;
                             }
 
@@ -220,6 +220,23 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                                 user_name: self.user_name.clone(),
                                 room_id: self.room_id,
                                 character_name,
+                            });
+                        }
+                        "/vote" => {
+                            if v.len() != 3 {
+                                ctx.text("error: expected arguments is 3");
+                                return;
+                            }
+
+                            let character_name: String = v[1].to_owned();
+                            let link_user_id: String = v[2].to_owned();
+
+                            self.addr.do_send(Vote {
+                                room_id: self.room_id,
+                                user_id: self.user_id.to_string(),
+                                user_name: self.user_name.clone(),
+                                character_name,
+                                link_user_id,
                             });
                         }
                         _ => ctx.text(format!("!!! unknown command: {m:?}")),
