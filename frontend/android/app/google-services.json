@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "834098871992",
+    "project_id": "avocado-test-5e236",
+    "storage_bucket": "avocado-test-5e236.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834098871992:android:6f638d58894f8adeaf7e4d",
+        "android_client_info": {
+          "package_name": "com.avocado.ms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFtjkeiv7tuYhhJlJRa7eEpjrOBhfAVds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834098871992:android:653899f4a4054746af7e4d",
+        "android_client_info": {
+          "package_name": "com.example"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFtjkeiv7tuYhhJlJRa7eEpjrOBhfAVds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
