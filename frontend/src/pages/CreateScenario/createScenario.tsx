@@ -39,12 +39,19 @@ type CreateScenarioContextType = {
   setItems: React.Dispatch<React.SetStateAction<string[]>>;
   phenomena: string[];
   setPhenomena: React.Dispatch<React.SetStateAction<string[]>>;
-  tricks: {a: string; b: string}[];
+  tricks: {
+    name: string;
+    uncommonSense: string;
+    principle: string;
+    illusion: string;
+  }[];
   setTricks: React.Dispatch<
     React.SetStateAction<
       {
-        a: string;
-        b: string;
+        name: string;
+        uncommonSense: string;
+        principle: string;
+        illusion: string;
       }[]
     >
   >;
@@ -88,7 +95,14 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [isTrick, setIsTrick] = useState<boolean>(false);
   const [items, setItems] = useState<string[]>([]);
   const [phenomena, setPhenomena] = useState<string[]>([]);
-  const [tricks, setTricks] = useState<{a: string; b: string}[]>([]);
+  const [tricks, setTricks] = useState<
+    {
+      name: string;
+      uncommonSense: string;
+      principle: string;
+      illusion: string;
+    }[]
+  >([]);
   const [editingCharacter, setEditingCharacter] = useState<Character>({
     name: '',
     age: 0,

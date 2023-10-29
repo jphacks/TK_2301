@@ -3,8 +3,10 @@ import TrickItemPresenter from './presenter';
 
 export type Props = {
   trick: {
-    a: string;
-    b: string;
+    name: string;
+    uncommonSense: string;
+    principle: string;
+    illusion: string;
   };
   setSelectedTricks: React.Dispatch<React.SetStateAction<string[]>>;
 };

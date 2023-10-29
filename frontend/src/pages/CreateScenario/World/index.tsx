@@ -6,6 +6,19 @@ import {extractJson} from '../utility';
 type Data = {item: string[]; trivia: string[]};
 
 const World = () => {
+  const dammyItems = [
+    'クライミングハーネス',
+    'ピッケル',
+    'クライミングロープ',
+    'テント',
+  ];
+
+  const dammyPhenomena = [
+    '高所での気圧の変化による耳のポップ',
+    '標高が高くなるにつれて気温が低下する',
+    '高度が高くなると酸素濃度が低くなる',
+  ];
+
   const {
     setIsWorld,
     setPhase,
