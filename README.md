@@ -43,7 +43,8 @@
 
 ## 開発技術
 ### 技術構成図
-![image](https://github.com/jphacks/TK_2301/assets/81950820/6aa6f10b-4419-4e12-9c09-7d7ea5435961)
+![image](https://github.com/jphacks/TK_2301/assets/81950820/02850cca-a256-4815-bea0-d70ef9b4db31)
+
 #### API・データ
 - OpenAPI
     - chatGPT4
