@@ -38,12 +38,12 @@
 - テスト駆動実装
 
 ### 注力したこと（こだわり等）
-![image](https://github.com/jphacks/TK_2301/assets/81950820/6aa6f10b-4419-4e12-9c09-7d7ea5435961)
-
 - OpenAIのAPIを用いたシナリオ・画像生成
 - 生成サーバとクライアントの連携
 
 ## 開発技術
+### 技術構成図
+![image](https://github.com/jphacks/TK_2301/assets/81950820/6aa6f10b-4419-4e12-9c09-7d7ea5435961)
 #### API・データ
 - OpenAPI
     - chatGPT4
