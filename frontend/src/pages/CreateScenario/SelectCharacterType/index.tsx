@@ -1,17 +1,22 @@
 import React from 'react';
 import SelectCharacterTypePresenter from './presenter';
-import {useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
 
 const SelectCharacterType = () => {
-  const {setIsCreatingCharacter, setIsOther, setPhase, phase} =
-    useCreateScenario();
+  const {setPhase, transitNextState} = useCreateScenario();
   const onPress = (type: string) => {
     if (type === 'criminal') {
-      setIsCreatingCharacter(true);
+      transitNextState(CreateState.CliminalCharacter);
+
       setPhase(prev => prev + 1);
-    } else if (type === 'other') {
-      setIsCreatingCharacter(true);
-      setIsOther(true);
+      return;
+    }
+
+    if (type === 'other') {
+      transitNextState(CreateState.OtherCharacter);
+      setPhase(prev => prev + 1);
+
+      return;
     }
   };
   return <SelectCharacterTypePresenter onPress={onPress} />;

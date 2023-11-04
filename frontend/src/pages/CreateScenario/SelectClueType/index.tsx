@@ -1,15 +1,20 @@
 import React from 'react';
 import SelectClueTypePresenter from './presenter';
-import {useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
 
 const SelectClueType = () => {
-  const {setPhase, setTabId, setIsItemInfo} = useCreateScenario();
+  const {setPhase, setTabId, transitNextState} = useCreateScenario();
   const onPress = (type: string) => {
     if (type === 'room') {
-    } else if (type === 'item') {
+      transitNextState(CreateState.Room);
+      return;
+    }
+
+    if (type === 'item') {
       setTabId(prev => prev + 1);
       setPhase(prev => prev + 1);
-      setIsItemInfo(true);
+      transitNextState(CreateState.ItemInfo);
+      return;
     }
   };
   return <SelectClueTypePresenter onPress={onPress} />;
