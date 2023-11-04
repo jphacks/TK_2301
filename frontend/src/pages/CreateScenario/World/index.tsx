@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import WorldPresenter from './presenter';
-import {useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
 import {extractJson} from '../utility';
 
 type Data = {item: string[]; trivia: string[]};
@@ -19,14 +19,8 @@ const World = () => {
     '高度が高くなると酸素濃度が低くなる',
   ];
 
-  const {
-    setIsWorld,
-    setPhase,
-    setIsHint,
-    setItems,
-    setPhenomena,
-    setShareJson,
-  } = useCreateScenario();
+  const {setPhase, setItems, setPhenomena, setShareJson, transitNextState} =
+    useCreateScenario();
   const [worldItemText, setWorldItemText] = useState('');
   const onPress = (name: string) => {
     setWorldItemText(name);
@@ -55,8 +49,7 @@ const World = () => {
     // ここでfetchして、itemsとphenomenaを更新する(今はダミー)
     setItems(castedData.item);
     setPhenomena(castedData.trivia);
-    setIsWorld(false);
-    setIsHint(true);
+    transitNextState(CreateState.Trick);
     setPhase(prev => prev + 1);
   };
   return <WorldPresenter onPress={onPress} next={next} value={worldItemText} />;

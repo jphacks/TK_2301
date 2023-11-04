@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import ItemInfoPresenter from './presenter';
-import {useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
 
 const ItemInfo = () => {
   const [showModal, setShowModal] = useState(false);
-  const {setIsImageCreate, setIsItemInfo, setPhase} = useCreateScenario();
+  const {setPhase, setCreateState} = useCreateScenario();
   const openModal = () => {
     setShowModal(true);
   };
@@ -14,9 +14,9 @@ const ItemInfo = () => {
 
   const next = () => {
     setPhase(prev => prev + 1);
-    setIsItemInfo(false);
-    setIsImageCreate(true);
+    setCreateState(CreateState.Image);
   };
+
   return (
     <ItemInfoPresenter
       showModal={showModal}

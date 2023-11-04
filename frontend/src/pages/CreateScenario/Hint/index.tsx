@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import HintPresenter from './presenter';
-import {useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
+import Create from 'agora-rn-uikit/src/Rtc/Create';
 
 const Hint = () => {
   const [sendItems, setSendItems] = useState<string[]>([]);
   const [sendPhenomena, setSendPhenomena] = useState<string[]>([]);
-  const {setIsHint, setPhase, setIsTrick, setTricks, shareJson} =
+  const {setPhase, setTricks, shareJson, transitNextState} =
     useCreateScenario();
 
   const addItem = (item: string) => {
@@ -44,8 +45,7 @@ const Hint = () => {
     console.log(res.trivia);
     setTricks([...res.item, ...res.trivia]);
 
-    setIsHint(false);
-    setIsTrick(true);
+    transitNextState(CreateState.Trick);
     setPhase(prev => prev + 1);
   };
   return <HintPresenter funcs={{addItem, addPhenomena}} next={next} />;

@@ -14,6 +14,18 @@ type Character = {
   purpose: string;
 };
 
+export enum CreateState {
+  Default,
+  CliminalCharacter,
+  OtherCharacter,
+  ItemInfo,
+  World,
+  Hint,
+  Trick,
+  Image,
+  Room,
+}
+
 type CreateScenarioContextType = {
   tabId: number;
   setTabId: React.Dispatch<React.SetStateAction<number>>;
@@ -63,6 +75,12 @@ type CreateScenarioContextType = {
   setIsImageCreate: React.Dispatch<React.SetStateAction<boolean>>;
   shareJson: any;
   setShareJson: React.Dispatch<React.SetStateAction<any>>;
+  createState: CreateState;
+  setCreateState: React.Dispatch<React.SetStateAction<CreateState>>;
+  pageStack: CreateState[];
+  setPageStack: React.Dispatch<React.SetStateAction<CreateState[]>>;
+  transitNextState: (createState: CreateState) => void;
+  transitPrevState: () => void;
 };
 
 const CreateScenarioContext = createContext<
@@ -120,6 +138,22 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [isItemInfo, setIsItemInfo] = useState<boolean>(false);
   const [isImageCreate, setIsImageCreate] = useState<boolean>(false);
   const [shareJson, setShareJson] = useState({});
+  const [createState, setCreateState] = useState(CreateState.Default);
+  const [pageStack, setPageStack] = useState([CreateState.Default]);
+
+  const transitNextState = (createState: CreateState) => {
+    setPageStack([...pageStack, createState]);
+    setCreateState(createState);
+  };
+
+  const transitPrevState = () => {
+    const bufStack: CreateState[] = [...pageStack];
+
+    bufStack.pop();
+    setPageStack([...bufStack]); // NOTE: ディープコピーにすることで後述の副作用を回避
+
+    setCreateState(bufStack.pop() || CreateState.Default);
+  };
 
   return (
     <CreateScenarioContext.Provider
@@ -158,6 +192,12 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setIsImageCreate,
         shareJson,
         setShareJson,
+        createState,
+        setCreateState,
+        pageStack,
+        setPageStack,
+        transitNextState,
+        transitPrevState,
       }}>
       {children}
     </CreateScenarioContext.Provider>

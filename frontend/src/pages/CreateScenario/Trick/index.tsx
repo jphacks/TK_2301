@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import TrickPresenter from './presenter';
-import {Text, View} from 'react-native';
-import {useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
 
 const Trick = () => {
-  const {setPhase, setTabId, setIsTrick, setIsCreatingCharacter} =
-    useCreateScenario();
+  const {setPhase, setTabId, transitNextState} = useCreateScenario();
   const [selectedTricks, setSelectedTricks] = useState<string[]>([]);
   const onPress = () => {
     // fetchする
@@ -13,8 +11,8 @@ const Trick = () => {
 
     setPhase(2);
     setTabId(1);
-    setIsTrick(false);
-    setIsCreatingCharacter(true);
+
+    transitNextState(CreateState.OtherCharacter);
   };
   return (
     <TrickPresenter

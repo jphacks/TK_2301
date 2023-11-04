@@ -1,15 +1,12 @@
 import React from 'react';
 import CharacterSheetPresenter from './presenter';
-import {useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
 
 const CharacterSheet = () => {
-  const {setIsCreatingCharacter, setIsOther, setPhase, setIsWorld} =
-    useCreateScenario();
+  const {setPhase, transitNextState} = useCreateScenario();
   const onPress = (type: string) => {
     if (type === 'ai') {
-      setIsCreatingCharacter(false);
-      setIsOther(false);
-      setIsWorld(true);
+      transitNextState(CreateState.World);
       setPhase(prev => prev + 1);
     }
   };

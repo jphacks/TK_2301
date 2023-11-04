@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import CreateScenarioPresenter from './presenter';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import {SceneMap} from 'react-native-tab-view';
 import {View, useWindowDimensions} from 'react-native';
 import {CreateScenarioProvider, useCreateScenario} from './createScenario';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';

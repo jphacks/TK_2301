@@ -1,17 +1,16 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import Header from './Header';
 import {TabBar, TabView} from 'react-native-tab-view';
 import styles from './style';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootRoutesParamList} from '../../routes/Root';
-import {useCreateScenario} from './createScenario';
+import {CreateState , useCreateScenario} from './createScenario';
 import CharacterSheet from './CharacterSheet';
 import World from './World';
 import Hint from './Hint';
 import Trick from './Trick';
 import ItemInfo from './ItemInfo';
-import ImageCreate from './ImageCreate';
 
 type Props = {
   tabViewProps: {
@@ -33,31 +32,35 @@ type Props = {
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
   const {
-    isCreatingCharacter,
-    isItemInfo,
-    isWorld,
-    isHint,
-    isTrick,
-    isImageCreate,
+    createState,
   } = useCreateScenario();
 
   const renderContent = () => {
-    if (isCreatingCharacter) return <CharacterSheet />;
-    else if (isWorld) return <World />;
-    else if (isHint) return <Hint />;
-    else if (isTrick) return <Trick />;
-    else if (isItemInfo) return <ItemInfo />;
-    else if (isImageCreate) return <ImageCreate />;
-    else
-      return (
-        <TabView
-          navigationState={{index, routes}}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{width: initialLayout.width}}
-          renderTabBar={renderTabBar}
-        />
-      );
+    switch (createState) {
+      case CreateState.CliminalCharacter:
+      case CreateState.OtherCharacter:
+        return <CharacterSheet />;
+      case CreateState.World:
+        return <World />;
+      case CreateState.Hint:
+        return <Hint />;
+      case CreateState.ItemInfo:
+        return <ItemInfo />;
+      case CreateState.Image:
+        return <ItemInfo />;
+      case CreateState.Trick:
+          return <Trick />;
+      default:
+        return (
+          <TabView
+            navigationState={{index, routes}}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{width: initialLayout.width}}
+            renderTabBar={renderTabBar}
+          />
+        );
+    }
   };
 
   const {index, routes, renderScene, setIndex, initialLayout} = tabViewProps;
