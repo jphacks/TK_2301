@@ -32,7 +32,7 @@ const World = () => {
       world: worldItemText,
     };
     // 3. Post通信
-    const formResponse = await fetch(
+    /*const formResponse = await fetch(
       'https://dpdu6gddt5h6dqs24g2xnfv5240tvcjk.lambda-url.ap-northeast-1.on.aws/',
       {
         method: 'POST', // HTTP-Methodを指定する！
@@ -46,10 +46,11 @@ const World = () => {
     const castedData = resData as Data;
     setShareJson(castedData);
     console.log(castedData.item);
-    // ここでfetchして、itemsとphenomenaを更新する(今はダミー)
     setItems(castedData.item);
-    setPhenomena(castedData.trivia);
-    transitNextState(CreateState.Trick);
+    setPhenomena(castedData.trivia);*/
+    setItems(dammyItems);
+    setPhenomena(dammyPhenomena);
+    transitNextState(CreateState.Hint);
     setPhase(prev => prev + 1);
   };
   return <WorldPresenter onPress={onPress} next={next} value={worldItemText} />;

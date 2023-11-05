@@ -3,7 +3,8 @@ import TrickPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 
 const Trick = () => {
-  const {setPhase, setTabId, transitNextState} = useCreateScenario();
+  const {setPhase, setTabId, transitNextState, setEditingCharacter} =
+    useCreateScenario();
   const [selectedTricks, setSelectedTricks] = useState<string[]>([]);
   const onPress = () => {
     // fetchする

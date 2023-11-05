@@ -28,7 +28,7 @@ const Hint = () => {
       context1: shareJson,
     };
 
-    const formResponse = await fetch(
+    /*const formResponse = await fetch(
       'https://dpdu6gddt5h6dqs24g2xnfv5240tvcjk.lambda-url.ap-northeast-1.on.aws/',
       {
         method: 'POST', // HTTP-Methodを指定する！
@@ -43,7 +43,17 @@ const Hint = () => {
     // tricksも受け取るけど、今はダミー(型もテキトー)
     console.log(res.item);
     console.log(res.trivia);
-    setTricks([...res.item, ...res.trivia]);
+    setTricks([...res.item, ...res.trivia]);*/
+
+    setTricks([
+      {
+        name: '滑落時にブレーキとして機能しないピッケル ',
+        uncommonSense:
+          '能力(ピッケルの効果を知っている登山者が滑落したと思わせるが、実は滑落しない) ピッケルの刃部分が折り畳み式であり、使い方を間違えると正しく機能しない。または、特定の素材の氷や雪ではピッケルが滑るような特殊なコーティングがされている。',
+        principle: '',
+        illusion: '',
+      },
+    ]);
 
     transitNextState(CreateState.Trick);
     setPhase(prev => prev + 1);
