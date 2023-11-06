@@ -6,6 +6,7 @@ import {
   launchImageLibrary,
 } from "react-native-image-picker";
 import CreateScenaio from "..";
+import { useCreateScenario } from "../createScenario";
 
 export type Props = {};
 
@@ -23,7 +24,7 @@ const MockItemData = [
 ];
 
 const Room = ({}: Props) => {
-  const {clueItems} = CreateScenaio
+  const {clueItems, setClueItems} = useCreateScenario();
 
   const [isSelectedImage, setIsSelectedImage] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -56,6 +57,8 @@ const Room = ({}: Props) => {
       isSelectedImage={isSelectedImage}
       showItemModal={showItemModal}
       reverseVisible={reverseVisible}
+      clueItems={clueItems}
+      setClueItems={setClueItems}
     />
   );
 };

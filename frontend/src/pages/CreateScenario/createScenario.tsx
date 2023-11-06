@@ -32,6 +32,44 @@ export enum CharacterType {
   Other,
 }
 
+export type ClueItem = {
+  scenarioId: number,
+  mapId: number,
+  uri: string,
+  name: string,
+  coordinate?: {
+    x: number,
+    y: number
+  },
+}
+
+const SampleClueItems: ClueItem[] = [
+  {
+    scenarioId: 1,
+    mapId: 101,
+    uri: 'http://example.com/clues/clue1.jpg',
+    name: 'Mysterious Key',
+  },
+  {
+    scenarioId: 2,
+    mapId: 102,
+    uri: 'http://example.com/clues/clue2.jpg',
+    name: 'Ancient Scroll',
+  },
+  {
+    scenarioId: 3,
+    mapId: 103,
+    uri: 'http://example.com/clues/clue3.jpg',
+    name: 'Silver Coin',
+    coordinate: {
+      x: 200,
+      y: 300
+    }
+  }
+  // 他のサンプルデータを必要に応じて追加...
+];
+
+
 type CreateScenarioContextType = {
   tabId: number;
   setTabId: React.Dispatch<React.SetStateAction<number>>;
@@ -53,8 +91,8 @@ type CreateScenarioContextType = {
   setIsHint: React.Dispatch<React.SetStateAction<boolean>>;
   isTrick: boolean;
   setIsTrick: React.Dispatch<React.SetStateAction<boolean>>;
-  items: string[];
-  setItems: React.Dispatch<React.SetStateAction<string[]>>;
+  clueItems: ClueItem[];
+  setClueItems: React.Dispatch<React.SetStateAction<ClueItem[]>>;
   phenomena: string[];
   setPhenomena: React.Dispatch<React.SetStateAction<string[]>>;
   tricks: {
@@ -119,7 +157,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [isWorld, setIsWorld] = useState<boolean>(false);
   const [isHint, setIsHint] = useState<boolean>(false);
   const [isTrick, setIsTrick] = useState<boolean>(false);
-  const [items, setItems] = useState<string[]>([]);
+  const [clueItems, setClueItems] = useState<ClueItem[]>(SampleClueItems);
   const [phenomena, setPhenomena] = useState<string[]>([]);
   const [tricks, setTricks] = useState<
     {
@@ -189,8 +227,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setIsHint,
         isTrick,
         setIsTrick,
-        items,
-        setItems,
+        clueItems,
+        setClueItems,
         phenomena,
         setPhenomena,
         tricks,

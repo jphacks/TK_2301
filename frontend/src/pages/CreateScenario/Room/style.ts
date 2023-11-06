@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   cardImage: {
-    color: "white",
     width: 100,
     height: 60,
     marginLeft: 10,
@@ -99,8 +98,22 @@ const styles = StyleSheet.create({
   cardText: {
     color: "white",
     fontSize: 20,
-    marginLeft: 10,
+    marginLeft: 20,
+    width: 160,
     fontWeight: "bold",
+  },
+  cardSubText: {
+    color: "#DADEE180",
+    fontSize: 10,
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   button: {
     borderRadius: 20,

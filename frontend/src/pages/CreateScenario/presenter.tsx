@@ -11,6 +11,7 @@ import World from './World';
 import Hint from './Hint';
 import Trick from './Trick';
 import ItemInfo from './ItemInfo';
+import Room from './Room';
 
 type Props = {
   tabViewProps: {
@@ -49,7 +50,9 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.Image:
         return <ItemInfo />;
       case CreateState.Trick:
-        return <Trick />;
+          return <Trick />;
+      case CreateState.Room:
+          return <Room/>;
       default:
         return (
           <TabView
