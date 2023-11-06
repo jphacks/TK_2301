@@ -4,9 +4,9 @@ import styles from "./style"
 import { Props } from "./index"
 import LinearGradient from "react-native-linear-gradient"
 
-const PrimaryButtonPresenter = ({ onPress, text, width }: Props) => {
+const PrimaryButtonPresenter = ({ onPress, text, width, style }: Props) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Pressable onPress={onPress}>
         <LinearGradient
           colors={["#238EA6", "#23A68E"]}
