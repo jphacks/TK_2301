@@ -5,14 +5,16 @@ export type Props = {
   labelName: string;
   placeholder?: string;
   style?: any
+  onTextChange?: (text: string) => void;
 };
 
-const LabeledTextInput = ({ labelName, placeholder, style }: Props) => {
+const LabeledTextInput = ({ labelName, placeholder, style, onTextChange }: Props) => {
   return (
     <LabeledTextInputPresenter
       placeholder={placeholder}
       labelName={labelName}
       style={style}
+      onTextChange={onTextChange}
     />
   );
 };

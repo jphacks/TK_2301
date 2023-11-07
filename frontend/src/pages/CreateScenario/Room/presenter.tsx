@@ -14,7 +14,7 @@ import styles from "./style";
 import LabeledTextInput from "../../../components/generics/LabeledTextInput";
 import ImageSelector from "../../../components/generics/ImageSelector";
 import ImageSelectModal from "../../../components/generics/ImageSelectModal";
-import {ClueItem, useCreateScenario} from "../createScenario";
+import {ClueItem, FloorMap, useCreateScenario} from "../createScenario";
 
 type Props = {
   openModal: () => void;
@@ -38,12 +38,14 @@ const RoomPresenter = ({
   isSelectedImage,
   showItemModal,
   reverseVisible,
+  roomId,
 }: Props) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
   const window = useWindowDimensions();
-  const {clueItems, setClueItems} = useCreateScenario();
+  const {clueItems, setClueItems, floorMaps, setFloorMaps} =
+    useCreateScenario();
 
   return (
     <ScrollView>
@@ -55,7 +57,16 @@ const RoomPresenter = ({
           onPressImageFromStorage={onPressImageFromStorage}
         />
       )}
-      <LabeledTextInput labelName={"部屋の名前"} style={styles.container} />
+      <LabeledTextInput
+        labelName={"部屋の名前"}
+        style={styles.container}
+        onTextChange={name => {
+          const bufMap = [...floorMaps];
+          bufMap[roomId].name = name;
+
+          setFloorMaps(bufMap);
+        }}
+      />
 
       {isSelectedImage ? (
         <View>
@@ -64,7 +75,6 @@ const RoomPresenter = ({
               // アイコンの大きさを加味しながら、座標を保存
               setX(e.nativeEvent.locationX - 5);
               setY(e.nativeEvent.locationY - 50);
-
               reverseVisible();
             }}
             style={styles.image}>

@@ -17,7 +17,6 @@ const SelectClueType = () => {
       transitNextState(CreateState.ItemInfo);
       return;
     }
-    
   };
   return <SelectClueTypePresenter onPress={onPress} />;
 };

@@ -1,5 +1,5 @@
-import React, {ReactNode, createContext, useContext, useState} from 'react';
-import auth from 'firebase/auth';
+import React, {ReactNode, createContext, useContext, useState} from "react";
+import auth from "firebase/auth";
 
 type Character = {
   name: string;
@@ -33,42 +33,48 @@ export enum CharacterType {
 }
 
 export type ClueItem = {
-  scenarioId: number,
-  mapId: number,
-  uri: string,
-  name: string,
+  scenarioId: number;
+  mapId: number;
+  uri: string;
+  name: string;
   coordinate?: {
-    x: number,
-    y: number
-  },
-}
+    x: number;
+    y: number;
+  };
+};
+
+export type FloorMap = {
+  mapId: number;
+  scenarioId: number;
+  uri: string;
+  name: string;
+};
 
 const SampleClueItems: ClueItem[] = [
   {
     scenarioId: 1,
     mapId: 101,
-    uri: 'http://example.com/clues/clue1.jpg',
-    name: 'Mysterious Key',
+    uri: "http://example.com/clues/clue1.jpg",
+    name: "Mysterious Key",
   },
   {
     scenarioId: 2,
     mapId: 102,
-    uri: 'http://example.com/clues/clue2.jpg',
-    name: 'Ancient Scroll',
+    uri: "http://example.com/clues/clue2.jpg",
+    name: "Ancient Scroll",
   },
   {
     scenarioId: 3,
     mapId: 103,
-    uri: 'http://example.com/clues/clue3.jpg',
-    name: 'Silver Coin',
+    uri: "http://example.com/clues/clue3.jpg",
+    name: "Silver Coin",
     coordinate: {
       x: 200,
-      y: 300
-    }
-  }
+      y: 300,
+    },
+  },
   // 他のサンプルデータを必要に応じて追加...
 ];
-
 
 type CreateScenarioContextType = {
   tabId: number;
@@ -123,6 +129,10 @@ type CreateScenarioContextType = {
   setCreateState: React.Dispatch<React.SetStateAction<CreateState>>;
   pageStack: CreateState[];
   setPageStack: React.Dispatch<React.SetStateAction<CreateState[]>>;
+  floorMaps: FloorMap[];
+  setFloorMaps: React.Dispatch<React.SetStateAction<FloorMap[]>>;
+  targetId?: number;
+  setTargetId: React.Dispatch<React.SetStateAction<number | undefined>>;
   transitNextState: (createState: CreateState) => void;
   transitPrevState: () => void;
   nowCharacterType: CharacterType;
@@ -137,7 +147,7 @@ export function useCreateScenario() {
   const context = useContext(CreateScenarioContext);
   if (!context) {
     throw new Error(
-      'useCreateScenario must be used within a CreateScenarioProvider',
+      "useCreateScenario must be used within a CreateScenarioProvider",
     );
   }
   return context;
@@ -158,6 +168,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [isHint, setIsHint] = useState<boolean>(false);
   const [isTrick, setIsTrick] = useState<boolean>(false);
   const [clueItems, setClueItems] = useState<ClueItem[]>(SampleClueItems);
+  const [floorMaps, setFloorMaps] = useState<FloorMap[]>([]);
+  const [targetId, setTargetId] = useState<number | undefined>(undefined);
   const [phenomena, setPhenomena] = useState<string[]>([]);
   const [tricks, setTricks] = useState<
     {
@@ -168,18 +180,18 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     }[]
   >([]);
   const [editingCharacter, setEditingCharacter] = useState<Character>({
-    name: '',
+    name: "",
     age: 0,
-    profession: '',
-    open: '',
-    private: '',
+    profession: "",
+    open: "",
+    private: "",
     timeline: [
       {
         num: 0,
-        text: '',
+        text: "",
       },
     ],
-    purpose: '',
+    purpose: "",
   });
   const [isItemInfo, setIsItemInfo] = useState<boolean>(false);
   const [isImageCreate, setIsImageCreate] = useState<boolean>(false);
@@ -190,7 +202,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     CharacterType.Default,
   );
 
-  const transitNextState = (createState: CreateState) => {
+  const transitNextState = (createState: CreateState, targetId?: number) => {
+    setTargetId(targetId);
     setPageStack([...pageStack, createState]);
     setCreateState(createState);
   };
@@ -249,6 +262,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         transitPrevState,
         nowCharacterType,
         setNowCharacterType,
+        floorMaps,
+        setFloorMaps,
+        targetId,
+        setTargetId,
       }}>
       {children}
     </CreateScenarioContext.Provider>

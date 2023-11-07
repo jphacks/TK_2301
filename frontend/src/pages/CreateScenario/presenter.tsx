@@ -32,9 +32,12 @@ type Props = {
 };
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
-  const {createState, criminal} = useCreateScenario();
-
-  console.log(criminal);
+  const {
+    createState,
+    criminal,
+    floorMaps,
+    targetId,
+  } = useCreateScenario();
 
   const renderContent = () => {
     switch (createState) {
@@ -52,7 +55,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.Trick:
           return <Trick />;
       case CreateState.Room:
-          return <Room/>;
+          return <Room roomId={targetId} />;
       default:
         return (
           <TabView

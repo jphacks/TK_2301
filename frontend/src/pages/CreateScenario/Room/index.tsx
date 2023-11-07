@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import RoomPresenter from "./presenter";
 import {
   MediaType,
@@ -6,9 +6,11 @@ import {
   launchImageLibrary,
 } from "react-native-image-picker";
 import CreateScenaio from "..";
-import { useCreateScenario } from "../createScenario";
+import {useCreateScenario} from "../createScenario";
 
-export type Props = {};
+export type Props = {
+  roomId?: number; // undefinedの場合は新規作成
+};
 
 const MockItemData = [
   {
@@ -17,14 +19,15 @@ const MockItemData = [
     uri: "./images/sample.png",
     name: "血がついたナイフ",
     coordinate: {
-      x: 0, 
-      y: 0
+      x: 0,
+      y: 0,
     },
   },
 ];
 
-const Room = ({}: Props) => {
-  const {clueItems, setClueItems} = useCreateScenario();
+const Room = ({roomId}: Props) => {
+  const {clueItems, setClueItems, floorMaps, setFloorMaps} =
+    useCreateScenario();
 
   const [isSelectedImage, setIsSelectedImage] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -32,6 +35,20 @@ const Room = ({}: Props) => {
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
+
+  useEffect(() => {
+    console.log("fire!!!!!!!", roomId);
+    if (roomId === undefined) {
+      const bufFloorMap = [...floorMaps];
+      bufFloorMap.push({
+        scenarioId: 1,
+        uri: "",
+        mapId: floorMaps.length,
+        name: "新規作成",
+      });
+      setFloorMaps(bufFloorMap);
+    }
+  }, []);
 
   const onPressImageWithAI = () => {
     setIsSelectedImage(true);
@@ -59,6 +76,7 @@ const Room = ({}: Props) => {
       reverseVisible={reverseVisible}
       clueItems={clueItems}
       setClueItems={setClueItems}
+      roomId={roomId}
     />
   );
 };

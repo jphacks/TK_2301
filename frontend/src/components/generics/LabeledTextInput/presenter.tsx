@@ -5,12 +5,13 @@ import styles from "./style";
 
 type Props = {} & ContainerProps;
 
-const LabeledTextInputPresenter = ({ labelName, placeholder, style }: Props) => {
+const LabeledTextInputPresenter = ({ labelName, placeholder, style, onTextChange }: Props) => {
   return (
     <View style={[style]}>
       <Text style={styles.label}>{labelName}</Text>
       <TextInput
         style={[styles.input]}
+        onChangeText={onTextChange}
         placeholder={placeholder ?? labelName}
         placeholderTextColor="#888888"
       />
