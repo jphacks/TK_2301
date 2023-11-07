@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import HeaderPresenter from './presenter';
-import {CreateState, useCreateScenario} from '../createScenario';
+import {CreateState, CharacterType, useCreateScenario} from '../createScenario';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootRoutesParamList} from '../../../routes/Root';
 
@@ -20,8 +20,15 @@ const Header = ({navigation}: Props) => {
     createState,
     pageStack,
     transitPrevState,
+    tabId,
+    editingCharacter,
+    nowCharacterType,
+    setCriminal,
+    setOtherCharacters,
+    transitNextState,
   } = useCreateScenario();
   const [headerText, setHeaderText] = useState<string>('シナリオ作成');
+
   useEffect(() => {
     switch (createState) {
       case CreateState.CliminalCharacter:
@@ -50,18 +57,34 @@ const Header = ({navigation}: Props) => {
   }, [createState]);
 
   const back = () => {
-    transitPrevState();
-
     if (pageStack.length === 0) {
       navigation.navigate('ServerSelect');
     }
 
     if (phase === 2) {
+      if (tabId === 1 && editingCharacter) {
+        switch (nowCharacterType) {
+          case CharacterType.Criminal:
+            setCriminal(editingCharacter);
+            break;
+          case CharacterType.Other:
+            setOtherCharacters(prev => [...prev, editingCharacter]);
+            break;
+        }
+      }
+      transitNextState(CreateState.Default); // トリック選択からキャラクターシートに遷移したときに、transitPrevState()を呼ぶと、トリック選択に戻ってしまうので、ここでtransitNextState()を呼ぶ
+      setPhase(phase - 1);
+
       setIsCreatingCharacter(false);
+
+      return;
     }
     if (phase > 1) setPhase(phase - 1);
     else navigation.navigate('ServerSelect');
+
+    transitPrevState();
   };
+
   return <HeaderPresenter back={back} text={headerText} />;
 };
 

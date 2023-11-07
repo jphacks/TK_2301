@@ -8,12 +8,26 @@ const Trick = () => {
   const [selectedTricks, setSelectedTricks] = useState<string[]>([]);
   const onPress = () => {
     // fetchする
-    console.log(selectedTricks);
 
     setPhase(2);
     setTabId(1);
 
     transitNextState(CreateState.OtherCharacter);
+
+    setEditingCharacter({
+      name: '竹下波瑠',
+      age: 52,
+      profession: 'マジシャン',
+      open: 'aaaaa',
+      private: 'bbbbb',
+      timeline: [
+        {
+          num: 0,
+          text: 'aaaaaa',
+        },
+      ],
+      purpose: 'bbbbbb',
+    });
   };
   return (
     <TrickPresenter

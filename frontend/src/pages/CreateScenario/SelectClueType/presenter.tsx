@@ -9,10 +9,10 @@ type Props = {
 };
 
 const SelectClueTypePresenter = ({onPress}: Props) => {
-  const {criminals, otherCharacters} = useCreateScenario();
+  const {criminal, otherCharacters} = useCreateScenario();
   return (
     <View style={styles.container}>
-      {criminals.length == 0 ? (
+      {criminal ? (
         <View>
           <Text style={styles.text}>フロアマップ</Text>
           <SquareButton type="room" onPress={() => onPress('room')} />
