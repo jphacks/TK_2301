@@ -1,17 +1,17 @@
-import React from "react"
-import { Pressable, Text, View, Image } from "react-native"
-import { Props as ContainerProps, FloorProps } from "./index"
-import styles from "./style"
-import Floor from "../Floor"
+import React from 'react';
+import {Pressable, Text, View, Image} from 'react-native';
+import {Props as ContainerProps, FloorProps} from './index';
+import styles from './style';
+import Floor from '../Floor';
 
 type Props = {
-  enter: (floorInfo: FloorProps) => void
-  floor: FloorProps | undefined
-  isFloorEntered: boolean
-  exit: () => void
-  surveysCount: number
-  minusSurveysCount: () => void
-} & ContainerProps
+  enter: (floorInfo: FloorProps) => void;
+  floor: FloorProps | undefined;
+  isFloorEntered: boolean;
+  exit: () => void;
+  surveysCount: number;
+  minusSurveysCount: () => void;
+} & ContainerProps;
 
 const FloorMapPresenter = ({
   floorMap,
@@ -20,18 +20,18 @@ const FloorMapPresenter = ({
   floor,
   exit,
   surveysCount,
-  minusSurveysCount
+  minusSurveysCount,
 }: Props) => {
   return (
     <View>
       <View style={styles.header}>
         {isFloorEntered && (
           <Pressable onPress={exit} style={styles.backContainer}>
-            <Image style={styles.backIcon} source={require("./back.png")} />
+            <Image style={styles.backIcon} source={require('./back.png')} />
           </Pressable>
         )}
         <Text style={styles.where}>
-          {isFloorEntered && floor ? floor?.floorName : "フロアマップ"}
+          {isFloorEntered && floor ? floor?.floorName : 'フロアマップ'}
         </Text>
       </View>
 
@@ -48,17 +48,16 @@ const FloorMapPresenter = ({
               <Pressable
                 key={index}
                 style={styles.container}
-                onPress={() => enter(floor)}
-              >
+                onPress={() => enter(floor)}>
                 <Text style={styles.text}>{floor.floorName}</Text>
-                <Image source={require("./<.png")} />
+                <Image source={require('./enter.png')} />
               </Pressable>
-            )
+            );
           })}
         </>
       )}
     </View>
-  )
-}
+  );
+};
 
-export default FloorMapPresenter
+export default FloorMapPresenter;
