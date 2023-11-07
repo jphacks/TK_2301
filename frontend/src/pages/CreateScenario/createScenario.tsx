@@ -26,13 +26,19 @@ export enum CreateState {
   Room,
 }
 
+export enum CharacterType {
+  Default,
+  Criminal,
+  Other,
+}
+
 type CreateScenarioContextType = {
   tabId: number;
   setTabId: React.Dispatch<React.SetStateAction<number>>;
   phase: number;
   setPhase: React.Dispatch<React.SetStateAction<number>>;
-  criminals: Character[];
-  setCriminals: React.Dispatch<React.SetStateAction<Character[]>>;
+  criminal: Character | undefined;
+  setCriminal: React.Dispatch<React.SetStateAction<Character | undefined>>;
   otherCharacters: Character[];
   setOtherCharacters: React.Dispatch<React.SetStateAction<Character[]>>;
   isCreatingCharacter: boolean;
@@ -81,6 +87,8 @@ type CreateScenarioContextType = {
   setPageStack: React.Dispatch<React.SetStateAction<CreateState[]>>;
   transitNextState: (createState: CreateState) => void;
   transitPrevState: () => void;
+  nowCharacterType: CharacterType;
+  setNowCharacterType: React.Dispatch<React.SetStateAction<CharacterType>>;
 };
 
 const CreateScenarioContext = createContext<
@@ -102,7 +110,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 }) => {
   const [tabId, setTabId] = useState<number>(1);
   const [phase, setPhase] = useState<number>(1);
-  const [criminals, setCriminals] = useState<Character[]>([]);
+  const [criminal, setCriminal] = useState<Character>();
   const [otherCharacters, setOtherCharacters] = useState<Character[]>([]);
   const [isCreatingCharacter, setIsCreatingCharacter] =
     useState<boolean>(false);
@@ -140,6 +148,9 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [shareJson, setShareJson] = useState({});
   const [createState, setCreateState] = useState(CreateState.Default);
   const [pageStack, setPageStack] = useState([CreateState.Default]);
+  const [nowCharacterType, setNowCharacterType] = useState(
+    CharacterType.Default,
+  );
 
   const transitNextState = (createState: CreateState) => {
     setPageStack([...pageStack, createState]);
@@ -162,8 +173,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setTabId,
         phase,
         setPhase,
-        criminals,
-        setCriminals,
+        criminal,
+        setCriminal,
         otherCharacters,
         setOtherCharacters,
         isCreatingCharacter,
@@ -198,6 +209,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setPageStack,
         transitNextState,
         transitPrevState,
+        nowCharacterType,
+        setNowCharacterType,
       }}>
       {children}
     </CreateScenarioContext.Provider>

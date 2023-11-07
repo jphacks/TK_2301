@@ -5,7 +5,7 @@ import {TabBar, TabView} from 'react-native-tab-view';
 import styles from './style';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootRoutesParamList} from '../../routes/Root';
-import {CreateState , useCreateScenario} from './createScenario';
+import {CreateState, useCreateScenario} from './createScenario';
 import CharacterSheet from './CharacterSheet';
 import World from './World';
 import Hint from './Hint';
@@ -31,9 +31,9 @@ type Props = {
 };
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
-  const {
-    createState,
-  } = useCreateScenario();
+  const {createState, criminal} = useCreateScenario();
+
+  console.log(criminal);
 
   const renderContent = () => {
     switch (createState) {
@@ -49,7 +49,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.Image:
         return <ItemInfo />;
       case CreateState.Trick:
-          return <Trick />;
+        return <Trick />;
       default:
         return (
           <TabView
