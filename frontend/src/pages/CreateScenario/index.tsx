@@ -7,6 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootRoutesParamList} from '../../routes/Root';
 import SelectCharacterType from './SelectCharacterType';
 import SelectClueType from './SelectClueType';
+import OtherSettings from './OtherSettings';
 
 type Props = NativeStackScreenProps<RootRoutesParamList, 'CreateScenario'>;
 const CreateScenaio = ({navigation}: Props) => {
@@ -22,7 +23,7 @@ const CreateScenaio = ({navigation}: Props) => {
   const renderScene = SceneMap({
     first: () => <SelectCharacterType />,
     second: () => <SelectClueType />,
-    third: () => <View></View>,
+    third: () => <OtherSettings />,
   });
 
   const tabViewProps = {

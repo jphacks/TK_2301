@@ -8,6 +8,8 @@ import {GameProvider} from './game.context';
 // floorMapからitemsを外に出す。itemにfloorMapのidを持たせる
 export type ScenarioType = {
   title: string;
+  outline: string;
+  numberOfPlayers: number;
   characters: {
     nameKanji: string;
     nameKana: string;
@@ -56,6 +58,8 @@ const Game = ({navigation}: NavigationProps) => {
     useTabbar();
   const scenario = {
     title: 'マーダーミステリーゲーム',
+    outline: '',
+    numberOfPlayers: 3,
     characters: [
       {
         nameKanji: '竹下波瑠',
