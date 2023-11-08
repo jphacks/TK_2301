@@ -1,5 +1,4 @@
 import React, {ReactNode, createContext, useContext, useState} from "react";
-import auth from "firebase/auth";
 
 type Character = {
   name: string;
@@ -33,8 +32,9 @@ export enum CharacterType {
 }
 
 export type ClueItem = {
-  scenarioId: number;
-  mapId: number;
+  itemId: string;
+  mapId?: string; // 位置するシナリオID
+  mapName?: string; // 設置されたマップの名前
   uri: string;
   name: string;
   coordinate?: {
@@ -43,29 +43,29 @@ export type ClueItem = {
   };
 };
 
-export type FloorMap = {
-  mapId: number;
-  scenarioId: number;
-  uri: string;
-  name: string;
-};
-
-const SampleClueItems: ClueItem[] = [
+// ClueItem のサンプル配列を作成します。
+const sampleClueItems: ClueItem[] = [
   {
-    scenarioId: 1,
-    mapId: 101,
+    itemId: "clue-001",
+    mapId: "map-101",
+    mapName: "Mystic Forest",
     uri: "http://example.com/clues/clue1.jpg",
     name: "Mysterious Key",
+    coordinate: {
+      x: 50,
+      y: 100,
+    },
   },
   {
-    scenarioId: 2,
-    mapId: 102,
+    itemId: "clue-002",
+    // mapId と mapName はこのアイテムでは省略されています。
     uri: "http://example.com/clues/clue2.jpg",
     name: "Ancient Scroll",
   },
   {
-    scenarioId: 3,
-    mapId: 103,
+    itemId: "clue-003",
+    mapId: "map-103",
+    mapName: "Cursed Tomb",
     uri: "http://example.com/clues/clue3.jpg",
     name: "Silver Coin",
     coordinate: {
@@ -73,8 +73,16 @@ const SampleClueItems: ClueItem[] = [
       y: 300,
     },
   },
-  // 他のサンプルデータを必要に応じて追加...
+  // 他のサンプルアイテムを追加する場合はここに続けます...
 ];
+
+const clueItemsMap = new Map<string, ClueItem>();
+
+export type FloorMap = {
+  mapId?: string;
+  uri?: string;
+  name?: string;
+};
 
 type CreateScenarioContextType = {
   tabId: number;
@@ -97,8 +105,8 @@ type CreateScenarioContextType = {
   setIsHint: React.Dispatch<React.SetStateAction<boolean>>;
   isTrick: boolean;
   setIsTrick: React.Dispatch<React.SetStateAction<boolean>>;
-  clueItems: ClueItem[];
-  setClueItems: React.Dispatch<React.SetStateAction<ClueItem[]>>;
+  clueItems: Map<string, ClueItem>;
+  setClueItems: React.Dispatch<React.SetStateAction<Map<string, ClueItem>>>;
   phenomena: string[];
   setPhenomena: React.Dispatch<React.SetStateAction<string[]>>;
   tricks: {
@@ -129,11 +137,13 @@ type CreateScenarioContextType = {
   setCreateState: React.Dispatch<React.SetStateAction<CreateState>>;
   pageStack: CreateState[];
   setPageStack: React.Dispatch<React.SetStateAction<CreateState[]>>;
-  floorMaps: FloorMap[];
-  setFloorMaps: React.Dispatch<React.SetStateAction<FloorMap[]>>;
-  targetId?: number;
-  setTargetId: React.Dispatch<React.SetStateAction<number | undefined>>;
-  transitNextState: (createState: CreateState) => void;
+  floorMaps: Map<string, FloorMap>;
+  setFloorMaps: React.Dispatch<React.SetStateAction<Map<string, FloorMap>>>;
+  targetId?: number | string;
+  setTargetId: React.Dispatch<
+    React.SetStateAction<number | string | undefined>
+  >;
+  transitNextState: (createState: CreateState, targetId?: string) => void;
   transitPrevState: () => void;
   nowCharacterType: CharacterType;
   setNowCharacterType: React.Dispatch<React.SetStateAction<CharacterType>>;
@@ -156,6 +166,10 @@ export function useCreateScenario() {
 export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   children,
 }) => {
+  sampleClueItems.forEach(item => {
+    clueItemsMap.set(item.itemId, item);
+  });
+
   const [tabId, setTabId] = useState<number>(1);
   const [phase, setPhase] = useState<number>(1);
   const [criminal, setCriminal] = useState<Character>();
@@ -167,9 +181,12 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [isWorld, setIsWorld] = useState<boolean>(false);
   const [isHint, setIsHint] = useState<boolean>(false);
   const [isTrick, setIsTrick] = useState<boolean>(false);
-  const [clueItems, setClueItems] = useState<ClueItem[]>(SampleClueItems);
-  const [floorMaps, setFloorMaps] = useState<FloorMap[]>([]);
-  const [targetId, setTargetId] = useState<number | undefined>(undefined);
+  const [clueItems, setClueItems] =
+    useState<Map<string, ClueItem>>(clueItemsMap);
+  const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
+  const [targetId, setTargetId] = useState<number | string | undefined>(
+    undefined,
+  ); //  対象となるIDを設定する変数。バッファーのように扱って良い
   const [phenomena, setPhenomena] = useState<string[]>([]);
   const [tricks, setTricks] = useState<
     {
@@ -202,7 +219,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     CharacterType.Default,
   );
 
-  const transitNextState = (createState: CreateState, targetId?: number) => {
+  // 第二引数は編集画面に遷移する際の対象要素の識別子
+  const transitNextState = (createState: CreateState, targetId?: string) => {
     setTargetId(targetId);
     setPageStack([...pageStack, createState]);
     setCreateState(createState);

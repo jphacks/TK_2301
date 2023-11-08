@@ -11,27 +11,36 @@ type Props = {
 };
 
 const SelectClueTypePresenter = ({onPress}: Props) => {
-  const {setPhase, floorMaps, transitNextState, criminal, otherCharacters} = useCreateScenario();
+  const {setPhase, floorMaps, transitNextState} = useCreateScenario();
+
   return (
     <View style={styles.container}>
       <View>
         <View style={styles.headerConteienr}>
           <Text style={styles.text}>フロアマップ</Text>
-          {floorMaps.length > 0 && <PurpleButton title={"追加"} />}
+          { floorMaps.size > 0 && (
+            <PurpleButton
+              title={"追加"}
+              onClick={() => {
+                setPhase(prev => prev + 1);
+                transitNextState(CreateState.Room);
+              }}
+            />
+          )}
         </View>
-        {floorMaps.length == 0 ? (
+        { floorMaps.size == 0 ? (
           <SquareButton type="room" onPress={() => onPress("room")} />
         ) : (
-          floorMaps.map((item, index) => {
+          Array.from(floorMaps, ([key, item]) => {
             return (
               <SquareCard
-                key={index}
+                key={key}
                 label={item.name}
                 onPress={() => {
                   setPhase(prev => prev + 1);
-                  transitNextState(CreateState.Room);
+                  transitNextState(CreateState.Room, key);
                 }}
-                id={index}
+                id={key}
                 style={styles.card}
               />
             );

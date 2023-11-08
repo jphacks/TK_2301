@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   cardSubText: {
     color: "#DADEE180",
-    fontSize: 10,
+    fontSize: 8,
     fontWeight: "bold",
   },
   modalOverlay: {

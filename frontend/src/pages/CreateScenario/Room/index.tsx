@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from "react";
 import RoomPresenter from "./presenter";
-import {
-  MediaType,
-  launchCamera,
-  launchImageLibrary,
-} from "react-native-image-picker";
-import CreateScenaio from "..";
 import {useCreateScenario} from "../createScenario";
+import uuid from "react-native-uuid";
 
 export type Props = {
   roomId?: number; // undefinedの場合は新規作成
@@ -26,7 +21,7 @@ const MockItemData = [
 ];
 
 const Room = ({roomId}: Props) => {
-  const {clueItems, setClueItems, floorMaps, setFloorMaps} =
+  const {clueItems, setClueItems, floorMaps, setFloorMaps, setTargetId} =
     useCreateScenario();
 
   const [isSelectedImage, setIsSelectedImage] = useState(false);
@@ -37,16 +32,19 @@ const Room = ({roomId}: Props) => {
   const closeModal = () => setShowModal(false);
 
   useEffect(() => {
-    console.log("fire!!!!!!!", roomId);
+    console.log("fire", roomId);
+
     if (roomId === undefined) {
-      const bufFloorMap = [...floorMaps];
-      bufFloorMap.push({
-        scenarioId: 1,
-        uri: "",
-        mapId: floorMaps.length,
+      const newMapId = uuid.v4().toString();
+
+      floorMaps.set(newMapId, {
+        scenarioId: 0,
         name: "新規作成",
+        mapId: newMapId,
       });
-      setFloorMaps(bufFloorMap);
+
+      setTargetId(newMapId);
+      setFloorMaps(floorMaps);
     }
   }, []);
 

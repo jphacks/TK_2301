@@ -25,8 +25,8 @@ type Props = {
   isSelectedImage: boolean;
   showItemModal: boolean;
   reverseVisible: () => void;
-  clueItems: ClueItem[];
-  setClueItems: React.Dispatch<React.SetStateAction<ClueItem[]>>;
+  clueItems: Map<string, ClueItem>;
+  setClueItems: React.Dispatch<React.SetStateAction<Map<string, ClueItem>>>;
 } & ContainerProps;
 
 const RoomPresenter = ({
@@ -38,13 +38,12 @@ const RoomPresenter = ({
   isSelectedImage,
   showItemModal,
   reverseVisible,
-  roomId,
 }: Props) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
   const window = useWindowDimensions();
-  const {clueItems, setClueItems, floorMaps, setFloorMaps} =
+  const {clueItems, setClueItems, floorMaps, setFloorMaps, targetId} =
     useCreateScenario();
 
   return (
@@ -61,10 +60,19 @@ const RoomPresenter = ({
         labelName={"部屋の名前"}
         style={styles.container}
         onTextChange={name => {
-          const bufMap = [...floorMaps];
-          bufMap[roomId].name = name;
+          if (targetId === undefined || typeof targetId === "number") {
+            return;
+          }
 
-          setFloorMaps(bufMap);
+          const data = floorMaps.get(targetId);
+          if (data === undefined) {
+            return;
+          }
+
+          data.name = name;
+
+          floorMaps.set(targetId, data);
+          setFloorMaps(floorMaps);
         }}
       />
 
@@ -81,8 +89,9 @@ const RoomPresenter = ({
             <ImageBackground
               source={require("./images/back.png")}
               style={{width: window.width, height: 500}}>
-              {clueItems.map((item, index) => {
-                if (item.coordinate === undefined) {
+              {/* ================ マップ上に表示されるアイテムアイコン ===================== */}
+              {Array.from(clueItems.values()).map((item, index) => {
+                if (item.coordinate === undefined || item.mapId !== targetId) {
                   return undefined;
                 }
 
@@ -119,21 +128,32 @@ const RoomPresenter = ({
         <ImageSelector onPress={openModal} text={""} style={undefined} />
       )}
 
+      {/* ================ 配置するアイテムのモーダル ===================== */}
       <Modal animationType="slide" transparent={true} visible={showItemModal}>
         <TouchableOpacity style={styles.modalView} onPress={reverseVisible}>
           <Text style={styles.modalHeader}>追加できる証拠品／情報</Text>
-          {clueItems.map((item, index) => {
+          {Array.from(clueItems, ([key, item]) => {
             return (
               <TouchableOpacity
                 style={styles.itemCard}
-                key={index}
+                key={key}
                 onPress={() => {
-                  const newArray = [...clueItems]; // 配列のコピーを作成
-                  newArray[index].coordinate = {
+                  if (typeof targetId === "string") {
+                    item.mapId = targetId;
+
+                    const mapName = floorMaps.get(targetId);
+                    item.mapName = mapName?.name;
+                  }
+
+                  item.coordinate = {
                     x,
                     y,
                   };
-                  setClueItems(newArray);
+
+                  console.log(item);
+                  clueItems.set(key, item);
+
+                  setClueItems(clueItems);
                   reverseVisible();
                 }}>
                 <Image
@@ -141,7 +161,7 @@ const RoomPresenter = ({
                   style={styles.cardImage}></Image>
                 <Text style={styles.cardText}>{item.name}</Text>
                 {item.coordinate !== undefined && (
-                  <Text style={styles.cardSubText}>設置済み</Text>
+                  <Text style={styles.cardSubText}>{item.mapName}</Text>
                 )}
               </TouchableOpacity>
             );
