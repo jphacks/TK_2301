@@ -95,16 +95,18 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 5,
   },
+  cardTextContainer: {
+    marginLeft: 20,
+  },
   cardText: {
     color: "white",
     fontSize: 20,
-    marginLeft: 20,
-    width: 160,
     fontWeight: "bold",
   },
   cardSubText: {
     color: "#DADEE180",
     fontSize: 8,
+    marginTop: 2,
     fontWeight: "bold",
   },
   modalOverlay: {

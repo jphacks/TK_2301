@@ -14,7 +14,7 @@ import styles from "./style";
 import LabeledTextInput from "../../../components/generics/LabeledTextInput";
 import ImageSelector from "../../../components/generics/ImageSelector";
 import ImageSelectModal from "../../../components/generics/ImageSelectModal";
-import {Item, FloorMap} from "../../../models/scenario";
+import {Item} from "../../../models/scenario";
 import { useCreateScenario } from "../createScenario";
 
 type Props = {
@@ -151,19 +151,20 @@ const RoomPresenter = ({
                     y,
                   };
 
-                  console.log(item);
                   items.set(key, item);
-
                   setItems(items);
+
                   reverseVisible();
                 }}>
                 <Image
                   source={require("./images/sample.png")}
                   style={styles.cardImage}></Image>
-                <Text style={styles.cardText}>{item.name}</Text>
-                {item.coordinate !== undefined && (
-                  <Text style={styles.cardSubText}>{item.mapId}</Text>
-                )}
+                  <View style={styles.cardTextContainer}>
+                    <Text style={styles.cardText}>{item.name}</Text>
+                    {item.coordinate !== undefined && (
+                      <Text style={styles.cardSubText}>{item.mapId}</Text>
+                    )}
+                  </View>
               </TouchableOpacity>
             );
           })}
