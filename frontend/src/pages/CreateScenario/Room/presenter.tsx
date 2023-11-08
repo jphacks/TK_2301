@@ -14,7 +14,8 @@ import styles from "./style";
 import LabeledTextInput from "../../../components/generics/LabeledTextInput";
 import ImageSelector from "../../../components/generics/ImageSelector";
 import ImageSelectModal from "../../../components/generics/ImageSelectModal";
-import {ClueItem, FloorMap, useCreateScenario} from "../createScenario";
+import {Item, FloorMap} from "../../../models/scenario";
+import { useCreateScenario } from "../createScenario";
 
 type Props = {
   openModal: () => void;
@@ -25,8 +26,8 @@ type Props = {
   isSelectedImage: boolean;
   showItemModal: boolean;
   reverseVisible: () => void;
-  clueItems: Map<string, ClueItem>;
-  setClueItems: React.Dispatch<React.SetStateAction<Map<string, ClueItem>>>;
+  items: Map<string, Item>;
+  setItems: React.Dispatch<React.SetStateAction<Map<string, Item>>>;
 } & ContainerProps;
 
 const RoomPresenter = ({
@@ -43,7 +44,7 @@ const RoomPresenter = ({
   const [y, setY] = useState(0);
 
   const window = useWindowDimensions();
-  const {clueItems, setClueItems, floorMaps, setFloorMaps, targetId} =
+  const {items, setItems, floorMaps, setFloorMaps, targetId} =
     useCreateScenario();
 
   return (
@@ -90,7 +91,7 @@ const RoomPresenter = ({
               source={require("./images/back.png")}
               style={{width: window.width, height: 500}}>
               {/* ================ マップ上に表示されるアイテムアイコン ===================== */}
-              {Array.from(clueItems.values()).map((item, index) => {
+              {Array.from(items.values()).map((item, index) => {
                 if (item.coordinate === undefined || item.mapId !== targetId) {
                   return undefined;
                 }
@@ -132,7 +133,7 @@ const RoomPresenter = ({
       <Modal animationType="slide" transparent={true} visible={showItemModal}>
         <TouchableOpacity style={styles.modalView} onPress={reverseVisible}>
           <Text style={styles.modalHeader}>追加できる証拠品／情報</Text>
-          {Array.from(clueItems, ([key, item]) => {
+          {Array.from(items, ([key, item]) => {
             return (
               <TouchableOpacity
                 style={styles.itemCard}
@@ -141,8 +142,8 @@ const RoomPresenter = ({
                   if (typeof targetId === "string") {
                     item.mapId = targetId;
 
-                    const mapName = floorMaps.get(targetId);
-                    item.mapName = mapName?.name;
+                    const map = floorMaps.get(targetId);
+                    item.mapId = map?.mapId || "";
                   }
 
                   item.coordinate = {
@@ -151,9 +152,9 @@ const RoomPresenter = ({
                   };
 
                   console.log(item);
-                  clueItems.set(key, item);
+                  items.set(key, item);
 
-                  setClueItems(clueItems);
+                  setItems(items);
                   reverseVisible();
                 }}>
                 <Image
@@ -161,7 +162,7 @@ const RoomPresenter = ({
                   style={styles.cardImage}></Image>
                 <Text style={styles.cardText}>{item.name}</Text>
                 {item.coordinate !== undefined && (
-                  <Text style={styles.cardSubText}>{item.mapName}</Text>
+                  <Text style={styles.cardSubText}>{item.mapId}</Text>
                 )}
               </TouchableOpacity>
             );

@@ -4,7 +4,7 @@ import {useCreateScenario} from "../createScenario";
 import uuid from "react-native-uuid";
 
 export type Props = {
-  roomId?: number; // undefinedの場合は新規作成
+  roomId?: number | string; // undefinedの場合は新規作成
 };
 
 const MockItemData = [
@@ -21,7 +21,7 @@ const MockItemData = [
 ];
 
 const Room = ({roomId}: Props) => {
-  const {clueItems, setClueItems, floorMaps, setFloorMaps, setTargetId} =
+  const {items, setItems, floorMaps, setFloorMaps, setTargetId} =
     useCreateScenario();
 
   const [isSelectedImage, setIsSelectedImage] = useState(false);
@@ -38,9 +38,9 @@ const Room = ({roomId}: Props) => {
       const newMapId = uuid.v4().toString();
 
       floorMaps.set(newMapId, {
-        scenarioId: 0,
         name: "新規作成",
         mapId: newMapId,
+        uri: ""
       });
 
       setTargetId(newMapId);
@@ -72,8 +72,8 @@ const Room = ({roomId}: Props) => {
       isSelectedImage={isSelectedImage}
       showItemModal={showItemModal}
       reverseVisible={reverseVisible}
-      clueItems={clueItems}
-      setClueItems={setClueItems}
+      items={items}
+      setItems={setItems}
       roomId={roomId}
     />
   );

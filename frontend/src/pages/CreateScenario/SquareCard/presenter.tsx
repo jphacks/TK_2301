@@ -2,7 +2,6 @@ import React from "react";
 import {Image, Pressable, Text, View} from "react-native";
 import {Props as ContainerProps} from "./index";
 import styles from "./style";
-import LinearGradient from "react-native-linear-gradient";
 
 type Props = {} & ContainerProps;
 

@@ -41,7 +41,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
 
   const renderContent = () => {
     switch (createState) {
-      case CreateState.CliminalCharacter:
+      case CreateState.CriminalsCharacter:
       case CreateState.OtherCharacter:
         return <CharacterSheet />;
       case CreateState.World:

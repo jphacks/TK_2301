@@ -6,7 +6,7 @@ const SelectCharacterType = () => {
   const {setPhase, transitNextState, setNowCharacterType} = useCreateScenario();
   const onPress = (type: string) => {
     if (type === 'criminal') {
-      transitNextState(CreateState.CliminalCharacter);
+      transitNextState(CreateState.CriminalsCharacter);
       setNowCharacterType(CharacterType.Criminal);
 
       setPhase(prev => prev + 1);

@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import HeaderPresenter from './presenter';
-import {CreateState, CharacterType, useCreateScenario} from '../createScenario';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootRoutesParamList} from '../../../routes/Root';
+import React, {useEffect, useState} from "react";
+import HeaderPresenter from "./presenter";
+import {CreateState, useCreateScenario} from "../createScenario";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {RootRoutesParamList} from "../../../routes/Root";
+import {CharacterType} from "../../../models/scenario";
 
 type Props = {
   navigation: NativeStackNavigationProp<
     RootRoutesParamList,
-    'CreateScenario',
+    "CreateScenario",
     undefined
   >;
 };
@@ -16,7 +17,6 @@ const Header = ({navigation}: Props) => {
   const {
     phase,
     setPhase,
-    setIsCreatingCharacter,
     createState,
     pageStack,
     transitPrevState,
@@ -26,39 +26,40 @@ const Header = ({navigation}: Props) => {
     setCriminal,
     setOtherCharacters,
     transitNextState,
+    uploadScenarioData
   } = useCreateScenario();
-  const [headerText, setHeaderText] = useState<string>('シナリオ作成');
+  const [headerText, setHeaderText] = useState<string>("シナリオ作成");
 
   useEffect(() => {
     switch (createState) {
-      case CreateState.CliminalCharacter:
+      case CreateState.CriminalsCharacter:
       case CreateState.OtherCharacter:
-        setHeaderText('キャラクターシート');
+        setHeaderText("キャラクターシート");
         break;
       case CreateState.World:
-        setHeaderText('世界観を決める');
+        setHeaderText("世界観を決める");
         break;
       case CreateState.Hint:
-        setHeaderText('ヒントを選ぶ');
+        setHeaderText("ヒントを選ぶ");
         break;
       case CreateState.Trick:
-        setHeaderText('使用するトリックを選ぶ');
+        setHeaderText("使用するトリックを選ぶ");
         break;
       case CreateState.ItemInfo:
-        setHeaderText('証拠品/情報');
+        setHeaderText("証拠品/情報");
         break;
       case CreateState.Image:
-        setHeaderText('画像作成');
+        setHeaderText("画像作成");
         break;
       default:
-        setHeaderText('シナリオ作成');
+        setHeaderText("シナリオ作成");
         break;
     }
   }, [createState]);
 
   const back = () => {
     if (pageStack.length === 0) {
-      navigation.navigate('ServerSelect');
+      navigation.navigate("ServerSelect");
     }
 
     if (phase === 2) {
@@ -75,17 +76,15 @@ const Header = ({navigation}: Props) => {
       transitNextState(CreateState.Default); // トリック選択からキャラクターシートに遷移したときに、transitPrevState()を呼ぶと、トリック選択に戻ってしまうので、ここでtransitNextState()を呼ぶ
       setPhase(phase - 1);
 
-      setIsCreatingCharacter(false);
-
       return;
     }
     if (phase > 1) setPhase(phase - 1);
-    else navigation.navigate('ServerSelect');
+    else navigation.navigate("ServerSelect");
 
     transitPrevState();
   };
 
-  return <HeaderPresenter back={back} text={headerText} />;
+  return <HeaderPresenter back={back} text={headerText} onPressUploadIcon={uploadScenarioData} />;
 };
 
 export default Header;
