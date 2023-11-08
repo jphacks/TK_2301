@@ -6,6 +6,7 @@ const SelectClueType = () => {
   const {setPhase, setTabId, transitNextState} = useCreateScenario();
   const onPress = (type: string) => {
     if (type === 'room') {
+      setPhase(prev => prev + 1);
       transitNextState(CreateState.Room);
       return;
     }
