@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 80,
     flexDirection: 'row',
+    justifyContent: "space-between",
     alignItems: 'center',
     padding: 16,
     backgroundColor: "#2B2B2B",
@@ -20,7 +21,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    marginLeft: 260,
   },
 });
 
