@@ -32,8 +32,6 @@ const Room = ({roomId}: Props) => {
   const closeModal = () => setShowModal(false);
 
   useEffect(() => {
-    console.log("fire", roomId);
-
     if (roomId === undefined) {
       const newMapId = uuid.v4().toString();
 
