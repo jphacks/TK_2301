@@ -1,28 +1,30 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
   text: {
-    color: '#DADEE1',
+    color: "#DADEE1",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   header: {
-    backgroundColor: '#1E1F23',
-    paddingVertical: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#1E1F23",
+    paddingVertical: 8,
   },
   where: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    textAlign: 'center',
   },
   backIcon: {},
   backContainer: {
     width: 30,
     height: 45,
     padding: 16,
-    position: 'absolute',
-    top: 3,
-    left: 18,
+  },
+  uploadIconContainer: {
+    marginRight: 10,
   },
 });
 

@@ -15,6 +15,10 @@ const HeaderPresenter = ({back, text}: Props) => {
       </Pressable>
 
       <Text style={styles.where}>{text}</Text>
+
+      <Pressable onPress={back} style={styles.uploadIconContainer}>
+        <Image style={styles.backIcon} source={require('./upload.png')} />
+      </Pressable>
     </View>
   );
 };
