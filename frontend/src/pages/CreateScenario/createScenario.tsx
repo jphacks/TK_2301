@@ -1,4 +1,4 @@
-import React, {ReactNode, createContext, useContext, useState} from "react";
+import React, {ReactNode, createContext, useContext, useState} from 'react';
 import {
   Character,
   Item,
@@ -7,9 +7,14 @@ import {
   Scenario,
   Abstraction,
   Trick,
-} from "../../models/scenario";
-import {sampleAbstract, sampleClueItems, sampleEditingCharacter} from "../../models/samples";
-import scenarioCollection from "../../api/firebase/firestore";
+  Phase,
+} from '../../models/scenario';
+import {
+  sampleAbstract,
+  sampleClueItems,
+  sampleEditingCharacter,
+} from '../../models/samples';
+import scenarioCollection from '../../api/firebase/firestore';
 
 export enum CreateState {
   Default,
@@ -21,6 +26,7 @@ export enum CreateState {
   Trick,
   Image,
   Room,
+  Phase,
 }
 
 const clueItemsMap = new Map<string, Item>();
@@ -50,6 +56,9 @@ type CreateScenarioContextType = {
     React.SetStateAction<number | string | undefined>
   >;
 
+  phase: number;
+  setPhase: React.Dispatch<React.SetStateAction<number>>;
+
   // ================================ 動的管理するシナリオデータ =============================
   // TODO: Map型への変換；　Characterとしてまとめても良いかも？
   criminal: Character | undefined;
@@ -72,8 +81,8 @@ type CreateScenarioContextType = {
   setPhenomena: React.Dispatch<React.SetStateAction<string[]>>;
 
   // TODO: Map型への変換
-  phase: number;
-  setPhase: React.Dispatch<React.SetStateAction<number>>;
+  phaseData: Map<string, Phase>;
+  setPhaseData: React.Dispatch<React.SetStateAction<Map<string, Phase>>>;
 
   // ================================ その他オリジナル関数 =============================
   transitNextState: (createState: CreateState, targetId?: string) => void;
@@ -95,7 +104,9 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [shareJson, setShareJson] = useState({});
   const [createState, setCreateState] = useState(CreateState.Default);
   const [pageStack, setPageStack] = useState([CreateState.Default]);
-  const [editingCharacter, setEditingCharacter] = useState<Character>(sampleEditingCharacter);
+  const [editingCharacter, setEditingCharacter] = useState<Character>(
+    sampleEditingCharacter,
+  );
   const [nowCharacterType, setNowCharacterType] = useState(
     CharacterType.Default,
   );
@@ -103,7 +114,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // 編集対象となる要素のID等を設定する変数。仮置き場的なレジスタとして扱って良い
   const [targetId, setTargetId] = useState<number | string | undefined>(
     undefined,
-  ); 
+  );
 
   // ================================ 動的管理するシナリオデータState =============================
   const [criminal, setCriminal] = useState<Character>();
@@ -119,6 +130,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       illusion: string;
     }[]
   >([]);
+  const [phaseData, setPhaseData] = useState<Map<string, Phase>>(new Map());
 
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
@@ -148,7 +160,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       characters: [], // TODO
     };
 
-    scenarioCollection.update("UA7B967KQVB4kXCMjt2t", data);
+    scenarioCollection.update('UA7B967KQVB4kXCMjt2t', data);
   };
 
   return (
@@ -185,6 +197,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         targetId,
         setTargetId,
         uploadScenarioData,
+        phaseData,
+        setPhaseData,
       }}>
       {children}
     </CreateScenarioContext.Provider>
@@ -199,7 +213,7 @@ export function useCreateScenario() {
   const context = useContext(CreateScenarioContext);
   if (!context) {
     throw new Error(
-      "useCreateScenario must be used within a CreateScenarioProvider",
+      'useCreateScenario must be used within a CreateScenarioProvider',
     );
   }
   return context;

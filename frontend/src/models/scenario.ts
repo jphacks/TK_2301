@@ -23,6 +23,9 @@ export type Character = {
   about: string;
   purpose: string;
   type: CharacterType;
+  timeline: {
+    text: string;
+  }[];
 };
 
 export enum CharacterType {
@@ -38,8 +41,10 @@ export type FloorMap = {
 };
 
 export type Phase = {
+  phaseId: string;
   name: string;
   numberOfSurveys: number;
+  timeLimit: number;
 };
 
 export type Item = {
