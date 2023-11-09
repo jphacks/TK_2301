@@ -15,6 +15,7 @@ import {
   sampleEditingCharacter,
 } from '../../models/samples';
 import scenarioCollection from '../../api/firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 export enum CreateState {
   Default,
@@ -51,7 +52,7 @@ type CreateScenarioContextType = {
   nowCharacterType: CharacterType;
   setNowCharacterType: React.Dispatch<React.SetStateAction<CharacterType>>;
 
-  targetId?: number | string;
+  targetId?: string;
   setTargetId: React.Dispatch<
     React.SetStateAction<number | string | undefined>
   >;
@@ -151,7 +152,30 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   };
 
   // ヘッダーのアップロードボタン押下時に発火
-  const uploadScenarioData = () => {
+  const uploadScenarioData = async () => {
+    const bufFloorMaps: Map<string, FloorMap> = new Map(floorMaps);
+    const bufFloorArray: FloorMap[] = Array.from(floorMaps.values());
+
+    for (let i = 0; i < bufFloorArray.length; i++) {
+      const map = bufFloorArray[i];
+
+      // ローカルの画像で、まだFireStorageに保存されていない場合
+      if (map.uri.startsWith('file://')) {
+        console.log('yes');
+
+        const uploadPath = `floor_maps/${map.mapId}.png`;
+        await storage().ref(uploadPath).putFile(map.uri, {
+          contentType: 'image/png',
+        });
+
+        map.uri = uploadPath; // Firebaseに格納したURIで上書きする
+      }
+
+      bufFloorMaps.set(map.mapId, map);
+    }
+
+    setFloorMaps(bufFloorMaps);
+
     const data: Scenario = {
       abstraction: abstraction,
       phases: [], // TODO
@@ -159,6 +183,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       items: Array.from(items.values()),
       characters: [], // TODO
     };
+
+    console.log(data);
 
     scenarioCollection.update('UA7B967KQVB4kXCMjt2t', data);
   };

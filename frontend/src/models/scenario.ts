@@ -37,7 +37,7 @@ export enum CharacterType {
 export type FloorMap = {
   mapId: string;
   name: string;
-  uri: any;
+  uri: string;
 };
 
 export type Phase = {

@@ -1,49 +1,66 @@
-import React, {useEffect, useState} from "react";
-import RoomPresenter from "./presenter";
-import {useCreateScenario} from "../createScenario";
-import uuid from "react-native-uuid";
+import React, {useEffect, useState} from 'react';
+import RoomPresenter from './presenter';
+import {useCreateScenario} from '../createScenario';
+import uuid from 'react-native-uuid';
+import storage from '@react-native-firebase/storage';
+import {
+  launchCamera,
+  launchImageLibrary,
+  MediaType,
+} from 'react-native-image-picker';
+import {FloorMap} from 'src/models/scenario';
 
 export type Props = {
-  roomId?: number | string; // undefinedの場合は新規作成
+  roomId?: string; // undefinedの場合は新規作成
 };
 
-const MockItemData = [
-  {
-    secenarioId: 1,
-    mapId: 1,
-    uri: "./images/sample.png",
-    name: "血がついたナイフ",
-    coordinate: {
-      x: 0,
-      y: 0,
-    },
-  },
-];
-
 const Room = ({roomId}: Props) => {
-  const {items, setItems, floorMaps, setFloorMaps, setTargetId} =
+  const {items, setItems, floorMaps, setFloorMaps, setTargetId, targetId} =
     useCreateScenario();
 
   const [isSelectedImage, setIsSelectedImage] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showItemModal, setShowItemModal] = useState(false);
+  const [targetUri, setTargetUri] = useState('');
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
   useEffect(() => {
+    // 新規作成時
     if (roomId === undefined) {
       const newMapId = uuid.v4().toString();
 
       floorMaps.set(newMapId, {
-        name: "新規作成",
+        name: '新規作成',
         mapId: newMapId,
-        uri: ""
+        uri: '',
       });
 
       setTargetId(newMapId);
       setFloorMaps(floorMaps);
+
+      return;
     }
+
+    const target = floorMaps.get(roomId)?.uri || '';
+
+    if (target.startsWith('floor_maps/')) {
+      // 既にFireStorageに保存されている場合
+      const get = async () => {
+        const uri = await storage().ref(target).getDownloadURL();
+        setTargetUri(uri);
+        setIsSelectedImage(true);
+      };
+
+      get();
+    } else if (target.startsWith('file://')) {
+      // まだFireStorageに保存されていない場合
+      setTargetUri(target);
+      setIsSelectedImage(true);
+    }
+
+    // TODO: 画像が表示されるまで間隔があるので、それまで画像ピッカーが表示されないようにする
   }, []);
 
   const onPressImageWithAI = () => {
@@ -51,7 +68,24 @@ const Room = ({roomId}: Props) => {
     closeModal();
   };
 
-  const onPressImageFromStorage = () => {
+  const onPressImageFromStorage = async () => {
+    const photo: MediaType = 'photo';
+    const options = {
+      mediaTypes: photo,
+    };
+
+    const result = await launchImageLibrary(options);
+    const selectedUri = result.assets?.pop()?.uri || '';
+
+    if (!selectedUri || !targetId) return;
+
+    const map: FloorMap = floorMaps.get(targetId) as FloorMap;
+    map.uri = selectedUri;
+    floorMaps.set(targetId, map);
+
+    setFloorMaps(floorMaps);
+    setTargetUri(selectedUri);
+    
     setIsSelectedImage(true);
     closeModal();
   };
@@ -73,6 +107,7 @@ const Room = ({roomId}: Props) => {
       items={items}
       setItems={setItems}
       roomId={roomId}
+      targetUri={targetUri}
     />
   );
 };
