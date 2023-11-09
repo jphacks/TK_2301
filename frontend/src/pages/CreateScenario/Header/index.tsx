@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import HeaderPresenter from './presenter';
-import {CreateState, CharacterType, useCreateScenario} from '../createScenario';
+import {CreateState, useCreateScenario} from '../createScenario';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootRoutesParamList} from '../../../routes/Root';
+import {CharacterType} from '../../../models/scenario';
 
 type Props = {
   navigation: NativeStackNavigationProp<
@@ -16,7 +17,6 @@ const Header = ({navigation}: Props) => {
   const {
     phase,
     setPhase,
-    setIsCreatingCharacter,
     createState,
     pageStack,
     transitPrevState,
@@ -26,12 +26,13 @@ const Header = ({navigation}: Props) => {
     setCriminal,
     setOtherCharacters,
     transitNextState,
+    uploadScenarioData,
   } = useCreateScenario();
   const [headerText, setHeaderText] = useState<string>('シナリオ作成');
 
   useEffect(() => {
     switch (createState) {
-      case CreateState.CliminalCharacter:
+      case CreateState.CriminalsCharacter:
       case CreateState.OtherCharacter:
         setHeaderText('キャラクターシート');
         break;
@@ -49,6 +50,12 @@ const Header = ({navigation}: Props) => {
         break;
       case CreateState.Image:
         setHeaderText('画像作成');
+        break;
+      case CreateState.Room:
+        setHeaderText('部屋');
+        break;
+      case CreateState.Phase:
+        setHeaderText('フェーズ');
         break;
       default:
         setHeaderText('シナリオ作成');
@@ -75,8 +82,6 @@ const Header = ({navigation}: Props) => {
       transitNextState(CreateState.Default); // トリック選択からキャラクターシートに遷移したときに、transitPrevState()を呼ぶと、トリック選択に戻ってしまうので、ここでtransitNextState()を呼ぶ
       setPhase(phase - 1);
 
-      setIsCreatingCharacter(false);
-
       return;
     }
     if (phase > 1) setPhase(phase - 1);
@@ -85,7 +90,13 @@ const Header = ({navigation}: Props) => {
     transitPrevState();
   };
 
-  return <HeaderPresenter back={back} text={headerText} />;
+  return (
+    <HeaderPresenter
+      back={back}
+      text={headerText}
+      onPressUploadIcon={uploadScenarioData}
+    />
+  );
 };
 
 export default Header;

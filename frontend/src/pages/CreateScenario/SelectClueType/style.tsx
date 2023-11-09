@@ -1,14 +1,22 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
   },
   text: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20,
-    fontWeight: 'bold',
-    paddingTop: 40,
+    fontWeight: "bold",
+  },
+  card: {
+    marginBottom: 10,
+  },
+  headerConteienr: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 30,
     paddingBottom: 16,
   },
 });

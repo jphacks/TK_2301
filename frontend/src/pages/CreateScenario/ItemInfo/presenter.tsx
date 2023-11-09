@@ -3,6 +3,7 @@ import {Image, Pressable, Text, TextInput, View} from 'react-native';
 import styles from './style';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
 import {RadioButton} from 'react-native-paper';
+import LabeledTextInput from '../../../components/generics/LabeledTextInput';
 
 type Props = {
   showModal: boolean;
@@ -35,19 +36,8 @@ const ItemInfoPresenter = ({showModal, openModal, closeModal, next}: Props) => {
           <Image style={styles.image} source={require('./upload.png')} />
         </Pressable>
 
-        <Text style={styles.label}>証拠品／情報の名前</Text>
-        <TextInput
-          style={[styles.input]}
-          placeholder="証拠品／情報の名前"
-          placeholderTextColor="#888888"
-        />
-
-        <Text style={styles.label}>証拠品／情報の説明</Text>
-        <TextInput
-          style={[styles.input]}
-          placeholder="証拠品／情報の名前"
-          placeholderTextColor="#888888"
-        />
+        <LabeledTextInput labelName={'証拠品／情報の名前'}/>
+        <LabeledTextInput labelName={'証拠品／情報の説明'}/>
 
         <Text style={styles.label}>証拠品／情報の説明</Text>
         <RadioButton.Item

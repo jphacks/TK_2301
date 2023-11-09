@@ -1,52 +1,52 @@
-import React, { FC } from "react"
-import { View, Text, Image, ScrollView } from "react-native"
-import TopHeader from "../../components/generics/TopHeader"
-import IconScroll from "../../components/generics/IconScroll"
-import Tabbar from "../../components/generics/Tabbar"
-import Evaluation from "../../components/generics/Evaluation"
-import styles from "./style"
-import PurpleButton from "../../components/generics/PurpleButton"
-import CharacterCard from "../../components/generics/CharacterCard"
-import PrimaryButton from "../../components/generics/PrimaryButton"
-import ImpressionCard from "./impressionCard"
-import ScenarioSelector from "../../components/generics/ScenarioSelector"
-import ServerCard from "../../components/generics/ServerCard"
-import { colorCode } from "../../styles/general"
-import Characters from "../../components/generics/Characters"
+import React, {FC} from 'react';
+import {View, Text, Image, ScrollView} from 'react-native';
+import TopHeader from '../../components/generics/TopHeader';
+import IconScroll from '../../components/generics/IconScroll';
+import Tabbar from '../../components/generics/Tabbar';
+import Evaluation from '../../components/generics/Evaluation';
+import styles from './style';
+import PurpleButton from '../../components/generics/PurpleButton';
+import CharacterCard from '../../components/generics/CharacterCard';
+import PrimaryButton from '../../components/generics/PrimaryButton';
+import ImpressionCard from './impressionCard';
+import ScenarioSelector from '../../components/generics/ScenarioSelector';
+import ServerCard from '../../components/generics/ServerCard';
+import {colorCode} from '../../styles/general';
+import Characters from '../../components/generics/Characters';
 
 type Props = {
-  thumbnail: any
-  title: string
-  rating: number
-  numberOfPeople: number
-  timeLimit: string
-  author: string
-  authorIcon: any
-  outline: string
+  thumbnail: any;
+  title: string;
+  rating: number;
+  numberOfPlayers: number;
+  timeLimit: string;
+  author: string;
+  authorIcon: any;
+  outline: string;
   characters: {
-    icon: any
-    nameKanji: string
-    nameKana: string
-    age: number
-    profession: string
-    description: string
-  }[]
-  scenarioFlow: string[]
+    icon: any;
+    nameKanji: string;
+    nameKana: string;
+    age: number;
+    profession: string;
+    description: string;
+  }[];
+  scenarioFlow: string[];
   impressions: {
-    icon: any
-    name: string
-    comment: string
-  }[]
-  isCapacity: boolean
-  navigation: any
-  nowPlay: () => void
-}
+    icon: any;
+    name: string;
+    comment: string;
+  }[];
+  isCapacity: boolean;
+  navigation: any;
+  nowPlay: () => void;
+};
 
 const ScenarioDetailsPresenter: FC<Props> = ({
   thumbnail,
   title,
   rating,
-  numberOfPeople,
+  numberOfPlayers,
   timeLimit,
   author,
   authorIcon,
@@ -56,14 +56,14 @@ const ScenarioDetailsPresenter: FC<Props> = ({
   impressions,
   isCapacity,
   navigation,
-  nowPlay
+  nowPlay,
 }) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <TopHeader />
       <IconScroll />
 
-      <ScrollView style={{ backgroundColor: colorCode.primaryBackground }}>
+      <ScrollView style={{backgroundColor: colorCode.primaryBackground}}>
         <Image source={thumbnail} style={styles.image} />
 
         <View style={styles.container}>
@@ -74,7 +74,7 @@ const ScenarioDetailsPresenter: FC<Props> = ({
               <Evaluation rating={rating} />
             </View>
             <View style={styles.info}>
-              <Text style={styles.infoText}>{numberOfPeople}人/</Text>
+              <Text style={styles.infoText}>{numberOfPlayers}人/</Text>
               <Text style={styles.infoText}>{timeLimit}</Text>
             </View>
           </View>
@@ -85,9 +85,8 @@ const ScenarioDetailsPresenter: FC<Props> = ({
               <Text style={styles.authorName}>{author}</Text>
             </View>
             <PurpleButton
-              title={"お気に入り"}
-              style={styles.purpleButton}
-            ></PurpleButton>
+              title={'お気に入り'}
+              style={styles.purpleButton}></PurpleButton>
           </View>
 
           <View style={styles.outline}>
@@ -103,7 +102,7 @@ const ScenarioDetailsPresenter: FC<Props> = ({
                 <View key={i} style={styles.scenarioFlow}>
                   <Text style={styles.scenarioFlowText}>・{flow}</Text>
                 </View>
-              )
+              );
             })}
           </View>
 
@@ -111,7 +110,7 @@ const ScenarioDetailsPresenter: FC<Props> = ({
             <View style={styles.primaryButton}>
               <PrimaryButton
                 onPress={nowPlay}
-                text={"今すぐあそぶ"}
+                text={'今すぐあそぶ'}
                 width={320}
               />
             </View>
@@ -119,20 +118,20 @@ const ScenarioDetailsPresenter: FC<Props> = ({
             <View>
               <View style={styles.serverCard}>
                 <ServerCard
-                  serverName={"yama"}
-                  serverId={"0801"}
+                  serverName={'yama'}
+                  serverId={'0801'}
                   userList={[
                     {
-                      user_name: "takt",
-                      user_id: "4NvyfXM7sVT5mckHovqWyLnisrf1"
-                    }
+                      user_name: 'takt',
+                      user_id: '4NvyfXM7sVT5mckHovqWyLnisrf1',
+                    },
                   ]}
                 />
               </View>
               <View style={styles.primaryButton}>
                 <PrimaryButton
-                  onPress={() => console.log("Button pressed")}
-                  text={"だれかを募集してあそぶ"}
+                  onPress={() => console.log('Button pressed')}
+                  text={'だれかを募集してあそぶ'}
                 />
               </View>
             </View>
@@ -145,7 +144,7 @@ const ScenarioDetailsPresenter: FC<Props> = ({
                 <View key={i} style={styles.impressionCard}>
                   <ImpressionCard props={impression} />
                 </View>
-              )
+              );
             })}
           </View>
 
@@ -157,7 +156,7 @@ const ScenarioDetailsPresenter: FC<Props> = ({
 
       <Tabbar isGame={false} />
     </View>
-  )
-}
+  );
+};
 
-export default ScenarioDetailsPresenter
+export default ScenarioDetailsPresenter;
