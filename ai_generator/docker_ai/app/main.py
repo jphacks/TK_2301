@@ -130,7 +130,6 @@ def create_scenario_test(reqBody: reqBody):
 @app.post("/test/item-and-trivia")
 def create_scenario_test(reqBody: reqBody):
 	message = reqBody.user_input
-	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
 	output = {"world": "testWorld", "item": ["testItem1", "testItem2"], "trivia": ["testTrivia1", "testTrivia2"]}
 	return output
