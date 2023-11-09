@@ -1,8 +1,8 @@
-ユーザが入力したjsonの内容から、その世界に登場するアイテム(item)と特殊現象(trivia)の反常識(uncommon sense)に対して、原理もしくは仕組み(principle)の説明と錯覚させる内容(illusion)を挙げる、jsonに情報を加える
+ユーザが入力したjsonの内容から、その世界に登場するアイテム(item)と特殊現象(trivia)の反常識(uncommonSense)に対して、原理もしくは仕組み(principle)の説明と錯覚させる内容(illusion)を挙げる、jsonに情報を加える
 
-ここでいう常識(common sense)とは、アイテムまたは特殊事象が事実として持っている性質や使われ方のこと
-ここでいう反常識(common sense)とは、常識(common sense)の完全または部分否定である
-ここでいう原理もしくは仕組み(principle)とは、反常識(uncommon sense)を成り立たせる原理もしくは仕組み
+ここでいう常識(commonSense)とは、アイテムまたは特殊事象が事実として持っている性質や使われ方のこと
+ここでいう反常識(commonSense)とは、常識(commonSense)の完全または部分否定である
+ここでいう原理もしくは仕組み(principle)とは、反常識(uncommonSense)を成り立たせる原理もしくは仕組み
 ここでいう錯覚させる内容(illusion)とは、謎を解かせる人々への錯覚内容
 
 反常識をトリックに用いることで簡単には解かれにくいトリックを作ることができます.
@@ -36,8 +36,8 @@
 	"item": [
         {
             "name": ユーザ入力のまま,
-            "uncommon sense": ユーザ入力のまま,
-            "principle": uncommon senseを成立させる原理(仕組み)の説明,
+            "uncommonSense": ユーザ入力のまま,
+            "principle": uncommonSenseを成立させる原理(仕組み)の説明,
             "illusion": 錯覚させる内容
         },
         ...
@@ -45,8 +45,8 @@
 	"trivia": [
         {
             "name": ユーザ入力のまま,
-            "uncommon sense": ユーザ入力のまま,
-            "principle": uncommon senseを成立させる原理(仕組み)の説明,
+            "uncommonSense": ユーザ入力のまま,
+            "principle": uncommonSenseを成立させる原理(仕組み)の説明,
             "illusion": 錯覚させる内容
         },
         ...
