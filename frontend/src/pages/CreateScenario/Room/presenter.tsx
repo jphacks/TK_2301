@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState} from 'react';
 import {
   Image,
   ImageBackground,
@@ -8,14 +8,14 @@ import {
   useWindowDimensions,
   Modal,
   TouchableOpacity,
-} from "react-native";
-import {Props as ContainerProps} from "./index";
-import styles from "./style";
-import LabeledTextInput from "../../../components/generics/LabeledTextInput";
-import ImageSelector from "../../../components/generics/ImageSelector";
-import ImageSelectModal from "../../../components/generics/ImageSelectModal";
-import {Item} from "../../../models/scenario";
-import { useCreateScenario } from "../createScenario";
+} from 'react-native';
+import {Props as ContainerProps} from './index';
+import styles from './style';
+import LabeledTextInput from '../../../components/generics/LabeledTextInput';
+import ImageSelector from '../../../components/generics/ImageSelector';
+import ImageSelectModal from '../../../components/generics/ImageSelectModal';
+import {Item} from '../../../models/scenario';
+import {useCreateScenario} from '../createScenario';
 
 type Props = {
   openModal: () => void;
@@ -28,6 +28,7 @@ type Props = {
   reverseVisible: () => void;
   items: Map<string, Item>;
   setItems: React.Dispatch<React.SetStateAction<Map<string, Item>>>;
+  targetUri: string;
 } & ContainerProps;
 
 const RoomPresenter = ({
@@ -39,6 +40,7 @@ const RoomPresenter = ({
   isSelectedImage,
   showItemModal,
   reverseVisible,
+  targetUri,
 }: Props) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
@@ -51,17 +53,17 @@ const RoomPresenter = ({
     <ScrollView>
       {showModal && (
         <ImageSelectModal
-          test={""}
-          label={"証拠品／情報の画像"}
+          test={''}
+          label={'証拠品／情報の画像'}
           onPressImageWithAI={onPressImageWithAI}
           onPressImageFromStorage={onPressImageFromStorage}
         />
       )}
       <LabeledTextInput
-        labelName={"部屋の名前"}
+        labelName={'部屋の名前'}
         style={styles.container}
         onTextChange={name => {
-          if (targetId === undefined || typeof targetId === "number") {
+          if (targetId === undefined || typeof targetId === 'number') {
             return;
           }
 
@@ -88,7 +90,7 @@ const RoomPresenter = ({
             }}
             style={styles.image}>
             <ImageBackground
-              source={require("./images/back.png")}
+              source={{uri: targetUri}}
               style={{width: window.width, height: 500}}>
               {/* ================ マップ上に表示されるアイテムアイコン ===================== */}
               {Array.from(items.values()).map((item, index) => {
@@ -100,11 +102,11 @@ const RoomPresenter = ({
                   <TouchableOpacity>
                     <Image
                       key={item.itemId}
-                      source={require("./images/pin.png")}
+                      source={require('./images/pin.png')}
                       style={{
                         left: item.coordinate.x,
                         top: item.coordinate.y,
-                        position: "absolute", // 子要素を絶対位置に設定
+                        position: 'absolute', // 子要素を絶対位置に設定
                       }}
                     />
                   </TouchableOpacity>
@@ -114,8 +116,8 @@ const RoomPresenter = ({
           </TouchableOpacity>
           <View
             style={{
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
               marginTop: 10,
             }}>
             {!showItemModal && (
@@ -126,7 +128,7 @@ const RoomPresenter = ({
           </View>
         </View>
       ) : (
-        <ImageSelector onPress={openModal} text={""} style={undefined} />
+        <ImageSelector onPress={openModal} text={''} style={undefined} />
       )}
 
       {/* ================ 配置するアイテムのモーダル ===================== */}
@@ -139,11 +141,11 @@ const RoomPresenter = ({
                 style={styles.itemCard}
                 key={item.itemId}
                 onPress={() => {
-                  if (typeof targetId === "string") {
+                  if (typeof targetId === 'string') {
                     item.mapId = targetId;
 
                     const map = floorMaps.get(targetId);
-                    item.mapId = map?.mapId || "";
+                    item.mapId = map?.mapId || '';
                   }
 
                   item.coordinate = {
@@ -157,14 +159,14 @@ const RoomPresenter = ({
                   reverseVisible();
                 }}>
                 <Image
-                  source={require("./images/sample.png")}
+                  source={require('./images/sample.png')}
                   style={styles.cardImage}></Image>
-                  <View style={styles.cardTextContainer}>
-                    <Text style={styles.cardText}>{item.name}</Text>
-                    {item.coordinate !== undefined && (
-                      <Text style={styles.cardSubText}>{item.mapId}</Text>
-                    )}
-                  </View>
+                <View style={styles.cardTextContainer}>
+                  <Text style={styles.cardText}>{item.name}</Text>
+                  {item.coordinate !== undefined && (
+                    <Text style={styles.cardSubText}>{item.mapId}</Text>
+                  )}
+                </View>
               </TouchableOpacity>
             );
           })}
