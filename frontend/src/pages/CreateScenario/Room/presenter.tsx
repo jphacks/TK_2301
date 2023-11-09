@@ -31,6 +31,10 @@ type Props = {
   targetUri: string;
 } & ContainerProps;
 
+// アイコンの大きさ差分。ちょうど矢印の先端がタップした場所になるように調整
+const PIN_ICON_WIDTH_DIFF = 5;
+const PIN_ICON_HEIGHT_DIFF = 52;
+
 const RoomPresenter = ({
   openModal,
   showModal,
@@ -42,15 +46,18 @@ const RoomPresenter = ({
   reverseVisible,
   targetUri,
 }: Props) => {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
+  const [currentPressedX, setCurrentPressedX] = useState(0);
+  const [currentPressedY, setCurrentPressedY] = useState(0);
 
   const window = useWindowDimensions();
+  const adjustedBackImageWidth = window.width;
+  const adjustedBackImageHeight = window.height - 120;
+
   const {items, setItems, floorMaps, setFloorMaps, targetId} =
     useCreateScenario();
 
   return (
-    <ScrollView>
+    <View>
       {showModal && (
         <ImageSelectModal
           test={''}
@@ -61,7 +68,7 @@ const RoomPresenter = ({
       )}
       <LabeledTextInput
         labelName={'部屋の名前'}
-        style={styles.container}
+        style={[styles.container, {marginBottom: isSelectedImage ? 20 : 20}]}
         onTextChange={name => {
           if (targetId === undefined || typeof targetId === 'number') {
             return;
@@ -73,7 +80,6 @@ const RoomPresenter = ({
           }
 
           data.name = name;
-
           floorMaps.set(targetId, data);
           setFloorMaps(floorMaps);
         }}
@@ -81,17 +87,34 @@ const RoomPresenter = ({
 
       {isSelectedImage ? (
         <View>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}></View>
+
+          {/* ================ フロアマップ画像 ==================== */}
           <TouchableOpacity
             onPress={e => {
-              // アイコンの大きさを加味しながら、座標を保存
-              setX(e.nativeEvent.locationX - 5);
-              setY(e.nativeEvent.locationY - 50);
+              // ちょうど矢印の先端がタップした場所になるように調整
+              setCurrentPressedX(
+                (e.nativeEvent.locationX - PIN_ICON_WIDTH_DIFF) /
+                  adjustedBackImageWidth,
+              );
+              setCurrentPressedY(
+                (e.nativeEvent.locationY - PIN_ICON_HEIGHT_DIFF) /
+                  adjustedBackImageHeight,
+              );
+
               reverseVisible();
             }}
-            style={styles.image}>
+            style={[
+              styles.image,
+              {width: window.width, height: adjustedBackImageHeight},
+            ]}>
             <ImageBackground
               source={{uri: targetUri}}
-              style={{width: window.width, height: 500}}>
+              style={{width: window.width, height: adjustedBackImageHeight}}>
               {/* ================ マップ上に表示されるアイテムアイコン ===================== */}
               {Array.from(items.values()).map((item, index) => {
                 if (item.coordinate === undefined || item.mapId !== targetId) {
@@ -104,8 +127,8 @@ const RoomPresenter = ({
                       key={item.itemId}
                       source={require('./images/pin.png')}
                       style={{
-                        left: item.coordinate.x,
-                        top: item.coordinate.y,
+                        left: item.coordinate.x * adjustedBackImageWidth,
+                        top: item.coordinate.y * adjustedBackImageHeight,
                         position: 'absolute', // 子要素を絶対位置に設定
                       }}
                     />
@@ -114,18 +137,6 @@ const RoomPresenter = ({
               })}
             </ImageBackground>
           </TouchableOpacity>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            {!showItemModal && (
-              <Text style={styles.instructionText}>
-                アイテムを設置する位置をタップ
-              </Text>
-            )}
-          </View>
         </View>
       ) : (
         <ImageSelector onPress={openModal} text={''} style={undefined} />
@@ -141,16 +152,10 @@ const RoomPresenter = ({
                 style={styles.itemCard}
                 key={item.itemId}
                 onPress={() => {
-                  if (typeof targetId === 'string') {
-                    item.mapId = targetId;
-
-                    const map = floorMaps.get(targetId);
-                    item.mapId = map?.mapId || '';
-                  }
-
+                  item.mapId = targetId || '';
                   item.coordinate = {
-                    x,
-                    y,
+                    x: currentPressedX,
+                    y: currentPressedY,
                   };
 
                   items.set(key, item);
@@ -172,7 +177,7 @@ const RoomPresenter = ({
           })}
         </TouchableOpacity>
       </Modal>
-    </ScrollView>
+    </View>
   );
 };
 
