@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import TrickPresenter from './presenter';
-import {CreateState, useCreateScenario} from '../createScenario';
+import {CharacterType, CreateState, useCreateScenario} from '../createScenario';
 
 const Trick = () => {
   const {setPhase, setTabId, transitNextState, setEditingCharacter} =
@@ -15,14 +15,16 @@ const Trick = () => {
     transitNextState(CreateState.OtherCharacter);
 
     setEditingCharacter({
-      name: '竹下波瑠',
+      nameKanji: '竹下波瑠',
+      nameKana: 'たけしたはる',
       age: 52,
+      icon: 'binary_data',
       profession: 'マジシャン',
-      open: 'aaaaa',
-      private: 'bbbbb',
+      description: 'aaaaa',
+      about: 'bbbbb',
+      type: CharacterType.Criminal,
       timeline: [
         {
-          num: 0,
           text: 'aaaaaa',
         },
       ],

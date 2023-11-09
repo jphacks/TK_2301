@@ -1,20 +1,10 @@
 import React from 'react';
 import CharacterCardPresenter from './presenter';
 import {useCreateScenario, CharacterType, CreateState} from '../createScenario';
+import {Character} from '../../../models/scenario';
 
 export type Props = {
-  character: {
-    name: string;
-    age: number;
-    profession: string;
-    open: string;
-    private: string;
-    timeline: {
-      num: number;
-      text: string;
-    }[];
-    purpose: string;
-  };
+  character: Character;
   type: CharacterType;
 };
 
@@ -24,7 +14,14 @@ const CharacterCard = ({character, type}: Props) => {
   const onPress = () => {
     setEditingCharacter(character);
     transitNextState(CreateState.OtherCharacter);
-    setNowCharacterType(CharacterType.Other);
+    switch (type) {
+      case CharacterType.Criminal:
+        setNowCharacterType(CharacterType.Criminal);
+        break;
+      case CharacterType.Other:
+        setNowCharacterType(CharacterType.Other);
+        break;
+    }
     setPhase(prev => prev + 1);
   };
   return (

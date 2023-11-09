@@ -12,6 +12,7 @@ import Hint from './Hint';
 import Trick from './Trick';
 import ItemInfo from './ItemInfo';
 import Room from './Room';
+import Phase from './Phase';
 
 type Props = {
   tabViewProps: {
@@ -32,12 +33,7 @@ type Props = {
 };
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
-  const {
-    createState,
-    criminal,
-    floorMaps,
-    targetId,
-  } = useCreateScenario();
+  const {createState, criminal, floorMaps, targetId} = useCreateScenario();
 
   const renderContent = () => {
     switch (createState) {
@@ -53,9 +49,11 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.Image:
         return <ItemInfo />;
       case CreateState.Trick:
-          return <Trick />;
+        return <Trick />;
       case CreateState.Room:
-          return <Room roomId={targetId} />;
+        return <Room roomId={targetId} />;
+      case CreateState.Phase:
+        return <Phase />;
       default:
         return (
           <TabView
