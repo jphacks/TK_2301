@@ -43,7 +43,7 @@ const Room = ({roomId}: Props) => {
       return;
     }
 
-    const target = floorMaps.get(roomId)?.uri || "";
+    const target = floorMaps.get(roomId)?.uri || '';
 
     if (target.startsWith('floor_maps/')) {
       // 既にFireStorageに保存されている場合
@@ -70,26 +70,22 @@ const Room = ({roomId}: Props) => {
 
   const onPressImageFromStorage = async () => {
     const photo: MediaType = 'photo';
-
     const options = {
       mediaTypes: photo,
     };
 
     const result = await launchImageLibrary(options);
-    console.log(result);
-
     const selectedUri = result.assets?.pop()?.uri || '';
-    if (selectedUri !== undefined) {
-      const map: FloorMap = floorMaps.get(targetId);
-      map.uri = selectedUri;
 
-      floorMaps.set(targetId, map);
+    if (!selectedUri || !targetId) return;
 
-      setFloorMaps(floorMaps);
-      setTargetUri(selectedUri);
-    }
+    const map: FloorMap = floorMaps.get(targetId) as FloorMap;
+    map.uri = selectedUri;
+    floorMaps.set(targetId, map);
 
-    // You can also use as a promise without 'callback':
+    setFloorMaps(floorMaps);
+    setTargetUri(selectedUri);
+    
     setIsSelectedImage(true);
     closeModal();
   };

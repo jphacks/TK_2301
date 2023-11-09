@@ -52,7 +52,7 @@ type CreateScenarioContextType = {
   nowCharacterType: CharacterType;
   setNowCharacterType: React.Dispatch<React.SetStateAction<CharacterType>>;
 
-  targetId?: number | string;
+  targetId?: string;
   setTargetId: React.Dispatch<
     React.SetStateAction<number | string | undefined>
   >;
