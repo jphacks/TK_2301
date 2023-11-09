@@ -99,7 +99,7 @@ const RoomPresenter = ({
                 return (
                   <TouchableOpacity>
                     <Image
-                      key={index}
+                      key={item.itemId}
                       source={require("./images/pin.png")}
                       style={{
                         left: item.coordinate.x,
@@ -137,7 +137,7 @@ const RoomPresenter = ({
             return (
               <TouchableOpacity
                 style={styles.itemCard}
-                key={key}
+                key={item.itemId}
                 onPress={() => {
                   if (typeof targetId === "string") {
                     item.mapId = targetId;
