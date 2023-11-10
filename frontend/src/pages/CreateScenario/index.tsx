@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CreateScenarioPresenter from './presenter';
 import {SceneMap} from 'react-native-tab-view';
 import {View, useWindowDimensions} from 'react-native';

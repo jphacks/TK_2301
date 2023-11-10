@@ -6,8 +6,6 @@ import {CreateState, useCreateScenario} from '../createScenario';
 import SquareCard from '../SquareCard';
 import PurpleButton from '../../../components/generics/PurpleButton';
 import PhaseCard from '../PhaseCard';
-import {Phase} from '../../../models/scenario';
-import uuid from 'react-native-uuid';
 
 type Props = {
   onPress: (type: string) => void;

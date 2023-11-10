@@ -70,6 +70,14 @@ type CreateScenarioContextType = {
   setWorld: React.Dispatch<React.SetStateAction<string>>;
 
   // ================================ 動的管理するシナリオデータ =============================
+  // 新規作成のシナリオどうかのフラグを保持する
+  isNewScenario: boolean;
+  setIsNewScenario: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // シナリオID. Firestoreへの保存に用いる
+  scenarioId: string;
+  setScenarioId: React.Dispatch<React.SetStateAction<string>>;
+
   abstraction: Abstraction;
   setAbstraction: React.Dispatch<React.SetStateAction<Abstraction>>;
 
@@ -132,6 +140,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [targetId, setTargetId] = useState<string | undefined>(undefined);
 
   // ================================ 動的管理するシナリオデータState =============================
+  const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
+  const [scenarioId, setScenarioId] = useState<string>('');
   const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
   const [criminal, setCriminal] = useState<Character>();
   const [otherCharacters, setOtherCharacters] = useState<Character[]>([]);
@@ -229,9 +239,11 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       characters: [], // TODO
     };
 
-    console.log(data);
+    // デバッグのためしばらく残しておく
+    console.log('upload', data);
 
-    scenarioCollection.update('UA7B967KQVB4kXCMjt2t', data);
+    if (isNewScenario) scenarioCollection.insert(scenarioId, data);
+    else scenarioCollection.update(scenarioId, data);
   };
 
   return (
@@ -280,6 +292,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setWorld,
         abstraction,
         setAbstraction,
+        isNewScenario,
+        setIsNewScenario,
+        scenarioId,
+        setScenarioId,
       }}>
       {children}
     </CreateScenarioContext.Provider>
