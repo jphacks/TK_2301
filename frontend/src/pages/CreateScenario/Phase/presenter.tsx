@@ -2,8 +2,13 @@ import React from 'react';
 import {Text, TextInput, View} from 'react-native';
 import styles from './style';
 import {useCreateScenario} from '../createScenario';
+import {Phase} from '../../../models/scenario';
 
-const PhasePresenter = () => {
+type Props = {
+  targetPhase?: Phase;
+};
+
+const PhasePresenter = ({targetPhase}: Props) => {
   const {phaseData, setPhaseData, targetId} = useCreateScenario();
   return (
     <View style={styles.container}>
@@ -13,6 +18,7 @@ const PhasePresenter = () => {
           style={styles.input}
           placeholderTextColor="#696969"
           placeholder="フェーズ"
+          defaultValue={targetPhase?.name}
           onChangeText={name => {
             if (targetId === undefined || typeof targetId === 'number') {
               return;
@@ -38,8 +44,13 @@ const PhasePresenter = () => {
             style={[styles.input, {width: 80}]}
             placeholder="2"
             placeholderTextColor="#696969"
+            defaultValue={
+              targetPhase?.numberOfSurveys
+                ? targetPhase?.numberOfSurveys.toString()
+                : undefined
+            }
             onChangeText={number => {
-              if (targetId === undefined || typeof targetId === 'number') {
+              if (targetId === undefined) {
                 return;
               }
 
@@ -65,8 +76,13 @@ const PhasePresenter = () => {
             style={[styles.input, {width: 80}]}
             placeholder="10"
             placeholderTextColor="#696969"
+            defaultValue={
+              targetPhase?.timeLimit
+                ? targetPhase?.timeLimit.toString()
+                : undefined
+            }
             onChangeText={number => {
-              if (targetId === undefined || typeof targetId === 'number') {
+              if (targetId === undefined) {
                 return;
               }
 

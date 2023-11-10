@@ -93,7 +93,6 @@ type CreateScenarioContextType = {
   phenomena: string[];
   setPhenomena: React.Dispatch<React.SetStateAction<string[]>>;
 
-  // TODO: Map型への変換
   phaseData: Map<string, Phase>;
   setPhaseData: React.Dispatch<React.SetStateAction<Map<string, Phase>>>;
 
@@ -138,7 +137,14 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [phenomena, setPhenomena] = useState<string[]>([]);
   const [itemTricks, setItemTricks] = useState<Trick[]>([]);
   const [triviaTricks, setTriviaTricks] = useState<Trick[]>([]);
-  const [phaseData, setPhaseData] = useState<Map<string, Phase>>(new Map());
+  const [phaseData, setPhaseData] = useState<Map<string, Phase>>(
+    new Map().set('xxxx', {
+      name: '第１章 事件の始まり',
+      phaseId: 'xxxx',
+      numberOfSurveys: 2,
+      timeLimit: 30,
+    }),
+  );
 
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
@@ -214,7 +220,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
     const data: Scenario = {
       abstraction: abstraction,
-      phases: [], // TODO
+      phases: Array.from(phaseData.values()),
       floorMaps: Array.from(floorMaps.values()),
       items: Array.from(items.values()),
       characters: [], // TODO

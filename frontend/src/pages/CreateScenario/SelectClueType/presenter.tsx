@@ -16,19 +16,11 @@ type Props = {
 const SelectClueTypePresenter = ({onPress}: Props) => {
   const {setPhase, floorMaps, transitNextState, phaseData, items} =
     useCreateScenario();
-  const defaultPhaseId = uuid.v4().toString();
-
-  const defaultPhase: Phase = {
-    name: '第１章 事件の始まり',
-    phaseId: defaultPhaseId,
-    numberOfSurveys: 2,
-    timeLimit: 30,
-  };
 
   return (
     <ScrollView style={styles.container}>
       <View>
-        <View style={styles.headerConteienr}>
+        <View style={styles.headerContainer}>
           <Text style={styles.text}>フロアマップ</Text>
           {floorMaps.size > 0 && (
             <PurpleButton
@@ -59,7 +51,7 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
           })
         )}
       </View>
-      <View style={styles.headerConteienr}>
+      <View style={styles.headerContainer}>
         <Text style={styles.text}>証拠品／情報</Text>
         {items.size > 0 && (
           <PurpleButton
@@ -90,7 +82,7 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
         })
       )}
 
-      <View style={styles.headerConteienr}>
+      <View style={styles.headerContainer}>
         <Text style={styles.text}>フェーズ</Text>
         <PurpleButton
           title={'追加する'}
@@ -100,11 +92,17 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
           }}
         />
       </View>
-      <PhaseCard phase={defaultPhase} />
       {phaseData.size > 0 && (
         <View>
           {Array.from(phaseData, ([key, value]) => (
-            <PhaseCard phase={value} key={key} />
+            <PhaseCard
+              phase={value}
+              key={key}
+              onPress={() => {
+                setPhase(prev => prev + 1);
+                transitNextState(CreateState.Phase, key);
+              }}
+            />
           ))}
         </View>
       )}
