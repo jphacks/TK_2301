@@ -13,6 +13,8 @@ import TrickSelector from './TrickSelector';
 import ItemInfo from './ItemInfo';
 import Room from './Room';
 import Phase from './Phase';
+import scenarioCollection from '../../api/firebase/firestore';
+import uuid from 'react-native-uuid';
 
 type Props = {
   tabViewProps: {
@@ -33,8 +35,19 @@ type Props = {
 };
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
-  const {createState, criminal, floorMaps, targetId} = useCreateScenario();
+  const {createState, scenarioId, setScenarioId, setIsNewScenario} =
+    useCreateScenario();
 
+  useEffect(() => {
+    if (scenarioId === '') {
+      const newScenarioId = uuid.v4().toString();
+
+      setIsNewScenario(true);
+      setScenarioId(newScenarioId);
+
+      return;
+    }
+  }, []);
   const renderContent = () => {
     switch (createState) {
       case CreateState.CriminalsCharacter:

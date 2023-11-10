@@ -1,32 +1,18 @@
-import {
-  doc,
-  getFirestore,
-  collection,
-  getDocs,
-  CollectionReference,
-  DocumentData,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
-import {initializeFirebase} from "./init";
-import firestore from "@react-native-firebase/firestore";
-import {Scenario} from "src/models/scenario";
+import firestore from '@react-native-firebase/firestore';
+import {Scenario} from '../../models/scenario';
 
 class ScenarioFirestore {
-  //   async getScenarios(docId: string) {
-  //     await firestore().collection("scenario").get();
-  //   }
+  // TODO: 実装
+  async get(docId: string) {
+    await firestore().collection('scenario').doc(docId).get();
+  }
 
-  //   async get(docId: string) {
-  //     await firestore().collection("scenario").doc(docId).get();
-  //   }
-
-  async insert(scenario: Scenario) {
-    await firestore().collection("scenario").add(scenario);
+  async insert(docId: string, scenario: Scenario) {
+    await firestore().collection('scenario').doc(docId).set(scenario);
   }
 
   async update(docId: string, scenario: Scenario) {
-    await firestore().collection("scenario").doc(docId).update(scenario);
+    await firestore().collection('scenario').doc(docId).update(scenario);
   }
 }
 

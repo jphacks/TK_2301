@@ -43,6 +43,7 @@ export const sampleClueItems: Item[] = [
 export const sampleAbstract = {
   title: 'おにぎり食べたの誰だ',
   outline: 'おにぎり食べられた',
+  requiredTime: 10,
   numberOfPlayers: 4,
 };
 

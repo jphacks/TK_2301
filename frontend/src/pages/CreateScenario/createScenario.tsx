@@ -70,6 +70,17 @@ type CreateScenarioContextType = {
   setWorld: React.Dispatch<React.SetStateAction<string>>;
 
   // ================================ 動的管理するシナリオデータ =============================
+  // 新規作成のシナリオどうかのフラグを保持する
+  isNewScenario: boolean;
+  setIsNewScenario: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // シナリオID. Firestoreへの保存に用いる
+  scenarioId: string;
+  setScenarioId: React.Dispatch<React.SetStateAction<string>>;
+
+  abstraction: Abstraction;
+  setAbstraction: React.Dispatch<React.SetStateAction<Abstraction>>;
+
   // TODO: Map型への変換；　Characterとしてまとめても良いかも？
   criminal: Character;
   setCriminal: React.Dispatch<React.SetStateAction<Character>>;
@@ -95,7 +106,6 @@ type CreateScenarioContextType = {
   phenomena: string[];
   setPhenomena: React.Dispatch<React.SetStateAction<string[]>>;
 
-  // TODO: Map型への変換
   phaseData: Map<string, Phase>;
   setPhaseData: React.Dispatch<React.SetStateAction<Map<string, Phase>>>;
 
@@ -115,7 +125,6 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // ================================ UI制御に必要なState =============================
   const [tabId, setTabId] = useState<number>(1);
   const [phase, setPhase] = useState<number>(1);
-  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
   const [shareJson, setShareJson] = useState({});
   const [createState, setCreateState] = useState(CreateState.Default);
   const [pageStack, setPageStack] = useState([CreateState.Default]);
@@ -148,12 +157,22 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [otherCharacters, setOtherCharacters] = useState<
     Map<string, Character>
   >(new Map());
+  const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
+  const [scenarioId, setScenarioId] = useState<string>('');
+  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
   const [items, setItems] = useState<Map<string, Item>>(clueItemsMap);
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
   const [itemTricks, setItemTricks] = useState<Trick[]>([]);
   const [triviaTricks, setTriviaTricks] = useState<Trick[]>([]);
-  const [phaseData, setPhaseData] = useState<Map<string, Phase>>(new Map());
+  const [phaseData, setPhaseData] = useState<Map<string, Phase>>(
+    new Map().set('xxxx', {
+      name: '第１章 事件の始まり',
+      phaseId: 'xxxx',
+      numberOfSurveys: 2,
+      timeLimit: 30,
+    }),
+  );
 
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
@@ -269,15 +288,17 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
     const data: Scenario = {
       abstraction: abstraction,
-      phases: [], // TODO
+      phases: Array.from(phaseData.values()),
       floorMaps: Array.from(floorMaps.values()),
       items: Array.from(items.values()),
       characters: [...Array.from(otherCharacters.values()), criminal], // TODO
     };
 
-    console.log(data);
+    // デバッグのためしばらく残しておく
+    console.log('upload', data);
 
-    scenarioCollection.update('UA7B967KQVB4kXCMjt2t', data);
+    if (isNewScenario) scenarioCollection.insert(scenarioId, data);
+    else scenarioCollection.update(scenarioId, data);
   };
 
   return (
@@ -324,6 +345,12 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setRecievedPhenomena,
         world,
         setWorld,
+        abstraction,
+        setAbstraction,
+        isNewScenario,
+        setIsNewScenario,
+        scenarioId,
+        setScenarioId,
       }}>
       {children}
     </CreateScenarioContext.Provider>

@@ -10,6 +10,7 @@ export type Scenario = {
 export type Abstraction = {
   title: string;
   outline: string;
+  requiredTime: number;
   numberOfPlayers: number;
 };
 

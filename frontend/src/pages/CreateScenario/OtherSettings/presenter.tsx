@@ -1,8 +1,23 @@
 import React, {useState} from 'react';
 import {Pressable, ScrollView, Text, TextInput, View} from 'react-native';
 import styles from './style';
+import {Abstraction} from '../../../models/scenario';
 
-const OtherSettingsPresenter = () => {
+type Props = {
+  targetAbstraction: Abstraction;
+  onTitleChange: (text: string) => void;
+  onRequiredTimeChange: (text: string) => void;
+  onNumOfPlayerChange: (text: number) => void;
+  onOutLineChange: (text: string) => void;
+};
+
+const OtherSettingsPresenter = ({
+  onTitleChange,
+  onRequiredTimeChange,
+  onNumOfPlayerChange,
+  onOutLineChange,
+  targetAbstraction,
+}: Props) => {
   const [activeTab, setActiveTab] = useState(2);
 
   const tabs = ['2人用', '3人用', '4人用', '5人用', '6人用']; // ここにタブを追加
@@ -13,12 +28,19 @@ const OtherSettingsPresenter = () => {
         style={styles.input}
         placeholder="タイトル"
         placeholderTextColor="#696969"
+        onChangeText={onTitleChange}
+        defaultValue={targetAbstraction.title}
       />
 
       <Text style={styles.text}>プレイ人数</Text>
       <ScrollView horizontal contentContainerStyle={styles.playerContainer}>
         {tabs.map((tab, index) => (
-          <Pressable key={tab} onPress={() => setActiveTab(index + 2)}>
+          <Pressable
+            key={tab}
+            onPress={() => {
+              onNumOfPlayerChange(index + 2);
+              setActiveTab(index + 2);
+            }}>
             <View
               style={[styles.tab, activeTab === index + 2 && styles.activeTab]}>
               <Text
@@ -39,6 +61,8 @@ const OtherSettingsPresenter = () => {
           style={[styles.input, {width: 80}]}
           placeholder="100"
           placeholderTextColor="#696969"
+          defaultValue={targetAbstraction.requiredTime.toString()}
+          onChangeText={onRequiredTimeChange}
         />
         <Text style={styles.minutesText}>分</Text>
       </View>
@@ -48,6 +72,8 @@ const OtherSettingsPresenter = () => {
         style={[styles.input, {height: 230}]}
         placeholderTextColor="#696969"
         multiline={true}
+        defaultValue={targetAbstraction.outline}
+        onChangeText={onOutLineChange}
       />
     </View>
   );
