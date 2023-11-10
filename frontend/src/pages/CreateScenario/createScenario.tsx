@@ -70,6 +70,9 @@ type CreateScenarioContextType = {
   setWorld: React.Dispatch<React.SetStateAction<string>>;
 
   // ================================ 動的管理するシナリオデータ =============================
+  abstraction: Abstraction;
+  setAbstraction: React.Dispatch<React.SetStateAction<Abstraction>>;
+
   // TODO: Map型への変換；　Characterとしてまとめても良いかも？
   criminal: Character | undefined;
   setCriminal: React.Dispatch<React.SetStateAction<Character | undefined>>;
@@ -112,7 +115,6 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // ================================ UI制御に必要なState =============================
   const [tabId, setTabId] = useState<number>(1);
   const [phase, setPhase] = useState<number>(1);
-  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
   const [shareJson, setShareJson] = useState({});
   const [createState, setCreateState] = useState(CreateState.Default);
   const [pageStack, setPageStack] = useState([CreateState.Default]);
@@ -130,6 +132,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [targetId, setTargetId] = useState<string | undefined>(undefined);
 
   // ================================ 動的管理するシナリオデータState =============================
+  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
   const [criminal, setCriminal] = useState<Character>();
   const [otherCharacters, setOtherCharacters] = useState<Character[]>([]);
   const [items, setItems] = useState<Map<string, Item>>(clueItemsMap);
@@ -275,6 +278,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setRecievedPhenomena,
         world,
         setWorld,
+        abstraction,
+        setAbstraction,
       }}>
       {children}
     </CreateScenarioContext.Provider>
