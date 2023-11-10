@@ -1,17 +1,17 @@
-import { StyleSheet } from "react-native"
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50
+    marginTop: 50,
   },
   bigBlue: {
-    color: "blue",
-    fontWeight: "bold",
-    fontSize: 30
+    color: 'blue',
+    fontWeight: 'bold',
+    fontSize: 30,
   },
   red: {
-    color: "red"
-  }
-})
+    color: 'red',
+  },
+});
 
-export default styles
+export default styles;

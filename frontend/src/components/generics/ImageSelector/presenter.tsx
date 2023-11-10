@@ -9,9 +9,9 @@ type Props = {
   text: string;
 } & ContainerProps;
 
-const ImageSelectorPresenter = ({onPress}: Props) => {
+const ImageSelectorPresenter = ({onPress, style}: Props) => {
   return (
-    <TouchableHighlight onPress={onPress} style={[styles.container]}>
+    <TouchableHighlight onPress={onPress} style={[styles.container, style]}>
       <View>
         <Image source={require("./camera.png")} />
         <Text style={styles.text}>部屋の画像</Text>

@@ -1,61 +1,118 @@
 import React from 'react';
-import {Image, Pressable, Text, TextInput, View} from 'react-native';
+import {ImageBackground, Text, TouchableOpacity, View} from 'react-native';
 import styles from './style';
-import PrimaryButton from '../../../components/generics/PrimaryButton';
 import {RadioButton} from 'react-native-paper';
 import LabeledTextInput from '../../../components/generics/LabeledTextInput';
+import ImageSelectModal from '../../../components/generics/ImageSelectModal';
+import ImageSelector from '../../../components/generics/ImageSelector';
+import {Item, ItemCategory} from '../../../models/scenario';
+import { useCreateScenario } from '../createScenario';
 
 type Props = {
   showModal: boolean;
   openModal: () => void;
   closeModal: () => void;
   next: () => void;
+  targetId: string | undefined;
+  onItemNameTextChange: (name: string) => void;
+  onItemDescriptionTextChange: (description: string) => void;
+  handleRadioButtonPress: (value: ItemCategory) => void;
+  onPressImageWithAI: () => void;
+  onPressImageFromStorage: () => void;
+  targetUri: string;
+  isSelectedImage: boolean;
+  itemType: ItemCategory;
+  targetItem?: Item;
 };
 
-const ItemInfoPresenter = ({showModal, openModal, closeModal, next}: Props) => {
-  const [checked, setChecked] = React.useState('first');
+const ItemInfoPresenter = ({
+  showModal,
+  openModal,
+  closeModal,
+  next,
+  onItemNameTextChange,
+  onItemDescriptionTextChange,
+  handleRadioButtonPress,
+  onPressImageFromStorage,
+  onPressImageWithAI,
+  isSelectedImage,
+  itemType,
+  targetUri,
+  targetItem,
+}: Props) => {
+  const {setPhase, setCreateState, items, setItems, targetId, setTargetId} =
+    useCreateScenario();
+
   return (
     <View>
       {showModal && (
-        <View style={{alignItems: 'center', zIndex: 30}}>
-          <View style={styles.modalContainer}>
-            <Pressable style={styles.closeIcon} onPress={closeModal}>
-              <Image source={require('./close.png')} />
-            </Pressable>
-            <Text style={styles.modalText}>証拠品／情報の画像</Text>
-            <PrimaryButton text="AIで作成" onPress={next} width={238} />
-          </View>
-        </View>
+        <ImageSelectModal
+          test={''}
+          label={'証拠品／情報の画像'}
+          onPressImageWithAI={onPressImageWithAI}
+          onPressImageFromStorage={onPressImageFromStorage}
+        />
       )}
+
       <View
         style={[
           styles.container,
           showModal ? {opacity: 0.5, backgroundColor: '#000'} : null,
         ]}>
-        <Pressable onPress={openModal}>
-          <Image style={styles.image} source={require('./upload.png')} />
-        </Pressable>
+        {isSelectedImage ? (
+          <View>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}></View>
 
-        <LabeledTextInput labelName={'証拠品／情報の名前'}/>
-        <LabeledTextInput labelName={'証拠品／情報の説明'}/>
+            {/* ================ 表示画像 ==================== */}
+            <TouchableOpacity onPress={openModal}>
+              <ImageBackground
+                source={{uri: targetUri}}
+                style={styles.selectedImage}></ImageBackground>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <ImageSelector onPress={openModal} text={''} style={{height: 200}} />
+        )}
+
+        <LabeledTextInput
+          labelName={'証拠品／情報の名前'}
+          style={styles.labeledInputText}
+          defaultValue={items.get(targetId || '')?.name}
+          onTextChange={onItemNameTextChange}
+        />
+        <LabeledTextInput
+          labelName={'証拠品／情報の説明'}
+          style={styles.labeledInputText}
+          defaultValue={targetItem?.description}
+          onTextChange={onItemDescriptionTextChange}
+        />
 
         <Text style={styles.label}>証拠品／情報の説明</Text>
-        <RadioButton.Item
-          value="item"
-          label="物品"
-          status={checked === 'shop2' ? 'checked' : 'unchecked'}
-          onPress={() => {
-            setChecked('item');
+        <RadioButton.Group
+          onValueChange={value => {
+            console.log(value);
+            handleRadioButtonPress(value as ItemCategory);
           }}
-        />
-        <RadioButton.Item
-          value="info"
-          label="情報"
-          status={checked === 'shop2' ? 'checked' : 'unchecked'}
-          onPress={() => {
-            setChecked('info');
-          }}
-        />
+          value={itemType}>
+          <RadioButton.Item
+            value="item"
+            label="証拠品"
+            labelStyle={styles.radioLabelStyle}
+            status={itemType === 'item' ? 'checked' : 'unchecked'}
+            color="#3DD6DD"
+          />
+          <RadioButton.Item
+            value="info"
+            label="情報"
+            labelStyle={styles.radioLabelStyle}
+            color="#3DD6DD"
+            status={itemType === 'info' ? 'checked' : 'unchecked'}
+          />
+        </RadioButton.Group>
       </View>
     </View>
   );

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
-    paddingBottom: 16,
+    marginTop: 16,
   },
   modalContainer: {
     backgroundColor: '#323338',
@@ -47,6 +47,23 @@ const styles = StyleSheet.create({
     top: 16,
     right: 16,
   },
+  labeledInputText: {
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  radioBox: {
+    color: 'white',
+  },
+  radioLabelStyle: {
+    color: 'white',
+  },
+  radioButton: {
+    color: '#3DD6DD',
+  },
+  selectedImage: {
+    height: 200,
+    width: '100%',
+  }
 });
 
 export default styles;

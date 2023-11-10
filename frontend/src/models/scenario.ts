@@ -52,13 +52,15 @@ export type Item = {
   mapId: string; // 配置するマップID
   name: string;
   uri: string;
-  category: string;
+  category: ItemCategory;
   description: string;
   coordinate: {
     x: number;
     y: number;
   };
 };
+
+export type ItemCategory = '' | 'item' | 'info';
 
 export type Trick = {
   name: string;
