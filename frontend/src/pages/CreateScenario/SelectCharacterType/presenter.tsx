@@ -16,19 +16,16 @@ const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
   const {criminal, otherCharacters} = useCreateScenario();
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.text}>犯人役のキャラクター</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.text}>犯人役のキャラクター</Text>
+      </View>
       {criminal ? (
         <CharacterCard character={criminal} type={CharacterType.Criminal} />
       ) : (
         <SquareButton type="criminal" onPress={() => onPress('criminal')} />
       )}
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
+      <View style={styles.headerContainer}>
         <Text style={styles.text}>その他のキャラクター</Text>
         {otherCharacters.length > 0 && (
           <PurpleButton title={'追加する'} onClick={onPressAdd} />
