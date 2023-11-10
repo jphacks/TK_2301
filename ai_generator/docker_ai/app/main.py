@@ -97,8 +97,8 @@ def create_scenario_test(reqBody: reqBody):
 		"name": chara["name"],
 		"age": chara["age"],
 		"profession": chara["profession"],
-		"public": chara["public"],
-		"private": chara["private"],
+		"public_info": chara["public_info"],
+		"private_info": chara["private_info"],
 		"timeline": timeline,
 		"purpose": "犯人であるを隠し通す。",
 		"item": [
@@ -120,7 +120,7 @@ def create_scenario_test(reqBody: reqBody):
 	message = reqBody.user_input
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
-	output = {"name": "testName","age": "testAge","profession": "testProfession","public": "testPublic","private": "testPrivate","timeline": [{"num": 1, "text": "testText1"}, {"num": 2, "text": "testText2"}],"purpose": "testPurpose"}
+	output = {"name": "testName","age": "testAge","profession": "testProfession","public_info": "testpublic_info","private_info": "testprivate_info","timeline": [{"num": 1, "text": "testText1"}, {"num": 2, "text": "testText2"}],"purpose": "testPurpose"}
 	return output
 
 """
@@ -147,7 +147,7 @@ def create_scenario_test(reqBody: reqBody):
 	message = reqBody.user_input
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
-	output = {"name":"testName","age":"testAge","profession":"testProfession","public":"testPublic","private":"testPrivate","timeline":[{"num":1,"text":"testText1"},{"num":2,"text":"testText2"}],"purpose":"testPurpose","item":[{"name":"testName1","image":["testURL1","testURL2","testURL3","testURL4"]},{"name":"testName2","image":["testURL1","testURL2","testURL3","testURL4"]}]}
+	output = {"name":"testName","age":"testAge","profession":"testProfession","public_info":"testpublic_info","private_info":"testprivate_info","timeline":[{"num":1,"text":"testText1"},{"num":2,"text":"testText2"}],"purpose":"testPurpose","item":[{"name":"testName1","image":["testURL1","testURL2","testURL3","testURL4"]},{"name":"testName2","image":["testURL1","testURL2","testURL3","testURL4"]}]}
 	return output
 
 @app.post("/test/normal-character")
@@ -155,5 +155,5 @@ def create_scenario_test(reqBody: reqBody):
 	message = reqBody.user_input
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
-	output = {"name": "testName","age": "testAge","profession": "testProfession","public": "testPublic","private": "testPrivate","timeline": [{"num": 1, "text": "testText1"}, {"num": 2, "text": "testText2"}],"purpose": "testPurpose"}
+	output = {"name": "testName","age": "testAge","profession": "testProfession","public_info": "testpublic_info","private_info": "testprivate_info","timeline": [{"num": 1, "text": "testText1"}, {"num": 2, "text": "testText2"}],"purpose": "testPurpose"}
 	return output
