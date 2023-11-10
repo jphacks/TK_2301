@@ -75,6 +75,7 @@ const Header = ({navigation}: Props) => {
             setCriminal(editingCharacter);
             break;
           case CharacterType.Other:
+            // 同じidのものがあったら更新、なければ追加
             setOtherCharacters(prev => [...prev, editingCharacter]);
             break;
         }
