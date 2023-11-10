@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import styles from './style';
 import SquareButton from '../SquareButton';
 import {CreateState, useCreateScenario} from '../createScenario';
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const SelectClueTypePresenter = ({onPress}: Props) => {
-  const {setPhase, floorMaps, transitNextState, phaseData} =
+  const {setPhase, floorMaps, transitNextState, phaseData, items} =
     useCreateScenario();
   const defaultPhaseId = uuid.v4().toString();
 
@@ -26,7 +26,7 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View>
         <View style={styles.headerConteienr}>
           <Text style={styles.text}>フロアマップ</Text>
@@ -61,8 +61,34 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
       </View>
       <View style={styles.headerConteienr}>
         <Text style={styles.text}>証拠品／情報</Text>
+        {items.size > 0 && (
+          <PurpleButton
+            title={'追加する'}
+            onClick={() => {
+              setPhase(prev => prev + 1);
+              transitNextState(CreateState.ItemInfo);
+            }}
+          />
+        )}
       </View>
-      <SquareButton type="item" onPress={() => onPress('item')} />
+      {items.size == 0 ? (
+        <SquareButton type="room" onPress={() => onPress('room')} />
+      ) : (
+        Array.from(items, ([key, item]) => {
+          return (
+            <SquareCard
+              key={key}
+              label={item.name}
+              onPress={() => {
+                setPhase(prev => prev + 1);
+                transitNextState(CreateState.ItemInfo, key);
+              }}
+              id={key}
+              style={styles.card}
+            />
+          );
+        })
+      )}
 
       <View style={styles.headerConteienr}>
         <Text style={styles.text}>フェーズ</Text>
@@ -82,7 +108,7 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
           ))}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

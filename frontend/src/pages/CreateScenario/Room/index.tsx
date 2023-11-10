@@ -3,18 +3,10 @@ import RoomPresenter from './presenter';
 import {useCreateScenario} from '../createScenario';
 import uuid from 'react-native-uuid';
 import storage from '@react-native-firebase/storage';
-import {
-  launchCamera,
-  launchImageLibrary,
-  MediaType,
-} from 'react-native-image-picker';
 import {FloorMap} from 'src/models/scenario';
+import {pickSingleImageFromLocalStorage} from '../utility';
 
-export type Props = {
-  roomId?: string; // undefinedの場合は新規作成
-};
-
-const Room = ({roomId}: Props) => {
+const Room = () => {
   const {items, setItems, floorMaps, setFloorMaps, setTargetId, targetId} =
     useCreateScenario();
 
@@ -28,7 +20,7 @@ const Room = ({roomId}: Props) => {
 
   useEffect(() => {
     // 新規作成時
-    if (roomId === undefined) {
+    if (targetId === '') {
       const newMapId = uuid.v4().toString();
 
       floorMaps.set(newMapId, {
@@ -43,7 +35,7 @@ const Room = ({roomId}: Props) => {
       return;
     }
 
-    const target = floorMaps.get(roomId)?.uri || '';
+    const target = floorMaps.get(targetId || '')?.uri || '';
 
     if (target.startsWith('floor_maps/')) {
       // 既にFireStorageに保存されている場合
@@ -69,13 +61,7 @@ const Room = ({roomId}: Props) => {
   };
 
   const onPressImageFromStorage = async () => {
-    const photo: MediaType = 'photo';
-    const options = {
-      mediaTypes: photo,
-    };
-
-    const result = await launchImageLibrary(options);
-    const selectedUri = result.assets?.pop()?.uri || '';
+    const selectedUri = await pickSingleImageFromLocalStorage();
 
     if (!selectedUri || !targetId) return;
 
@@ -85,7 +71,7 @@ const Room = ({roomId}: Props) => {
 
     setFloorMaps(floorMaps);
     setTargetUri(selectedUri);
-    
+
     setIsSelectedImage(true);
     closeModal();
   };
@@ -106,7 +92,6 @@ const Room = ({roomId}: Props) => {
       reverseVisible={reverseVisible}
       items={items}
       setItems={setItems}
-      roomId={roomId}
       targetUri={targetUri}
     />
   );

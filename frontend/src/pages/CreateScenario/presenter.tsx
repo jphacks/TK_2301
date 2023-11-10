@@ -51,7 +51,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.Trick:
         return <TrickSelector />;
       case CreateState.Room:
-        return <Room roomId={targetId} />;
+        return <Room />;
       case CreateState.Phase:
         return <Phase />;
       default:

@@ -143,7 +143,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
   const transitNextState = (createState: CreateState, targetId?: string) => {
-    setTargetId(targetId);
+    setTargetId(targetId || '');
     setPageStack([...pageStack, createState]);
     setCreateState(createState);
   };
@@ -158,8 +158,31 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     setCreateState(bufStack.pop() || CreateState.Default);
   };
 
-  // ヘッダーのアップロードボタン押下時に発火
-  const uploadScenarioData = async () => {
+  // Firebase Storageに保存されていない画像があれば保存し、URIを書き換える
+  const preprocessItemsForUpload = async () => {
+    const bufItem: Map<string, Item> = new Map(items);
+    const bufItemArray: Item[] = Array.from(items.values());
+
+    for (let i = 0; i < bufItemArray.length; i++) {
+      const item = bufItemArray[i];
+
+      // ローカルの画像で、まだFireStorageに保存されていない場合
+      if (item.uri.startsWith('file://')) {
+        const uploadPath = `items/${item.mapId}.png`;
+        await storage().ref(uploadPath).putFile(item.uri, {
+          contentType: 'image/png',
+        });
+
+        item.uri = uploadPath; // Firebaseに格納したURIで上書きする
+      }
+
+      bufItem.set(item.mapId, item);
+    }
+
+    setItems(bufItem);
+  };
+
+  const preprocessMapFloorForUpload = async () => {
     const bufFloorMaps: Map<string, FloorMap> = new Map(floorMaps);
     const bufFloorArray: FloorMap[] = Array.from(floorMaps.values());
 
@@ -182,6 +205,12 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     }
 
     setFloorMaps(bufFloorMaps);
+  };
+
+  // ヘッダーのアップロードボタン押下時に発火
+  const uploadScenarioData = async () => {
+    await preprocessItemsForUpload();
+    await preprocessMapFloorForUpload();
 
     const data: Scenario = {
       abstraction: abstraction,

@@ -9,7 +9,6 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
-import {Props as ContainerProps} from './index';
 import styles from './style';
 import LabeledTextInput from '../../../components/generics/LabeledTextInput';
 import ImageSelector from '../../../components/generics/ImageSelector';
@@ -29,7 +28,7 @@ type Props = {
   items: Map<string, Item>;
   setItems: React.Dispatch<React.SetStateAction<Map<string, Item>>>;
   targetUri: string;
-} & ContainerProps;
+};
 
 // アイコンの大きさ差分。ちょうど矢印の先端がタップした場所になるように調整
 const PIN_ICON_WIDTH_DIFF = 5;

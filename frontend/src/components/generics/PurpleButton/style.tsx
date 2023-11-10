@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   button: {
-    width: 100,
+    width:90,
     borderRadius: 50,
     backgroundColor: "#5865F2"
   },
   text: {
-    paddingVertical: 10,
+    paddingVertical: 6,
     color: "white",
     textAlign: "center",
     backgroundColor: "#5865F2",
