@@ -9,7 +9,7 @@ import {CreateState, useCreateScenario} from './createScenario';
 import CharacterSheet from './CharacterSheet';
 import World from './World';
 import Hint from './Hint';
-import Trick from './Trick';
+import TrickSelector from './TrickSelector';
 import ItemInfo from './ItemInfo';
 import Room from './Room';
 import Phase from './Phase';
@@ -49,7 +49,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.Image:
         return <ItemInfo />;
       case CreateState.Trick:
-        return <Trick />;
+        return <TrickSelector />;
       case CreateState.Room:
         return <Room roomId={targetId} />;
       case CreateState.Phase:

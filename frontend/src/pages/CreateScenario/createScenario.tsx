@@ -53,12 +53,21 @@ type CreateScenarioContextType = {
   setNowCharacterType: React.Dispatch<React.SetStateAction<CharacterType>>;
 
   targetId?: string;
-  setTargetId: React.Dispatch<
-    React.SetStateAction<number | string | undefined>
-  >;
+  setTargetId: React.Dispatch<React.SetStateAction<string | undefined>>;
 
   phase: number;
   setPhase: React.Dispatch<React.SetStateAction<number>>;
+
+  recievedItems: string[] | undefined;
+  setRecievedItems: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+
+  recievedPhenomena: string[] | undefined;
+  setRecievedPhenomena: React.Dispatch<
+    React.SetStateAction<string[] | undefined>
+  >;
+
+  world: string;
+  setWorld: React.Dispatch<React.SetStateAction<string>>;
 
   // ================================ 動的管理するシナリオデータ =============================
   // TODO: Map型への変換；　Characterとしてまとめても良いかも？
@@ -74,8 +83,11 @@ type CreateScenarioContextType = {
   setItems: React.Dispatch<React.SetStateAction<Map<string, Item>>>;
 
   // TODO: Map型への変換
-  tricks: Trick[];
-  setTricks: React.Dispatch<React.SetStateAction<Trick[]>>;
+  itemTricks: Trick[];
+  setItemTricks: React.Dispatch<React.SetStateAction<Trick[]>>;
+
+  triviaTricks: Trick[];
+  setTriviaTricks: React.Dispatch<React.SetStateAction<Trick[]>>;
 
   // TODO: Map型への変換
   phenomena: string[];
@@ -111,11 +123,12 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [nowCharacterType, setNowCharacterType] = useState(
     CharacterType.Default,
   );
+  const [recievedItems, setRecievedItems] = useState<string[]>();
+  const [recievedPhenomena, setRecievedPhenomena] = useState<string[]>();
+  const [world, setWorld] = useState<string>('');
 
   // 編集対象となる要素のID等を設定する変数。仮置き場的なレジスタとして扱って良い
-  const [targetId, setTargetId] = useState<number | string | undefined>(
-    undefined,
-  );
+  const [targetId, setTargetId] = useState<string | undefined>(undefined);
 
   // ================================ 動的管理するシナリオデータState =============================
   const [criminal, setCriminal] = useState<Character>();
@@ -123,14 +136,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [items, setItems] = useState<Map<string, Item>>(clueItemsMap);
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
-  const [tricks, setTricks] = useState<
-    {
-      name: string;
-      uncommonSense: string;
-      principle: string;
-      illusion: string;
-    }[]
-  >([]);
+  const [itemTricks, setItemTricks] = useState<Trick[]>([]);
+  const [triviaTricks, setTriviaTricks] = useState<Trick[]>([]);
   const [phaseData, setPhaseData] = useState<Map<string, Phase>>(new Map());
 
   // ================================ その他オリジナル関数 =============================
@@ -204,8 +211,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setItems,
         phenomena,
         setPhenomena,
-        tricks,
-        setTricks,
+        itemTricks,
+        setItemTricks,
+        triviaTricks,
+        setTriviaTricks,
         editingCharacter,
         setEditingCharacter,
         shareJson,
@@ -225,6 +234,12 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         uploadScenarioData,
         phaseData,
         setPhaseData,
+        recievedItems,
+        setRecievedItems,
+        recievedPhenomena,
+        setRecievedPhenomena,
+        world,
+        setWorld,
       }}>
       {children}
     </CreateScenarioContext.Provider>

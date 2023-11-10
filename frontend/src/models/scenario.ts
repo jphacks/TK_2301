@@ -14,16 +14,16 @@ export type Abstraction = {
 };
 
 export type Character = {
-  nameKanji: string;
-  nameKana: string;
+  name: string;
   age: number;
   icon: any;
   profession: string;
-  description: string;
-  about: string;
+  public_info: string;
+  private_info: string;
   purpose: string;
   type: CharacterType;
   timeline: {
+    num: number;
     text: string;
   }[];
 };

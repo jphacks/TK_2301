@@ -6,6 +6,8 @@ import {CreateState, useCreateScenario} from '../createScenario';
 import SquareCard from '../SquareCard';
 import PurpleButton from '../../../components/generics/PurpleButton';
 import PhaseCard from '../PhaseCard';
+import {Phase} from '../../../models/scenario';
+import uuid from 'react-native-uuid';
 
 type Props = {
   onPress: (type: string) => void;
@@ -14,6 +16,14 @@ type Props = {
 const SelectClueTypePresenter = ({onPress}: Props) => {
   const {setPhase, floorMaps, transitNextState, phaseData} =
     useCreateScenario();
+  const defaultPhaseId = uuid.v4().toString();
+
+  const defaultPhase: Phase = {
+    name: '第１章 事件の始まり',
+    phaseId: defaultPhaseId,
+    numberOfSurveys: 2,
+    timeLimit: 30,
+  };
 
   return (
     <View style={styles.container}>
@@ -64,6 +74,7 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
           }}
         />
       </View>
+      <PhaseCard phase={defaultPhase} />
       {phaseData.size > 0 && (
         <View>
           {Array.from(phaseData, ([key, value]) => (

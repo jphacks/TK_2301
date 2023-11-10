@@ -14,7 +14,7 @@ type Props = {
 };
 
 const HintPresenter = ({funcs, next}: Props) => {
-  const {items, phenomena} = useCreateScenario();
+  const {recievedItems, recievedPhenomena} = useCreateScenario();
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -23,7 +23,7 @@ const HintPresenter = ({funcs, next}: Props) => {
         </Text>
         <View
           style={{flexDirection: 'row', flexWrap: 'wrap', marginBottom: 40}}>
-          {items.map((item, index) => (
+          {recievedItems?.map((item, index) => (
             <HintItem key={index} name={item} type={'item'} funcs={funcs} />
           ))}
         </View>
@@ -32,7 +32,7 @@ const HintPresenter = ({funcs, next}: Props) => {
         </Text>
         <View
           style={{flexDirection: 'row', flexWrap: 'wrap', marginBottom: 110}}>
-          {phenomena.map((phenomena, index) => (
+          {recievedPhenomena?.map((phenomena, index) => (
             <HintItem
               key={index}
               name={phenomena}

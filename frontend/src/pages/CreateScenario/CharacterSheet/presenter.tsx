@@ -20,11 +20,11 @@ const CharacterSheetPresenter = ({onPress}: Props) => {
             style={[styles.input, styles.nameInput]}
             placeholder="キャラクター名"
             placeholderTextColor="#888888"
-            value={editingCharacter?.nameKana}
+            value={editingCharacter?.name}
             onChangeText={text => {
               setEditingCharacter({
                 ...editingCharacter!,
-                nameKana: text,
+                name: text,
               });
             }}
           />
@@ -34,11 +34,11 @@ const CharacterSheetPresenter = ({onPress}: Props) => {
         <TextInput
           style={[styles.input, styles.openInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.description}
+          value={editingCharacter?.public_info}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
-              description: text,
+              public_info: text,
             });
           }}
         />
@@ -47,11 +47,11 @@ const CharacterSheetPresenter = ({onPress}: Props) => {
         <TextInput
           style={[styles.input, styles.privateInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.about}
+          value={editingCharacter?.private_info}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
-              about: text,
+              private_info: text,
             });
           }}
         />
@@ -64,7 +64,7 @@ const CharacterSheetPresenter = ({onPress}: Props) => {
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
-              timeline: text.split('\n').map(t => ({text: t})),
+              timeline: text.split('\n').map((t, i) => ({num: i, text: t})),
             });
           }}
         />
