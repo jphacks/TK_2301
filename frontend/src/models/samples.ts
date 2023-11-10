@@ -7,7 +7,7 @@ export const sampleClueItems: Item[] = [
     mapId: '1F',
     name: '血塗られたナイフ',
     uri: 'binary_data',
-    category: 'Key',
+    category: 'item',
     description: 'An old key that opens a mysterious door in the mansion.',
     coordinate: {
       x: -1,
@@ -19,7 +19,7 @@ export const sampleClueItems: Item[] = [
     mapId: '2F',
     name: '古びたキーボード',
     uri: 'binary_data',
-    category: 'Key',
+    category: 'item',
     description: 'An old key that opens a mysterious door in the mansion.',
     coordinate: {
       x: -1,
@@ -31,7 +31,7 @@ export const sampleClueItems: Item[] = [
     mapId: '2F',
     name: '錆びた鍵',
     uri: 'binary_data',
-    category: 'Key',
+    category: 'item',
     description: 'An old key that opens a mysterious door in the mansion.',
     coordinate: {
       x: -1,
@@ -47,6 +47,7 @@ export const sampleAbstract = {
 };
 
 export const sampleEditingCharacter: Character = {
+  id: 'character01',
   name: '山田太郎',
   age: 30,
   icon: 'binary_data',
