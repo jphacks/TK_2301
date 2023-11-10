@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     paddingHorizontal: 24,
     marginBottom: 24,
+    borderColor: '#3DD6DD',
   },
   title: {
     color: '#fff',
@@ -16,9 +17,11 @@ const styles = StyleSheet.create({
   text: {
     color: '#fff',
     fontSize: 13,
-    paddingTop: 16,
+  },
+  discription: {
     borderTopWidth: 1,
     borderColor: '#484B5B',
+    paddingTop: 16,
   },
 });
 

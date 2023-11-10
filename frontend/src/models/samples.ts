@@ -47,17 +47,17 @@ export const sampleAbstract = {
 };
 
 export const sampleEditingCharacter: Character = {
-  nameKanji: '山田太郎',
-  nameKana: 'ヤマダタロウ',
+  name: '山田太郎',
   age: 30,
   icon: 'binary_data',
   profession: 'Detective',
-  description: 'A sharp-witted detective with a keen eye for detail.',
-  about: 'Known for solving several high-profile cases.',
+  public_info: 'A sharp-witted detective with a keen eye for detail.',
+  private_info: 'Known for solving several high-profile cases.',
   purpose: 'To find the truth behind the mysterious events at the mansion.',
   type: CharacterType.Criminal,
   timeline: [
     {
+      num: 1,
       text: '殺害。',
     },
   ],

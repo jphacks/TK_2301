@@ -6,8 +6,14 @@ import Create from 'agora-rn-uikit/src/Rtc/Create';
 const Hint = () => {
   const [sendItems, setSendItems] = useState<string[]>([]);
   const [sendPhenomena, setSendPhenomena] = useState<string[]>([]);
-  const {setPhase, setTricks, shareJson, transitNextState} =
-    useCreateScenario();
+  const {
+    setPhase,
+    setItemTricks,
+    setTriviaTricks,
+    shareJson,
+    transitNextState,
+    world,
+  } = useCreateScenario();
 
   const addItem = (item: string) => {
     setSendItems([...sendItems, item]);
@@ -22,30 +28,32 @@ const Hint = () => {
 
     shareJson.item = sendItems;
     shareJson.trivia = sendPhenomena;
-    console.log(shareJson);
+    const bodyData = JSON.stringify({
+      world: world,
+      item: sendItems,
+      trivia: sendPhenomena,
+    }).toString();
     const data = {
-      phase: 1,
-      context1: shareJson,
+      user_input: `${bodyData}`,
     };
 
-    /*const formResponse = await fetch(
-      'https://dpdu6gddt5h6dqs24g2xnfv5240tvcjk.lambda-url.ap-northeast-1.on.aws/',
-      {
-        method: 'POST', // HTTP-Methodを指定する！
-        body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
+    const formResponse = await fetch('http://192.168.0.20:8080/test/trick', {
+      method: 'POST', // HTTP-Methodを指定する！
+      body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+    });
 
     const res = await formResponse.json();
     console.log(res);
 
-    // ここでfetchして、itemsとphenomenaを送る(今はダミー)
-    // tricksも受け取るけど、今はダミー(型もテキトー)
     console.log(res.item);
     console.log(res.trivia);
-    setTricks([...res.item, ...res.trivia]);*/
+    setItemTricks([...res.item]);
+    setTriviaTricks([...res.trivia]);
 
-    setTricks([
+    /*setTricks([
       {
         name: '滑落時にブレーキとして機能しないピッケル ',
         uncommonSense:
@@ -53,7 +61,7 @@ const Hint = () => {
         principle: '',
         illusion: '',
       },
-    ]);
+    ]);*/
 
     transitNextState(CreateState.Trick);
     setPhase(prev => prev + 1);

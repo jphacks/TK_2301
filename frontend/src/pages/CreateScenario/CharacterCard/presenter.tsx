@@ -8,18 +8,18 @@ type Props = {
 } & ContainerProps;
 
 const CharacterCardPresenter = ({character, type, onPress}: Props) => {
-  const {nameKanji, nameKana, age, profession, description} = character;
+  const {name, age, profession, public_info} = character;
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <View style={styles.nameContainer}>
         {/*<Image source={icon} style={styles.icon} />*/}
         <Text style={styles.name}>
-          {nameKanji}（{nameKana}）({age})
+          {name}({age})
         </Text>
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.profession}>職業:{profession}</Text>
-        <Text style={styles.description}>{description}</Text>
+        <Text style={styles.description}>{public_info}</Text>
       </View>
     </Pressable>
   );

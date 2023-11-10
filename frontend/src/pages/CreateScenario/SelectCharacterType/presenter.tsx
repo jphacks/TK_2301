@@ -47,15 +47,6 @@ const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
       ) : (
         <SquareButton type="other" onPress={() => onPress('other')} />
       )}
-
-      {/*otherCharacterが0以上かつcriminalにデータがあるときのみ表示*/}
-      {otherCharacters.length > 0 && criminal && (
-        <PrimaryButton
-          text={'フロアマップの作成に進む'}
-          onPress={() => onPress('sheet')}
-          width={320}
-        />
-      )}
     </ScrollView>
   );
 };
