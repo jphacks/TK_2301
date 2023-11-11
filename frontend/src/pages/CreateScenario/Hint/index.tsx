@@ -13,6 +13,7 @@ const Hint = () => {
     shareJson,
     transitNextState,
     world,
+    targetId,
   } = useCreateScenario();
 
   const addItem = (item: string) => {
@@ -23,9 +24,6 @@ const Hint = () => {
   };
 
   const next = async () => {
-    console.log(sendItems);
-    console.log(sendPhenomena);
-
     shareJson.item = sendItems;
     shareJson.trivia = sendPhenomena;
     const bodyData = JSON.stringify({
@@ -37,7 +35,7 @@ const Hint = () => {
       user_input: `${bodyData}`,
     };
 
-    const formResponse = await fetch('http://192.168.0.20:8080/test/trick', {
+    const formResponse = await fetch('http://10.235.234.55:8080/test/trick', {
       method: 'POST', // HTTP-Methodを指定する！
       body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
       headers: {
@@ -46,10 +44,6 @@ const Hint = () => {
     });
 
     const res = await formResponse.json();
-    console.log(res);
-
-    console.log(res.item);
-    console.log(res.trivia);
     setItemTricks([...res.item]);
     setTriviaTricks([...res.trivia]);
 
@@ -63,7 +57,7 @@ const Hint = () => {
       },
     ]);*/
 
-    transitNextState(CreateState.Trick);
+    transitNextState(CreateState.Trick, targetId);
     setPhase(prev => prev + 1);
   };
   return <HintPresenter funcs={{addItem, addPhenomena}} next={next} />;

@@ -15,9 +15,10 @@ export type Abstraction = {
 };
 
 export type Character = {
+  id: string;
   name: string;
   age: number;
-  icon: any;
+  icon: string;
   profession: string;
   public_info: string;
   private_info: string;

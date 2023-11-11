@@ -24,9 +24,11 @@ const Header = ({navigation}: Props) => {
     editingCharacter,
     nowCharacterType,
     setCriminal,
+    otherCharacters,
     setOtherCharacters,
     transitNextState,
     uploadScenarioData,
+    targetId,
   } = useCreateScenario();
   const [headerText, setHeaderText] = useState<string>('シナリオ作成');
 
@@ -75,7 +77,8 @@ const Header = ({navigation}: Props) => {
             setCriminal(editingCharacter);
             break;
           case CharacterType.Other:
-            setOtherCharacters(prev => [...prev, editingCharacter]);
+            otherCharacters.set(targetId!, editingCharacter);
+            setOtherCharacters(otherCharacters);
             break;
         }
       }

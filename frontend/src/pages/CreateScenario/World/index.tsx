@@ -27,6 +27,7 @@ const World = () => {
     transitNextState,
     world,
     setWorld,
+    targetId,
   } = useCreateScenario();
   const onPress = (name: string) => {
     setWorld(name);
@@ -39,7 +40,7 @@ const World = () => {
 
     // Post通信
     const formResponse = await fetch(
-      'http://192.168.0.20:8080/test/item-and-trivia/',
+      'http://10.235.234.55:8080/test/item-and-trivia/',
       {
         method: 'POST',
         body: JSON.stringify(data),
@@ -57,7 +58,8 @@ const World = () => {
     /*setItems(dammyItems);
     setPhenomena(dammyPhenomena);*/
 
-    transitNextState(CreateState.Hint);
+    console.log(targetId);
+    transitNextState(CreateState.Hint, targetId);
     setPhase(prev => prev + 1);
   };
   return <WorldPresenter onPress={onPress} next={next} value={world} />;
