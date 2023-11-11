@@ -16,7 +16,7 @@ const Room = () => {
     targetId,
     transitNextState,
     setTargetImageType,
-    setTargetImageURL
+    setTargetImageURL,
   } = useCreateScenario();
 
   const [isSelectedImage, setIsSelectedImage] = useState(false);
@@ -81,7 +81,7 @@ const Room = () => {
     floorMaps.set(targetId, map);
 
     setFloorMaps(floorMaps);
-    setTargetUri(selectedUri);
+    setTargetImageURL(selectedUri);
 
     setIsSelectedImage(true);
     closeModal();
