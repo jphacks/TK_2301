@@ -275,26 +275,27 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         console.log('yes');
 
         const uploadPath = `character_icons/${character.id}.png`;
-        await storage().ref(uploadPath).putFile(character.id, {
+        await storage().ref(uploadPath).putFile(character.icon, {
           contentType: 'image/png',
         });
 
-        character.id = uploadPath; // Firebaseに格納したURIで上書きする
+        character.icon = uploadPath; // Firebaseに格納したURIで上書きする
       }
 
       bufOther.set(character.id, character);
     }
 
     // criminal
+    console.log(criminal);
     if (criminal?.icon.startsWith('file://')) {
       console.log('yes');
 
       const uploadPath = `character_icons/${criminal.id}.png`;
-      await storage().ref(uploadPath).putFile(criminal.id, {
+      await storage().ref(uploadPath).putFile(criminal.icon, {
         contentType: 'image/png',
       });
 
-      criminal.id = uploadPath; // Firebaseに格納したURIで上書きする
+      criminal.icon = uploadPath; // Firebaseに格納したURIで上書きする
     }
 
     setOtherCharacters(bufOther);

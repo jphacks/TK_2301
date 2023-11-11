@@ -30,7 +30,9 @@ const ImageCreate = () => {
     items,
     floorMaps,
     setFloorMaps,
-    setItemImageCandidate
+    setItemImageCandidate,
+    editingCharacter,
+    setEditingCharacter,
   } = useCreateScenario();
 
   const onChangeText = (text: string) => {
@@ -46,13 +48,17 @@ const ImageCreate = () => {
       .toString()
       .split('/');
 
-    const uriForStore = `${buf[buf.length-2]}/${buf[buf.length-1]}`;
+    const uriForStore = `${buf[buf.length - 2]}/${buf[buf.length - 1]}`;
     console.log(uriForStore);
     console.log(targetImageType);
     console.log(targetId);
 
     switch (targetImageType) {
       case ImageType.Character:
+        if (editingCharacter === undefined) return;
+        editingCharacter.icon = uriForStore;
+        setTargetImageURL(uriForStore)
+        setEditingCharacter(editingCharacter);
         break;
       case ImageType.FloorMap: {
         const target = floorMaps.get(targetId || '');

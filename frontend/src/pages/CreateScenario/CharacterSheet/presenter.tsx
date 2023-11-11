@@ -1,21 +1,56 @@
 import React from 'react';
-import {Image, ScrollView, Text, TextInput, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import SquareButton from '../SquareButton';
 import styles from './style';
 import {useCreateScenario} from '../createScenario';
+import ImageSelectModal from '../../../components/generics/ImageSelectModal';
+import CircularIcon from '../../../components/generics/CircularIcon';
 
 type Props = {
+  showImageSelectModal: boolean;
   onPress: (type: string) => void;
+  openImageSelectModal: () => void;
+  onPressImageWithAI: () => void;
+  onPressImageFromStorage: () => void;
 };
 
-const CharacterSheetPresenter = ({onPress}: Props) => {
-  const {editingCharacter, setEditingCharacter} = useCreateScenario();
+const CharacterSheetPresenter = ({
+  onPress,
+  showImageSelectModal,
+  openImageSelectModal,
+  onPressImageFromStorage,
+  onPressImageWithAI,
+}: Props) => {
+  const {editingCharacter, setEditingCharacter, targetImageURL} =
+    useCreateScenario();
   return (
     <View style={styles.container}>
+      {showImageSelectModal && (
+        <ImageSelectModal
+          test={''}
+          label={'証拠品／情報の画像'}
+          onPressImageWithAI={onPressImageWithAI}
+          onPressImageFromStorage={onPressImageFromStorage}
+        />
+      )}
+
       <SquareButton type="ai" onPress={onPress} />
       <ScrollView>
         <View style={styles.characterNameForm}>
-          <Image source={require('./cameraIcon.png')} />
+          <TouchableOpacity onPress={openImageSelectModal} style={styles.icon}>
+            {editingCharacter?.icon === '' ? (
+              <Image source={require('./cameraIcon.png')} />
+            ) : (
+              <CircularIcon url={{uri: targetImageURL}} />
+            )}
+          </TouchableOpacity>
           <TextInput
             style={[styles.input, styles.nameInput]}
             placeholder="キャラクター名"

@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  icon: {
+    marginLeft: 16,
+  },
   input: {
     borderWidth: 1,
     borderColor: '#696969',

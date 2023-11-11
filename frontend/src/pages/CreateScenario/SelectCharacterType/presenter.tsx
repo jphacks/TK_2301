@@ -20,7 +20,11 @@ const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
         <Text style={styles.text}>犯人役のキャラクター</Text>
       </View>
       {criminal ? (
-        <CharacterCard character={criminal} type={CharacterType.Criminal} />
+        <CharacterCard
+          id={criminal.id}
+          character={criminal}
+          type={CharacterType.Criminal}
+        />
       ) : (
         <SquareButton type="criminal" onPress={() => onPress('criminal')} />
       )}
