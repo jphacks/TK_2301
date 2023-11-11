@@ -8,7 +8,7 @@ export type Props = {
 };
 
 const ImageSelector = ({text, style, onPress}: Props) => {
-  return <ImageSelectorPresenter text={text} style={style} onPress={onPress} />;
+  return <ImageSelectorPresenter text={text} style={style} onPress={onPress} url={undefined} />;
 };
 
 export default ImageSelector;

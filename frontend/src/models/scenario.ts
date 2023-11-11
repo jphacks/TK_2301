@@ -71,6 +71,13 @@ export type Trick = {
   illusion: string;
 };
 
+export enum ImageType {
+  Default,
+  Character,
+  FloorMap,
+  Item
+}
+
 export type ItemImageCandidate = {
   name: string;
   image: string[];

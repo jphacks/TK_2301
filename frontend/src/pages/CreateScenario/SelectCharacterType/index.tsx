@@ -9,15 +9,18 @@ const SelectCharacterType = () => {
 
   const addOtherCharacter = () => {
     sampleEditingCharacter.type = CharacterType.Other;
+    
     setEditingCharacter(sampleEditingCharacter);
     transitNextState(CreateState.OtherCharacter);
     setNowCharacterType(CharacterType.Other);
+
     setPhase(prev => prev + 1);
   };
 
   const onPress = (type: string) => {
     if (type === 'criminal') {
       sampleEditingCharacter.type = CharacterType.Criminal;
+
       setEditingCharacter(sampleEditingCharacter);
       transitNextState(CreateState.CriminalsCharacter);
       setNowCharacterType(CharacterType.Criminal);

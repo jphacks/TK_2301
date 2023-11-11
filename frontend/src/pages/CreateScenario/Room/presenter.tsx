@@ -52,7 +52,7 @@ const RoomPresenter = ({
   const adjustedBackImageWidth = window.width;
   const adjustedBackImageHeight = window.height - 120;
 
-  const {items, setItems, floorMaps, setFloorMaps, targetId} =
+  const {items, setItems, floorMaps, setFloorMaps, targetId, targetImageURL} =
     useCreateScenario();
 
   return (
@@ -84,7 +84,7 @@ const RoomPresenter = ({
         }}
       />
 
-      {isSelectedImage ? (
+      {targetImageURL !== '' ? (
         <View>
           <View
             style={{
@@ -112,7 +112,7 @@ const RoomPresenter = ({
               {width: window.width, height: adjustedBackImageHeight},
             ]}>
             <ImageBackground
-              source={{uri: targetUri}}
+              source={{uri: targetImageURL}}
               style={{width: window.width, height: adjustedBackImageHeight}}>
               {/* ================ マップ上に表示されるアイテムアイコン ===================== */}
               {Array.from(items.values()).map((item, index) => {
@@ -121,9 +121,8 @@ const RoomPresenter = ({
                 }
 
                 return (
-                  <TouchableOpacity>
+                  <TouchableOpacity key={`pin.${index}.${item.itemId}`}>
                     <Image
-                      key={item.itemId}
                       source={require('./images/pin.png')}
                       style={{
                         left: item.coordinate.x * adjustedBackImageWidth,
@@ -149,7 +148,7 @@ const RoomPresenter = ({
             return (
               <TouchableOpacity
                 style={styles.itemCard}
-                key={item.itemId}
+                key={`modal.${key}.${item.itemId}`}
                 onPress={() => {
                   item.mapId = targetId || '';
                   item.coordinate = {

@@ -9,6 +9,7 @@ import {
   Trick,
   Phase,
   ItemImageCandidate,
+  ImageType,
 } from '../../models/scenario';
 import {
   sampleAbstract,
@@ -55,6 +56,12 @@ type CreateScenarioContextType = {
 
   targetId?: string;
   setTargetId: React.Dispatch<React.SetStateAction<string | undefined>>;
+
+  targetImageURL: string;
+  setTargetImageURL: React.Dispatch<React.SetStateAction<string>>;
+
+  targetImageType: ImageType;
+  setTargetImageType: React.Dispatch<React.SetStateAction<ImageType>>;
 
   phase: number;
   setPhase: React.Dispatch<React.SetStateAction<number>>;
@@ -143,11 +150,16 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [recievedItems, setRecievedItems] = useState<string[]>();
   const [recievedPhenomena, setRecievedPhenomena] = useState<string[]>();
   const [world, setWorld] = useState<string>('');
+
   const [itemImageCandidate, setItemImageCandidate] =
     useState<ItemImageCandidate>();
 
-  // 編集対象となる要素のID等を設定する変数。仮置き場的なレジスタとして扱って良い
+  // 編集対象となる要素のID, イメージの画像種類, URLを設定する変数。仮置き場的なレジスタとして扱って良い
   const [targetId, setTargetId] = useState<string | undefined>(undefined);
+  const [targetImageType, setTargetImageType] = useState<ImageType>(
+    ImageType.Default,
+  );
+  const [targetImageURL, setTargetImageURL] = useState<string>('');
 
   // ================================ 動的管理するシナリオデータState =============================
   const [criminal, setCriminal] = useState<Character>({
@@ -186,6 +198,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // 第二引数は編集画面に遷移する際の対象要素の識別子
   const transitNextState = (createState: CreateState, targetId?: string) => {
     setTargetId(targetId || '');
+    setTargetImageURL('');
     setPageStack([...pageStack, createState]);
     setCreateState(createState);
   };
@@ -262,26 +275,27 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         console.log('yes');
 
         const uploadPath = `character_icons/${character.id}.png`;
-        await storage().ref(uploadPath).putFile(character.id, {
+        await storage().ref(uploadPath).putFile(character.icon, {
           contentType: 'image/png',
         });
 
-        character.id = uploadPath; // Firebaseに格納したURIで上書きする
+        character.icon = uploadPath; // Firebaseに格納したURIで上書きする
       }
 
       bufOther.set(character.id, character);
     }
 
     // criminal
+    console.log(criminal);
     if (criminal?.icon.startsWith('file://')) {
       console.log('yes');
 
       const uploadPath = `character_icons/${criminal.id}.png`;
-      await storage().ref(uploadPath).putFile(criminal.id, {
+      await storage().ref(uploadPath).putFile(criminal.icon, {
         contentType: 'image/png',
       });
 
-      criminal.id = uploadPath; // Firebaseに格納したURIで上書きする
+      criminal.icon = uploadPath; // Firebaseに格納したURIで上書きする
     }
 
     setOtherCharacters(bufOther);
@@ -361,6 +375,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setScenarioId,
         itemImageCandidate,
         setItemImageCandidate,
+        targetImageURL,
+        setTargetImageURL,
+        targetImageType,
+        setTargetImageType,
       }}>
       {children}
     </CreateScenarioContext.Provider>
