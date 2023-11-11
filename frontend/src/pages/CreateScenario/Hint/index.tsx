@@ -37,7 +37,7 @@ const Hint = () => {
       user_input: `${bodyData}`,
     };
 
-    const formResponse = await fetch('http://10.17.106.114:8080/test/trick', {
+    const formResponse = await fetch('http://192.168.0.20:8080/test/trick', {
       method: 'POST', // HTTP-Methodを指定する！
       body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
       headers: {

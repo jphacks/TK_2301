@@ -3,7 +3,7 @@ import CharacterSheetPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 
 const CharacterSheet = () => {
-  const {setPhase, transitNextState, itemImageCandidate} = useCreateScenario();
+  const {setPhase, transitNextState} = useCreateScenario();
 
   const onPress = (type: string) => {
     if (type === 'ai') {
