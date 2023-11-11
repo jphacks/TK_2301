@@ -3,7 +3,7 @@ import RoomPresenter from './presenter';
 import {useCreateScenario} from '../createScenario';
 import uuid from 'react-native-uuid';
 import storage from '@react-native-firebase/storage';
-import {FloorMap} from 'src/models/scenario';
+import {FloorMap} from '../../../models/scenario';
 import {pickSingleImageFromLocalStorage} from '../utility';
 
 const Room = () => {

@@ -48,6 +48,7 @@ export const sampleAbstract = {
 };
 
 export const sampleEditingCharacter: Character = {
+  id: 'character01',
   name: '山田太郎',
   age: 30,
   icon: 'binary_data',

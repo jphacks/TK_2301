@@ -27,19 +27,22 @@ const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
 
       <View style={styles.headerContainer}>
         <Text style={styles.text}>その他のキャラクター</Text>
-        {otherCharacters.length > 0 && (
+        {otherCharacters.size > 0 && (
           <PurpleButton title={'追加する'} onClick={onPressAdd} />
         )}
       </View>
-      {otherCharacters.length > 0 ? (
+      {otherCharacters.size > 0 ? (
         <View style={{marginBottom: 10}}>
-          {otherCharacters.map((character, index) => (
-            <CharacterCard
-              key={index}
-              character={character}
-              type={CharacterType.Other}
-            />
-          ))}
+          {Array.from(otherCharacters, ([key, item]) => {
+            return (
+              <CharacterCard
+                key={key}
+                id={key}
+                character={item}
+                type={CharacterType.Other}
+              />
+            );
+          })}
         </View>
       ) : (
         <SquareButton type="other" onPress={() => onPress('other')} />

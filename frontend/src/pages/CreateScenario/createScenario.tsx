@@ -82,10 +82,12 @@ type CreateScenarioContextType = {
   setAbstraction: React.Dispatch<React.SetStateAction<Abstraction>>;
 
   // TODO: Map型への変換；　Characterとしてまとめても良いかも？
-  criminal: Character | undefined;
-  setCriminal: React.Dispatch<React.SetStateAction<Character | undefined>>;
-  otherCharacters: Character[];
-  setOtherCharacters: React.Dispatch<React.SetStateAction<Character[]>>;
+  criminal: Character;
+  setCriminal: React.Dispatch<React.SetStateAction<Character>>;
+  otherCharacters: Map<string, Character>;
+  setOtherCharacters: React.Dispatch<
+    React.SetStateAction<Map<string, Character>>
+  >;
 
   floorMaps: Map<string, FloorMap>;
   setFloorMaps: React.Dispatch<React.SetStateAction<Map<string, FloorMap>>>;
@@ -140,11 +142,24 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [targetId, setTargetId] = useState<string | undefined>(undefined);
 
   // ================================ 動的管理するシナリオデータState =============================
+  const [criminal, setCriminal] = useState<Character>({
+    name: '',
+    id: '',
+    icon: '',
+    age: 0,
+    profession: '',
+    public_info: '',
+    private_info: '',
+    purpose: '',
+    type: CharacterType.Criminal,
+    timeline: [],
+  });
+  const [otherCharacters, setOtherCharacters] = useState<
+    Map<string, Character>
+  >(new Map());
   const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
   const [scenarioId, setScenarioId] = useState<string>('');
   const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
-  const [criminal, setCriminal] = useState<Character>();
-  const [otherCharacters, setOtherCharacters] = useState<Character[]>([]);
   const [items, setItems] = useState<Map<string, Item>>(clueItemsMap);
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
@@ -226,17 +241,57 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     setFloorMaps(bufFloorMaps);
   };
 
+  const preprocessCharacterForUpload = async () => {
+    const bufOther: Map<string, Character> = new Map(otherCharacters);
+    const bufOtherArray: Character[] = Array.from(otherCharacters.values());
+
+    // otherCharacters
+    for (let i = 0; i < bufOtherArray.length; i++) {
+      const character = bufOtherArray[i];
+
+      // ローカルの画像で、まだFireStorageに保存されていない場合
+      if (character.icon.startsWith('file://')) {
+        console.log('yes');
+
+        const uploadPath = `character_icons/${character.id}.png`;
+        await storage().ref(uploadPath).putFile(character.id, {
+          contentType: 'image/png',
+        });
+
+        character.id = uploadPath; // Firebaseに格納したURIで上書きする
+      }
+
+      bufOther.set(character.id, character);
+    }
+
+    // criminal
+    if (criminal?.icon.startsWith('file://')) {
+      console.log('yes');
+
+      const uploadPath = `character_icons/${criminal.id}.png`;
+      await storage().ref(uploadPath).putFile(criminal.id, {
+        contentType: 'image/png',
+      });
+
+      criminal.id = uploadPath; // Firebaseに格納したURIで上書きする
+    }
+
+    setOtherCharacters(bufOther);
+    setCriminal(criminal);
+  };
+
   // ヘッダーのアップロードボタン押下時に発火
   const uploadScenarioData = async () => {
     await preprocessItemsForUpload();
     await preprocessMapFloorForUpload();
+    await preprocessCharacterForUpload();
 
     const data: Scenario = {
       abstraction: abstraction,
       phases: Array.from(phaseData.values()),
       floorMaps: Array.from(floorMaps.values()),
       items: Array.from(items.values()),
-      characters: [], // TODO
+      characters: [...Array.from(otherCharacters.values()), criminal], // TODO
     };
 
     // デバッグのためしばらく残しておく
