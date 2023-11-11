@@ -10,6 +10,7 @@ const TrickSelector = () => {
     transitNextState,
     setEditingCharacter,
     world,
+    setItemImageCandidate,
     targetId,
   } = useCreateScenario();
   const [selectedItemTricks, setSelectedItemTricks] = useState<Trick[]>([]);
@@ -40,6 +41,7 @@ const TrickSelector = () => {
     const res = await formResponse.json();
 
     setEditingCharacter(res);
+    setItemImageCandidate(res.item);
 
     setPhase(2);
     setTabId(1);
