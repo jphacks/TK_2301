@@ -69,3 +69,8 @@ export type Trick = {
   principle: string;
   illusion: string;
 };
+
+export type ItemImageCandidate = {
+  name: string;
+  image: string[];
+};

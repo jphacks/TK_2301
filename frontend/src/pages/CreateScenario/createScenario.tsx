@@ -8,6 +8,7 @@ import {
   Abstraction,
   Trick,
   Phase,
+  ItemImageCandidate,
 } from '../../models/scenario';
 import {
   sampleAbstract,
@@ -68,6 +69,11 @@ type CreateScenarioContextType = {
 
   world: string;
   setWorld: React.Dispatch<React.SetStateAction<string>>;
+
+  itemImageCandidate: ItemImageCandidate | undefined;
+  setItemImageCandidate: React.Dispatch<
+    React.SetStateAction<ItemImageCandidate | undefined>
+  >;
 
   // ================================ 動的管理するシナリオデータ =============================
   // 新規作成のシナリオどうかのフラグを保持する
@@ -135,6 +141,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [recievedItems, setRecievedItems] = useState<string[]>();
   const [recievedPhenomena, setRecievedPhenomena] = useState<string[]>();
   const [world, setWorld] = useState<string>('');
+  const [itemImageCandidate, setItemImageCandidate] =
+    useState<ItemImageCandidate>();
 
   // 編集対象となる要素のID等を設定する変数。仮置き場的なレジスタとして扱って良い
   const [targetId, setTargetId] = useState<string | undefined>(undefined);
@@ -296,6 +304,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setIsNewScenario,
         scenarioId,
         setScenarioId,
+        itemImageCandidate,
+        setItemImageCandidate,
       }}>
       {children}
     </CreateScenarioContext.Provider>
