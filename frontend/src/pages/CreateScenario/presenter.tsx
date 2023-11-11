@@ -15,6 +15,7 @@ import Room from './Room';
 import Phase from './Phase';
 import scenarioCollection from '../../api/firebase/firestore';
 import uuid from 'react-native-uuid';
+import ImageCreate from './ImageCreate';
 
 type Props = {
   tabViewProps: {
@@ -56,11 +57,10 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.World:
         return <World />;
       case CreateState.Hint:
-        return <Hint />;
       case CreateState.ItemInfo:
         return <ItemInfo />;
       case CreateState.Image:
-        return <ItemInfo />;
+        return <ImageCreate />;
       case CreateState.Trick:
         return <TrickSelector />;
       case CreateState.Room:

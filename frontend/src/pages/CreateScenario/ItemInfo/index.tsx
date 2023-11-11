@@ -3,17 +3,25 @@ import ItemInfoPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 import uuid from 'react-native-uuid';
 import storage from '@react-native-firebase/storage';
-import {Item, ItemCategory} from '../../../models/scenario';
+import {ImageType, Item, ItemCategory} from '../../../models/scenario';
 import {pickSingleImageFromLocalStorage} from '../utility';
 
 const ItemInfo = () => {
   const [showModal, setShowModal] = useState(false);
-  const [targetUri, setTargetUri] = useState('');
   const [isSelectedImage, setIsSelectedImage] = useState(false);
   const [itemType, setItemType] = React.useState<ItemCategory>('');
 
-  const {setPhase, setCreateState, items, setItems, targetId, setTargetId} =
-    useCreateScenario();
+  const {
+    setPhase,
+    setCreateState,
+    items,
+    setItems,
+    targetId,
+    setTargetId,
+    transitNextState,
+    setTargetImageURL,
+    setTargetImageType,
+  } = useCreateScenario();
   const openModal = () => {
     setShowModal(true);
   };
@@ -23,6 +31,8 @@ const ItemInfo = () => {
 
   const onPressImageWithAI = async () => {
     // TODO
+    setTargetImageType(ImageType.Item);
+    transitNextState(CreateState.Image, targetId); // 対象ID情報を保持するために、IDを明示的に指定
   };
 
   const onPressImageFromStorage = async () => {
@@ -35,9 +45,9 @@ const ItemInfo = () => {
     items.set(targetId, item);
 
     setItems(items);
-    setTargetUri(selectedUri);
+    setTargetImageURL(selectedUri);
     setIsSelectedImage(true);
-    
+
     closeModal();
   };
 
@@ -122,18 +132,18 @@ const ItemInfo = () => {
     // ラジオボタンの初期値を設定するために必要
     setItemType(target.category);
 
-    if (target.uri.startsWith('items/')) {
+    if (target.uri.startsWith('items/') || target.uri.startsWith('images/')) {
       // 既にFireStorageに保存されている場合
       const get = async () => {
         const uri = await storage().ref(target.uri).getDownloadURL();
-        setTargetUri(uri);
+        setTargetImageURL(uri);
         setIsSelectedImage(true);
       };
 
       get();
     } else if (target.uri.startsWith('file://')) {
       // まだFireStorageに保存されていない場合
-      setTargetUri(target.uri);
+      setTargetImageURL(target.uri);
       setIsSelectedImage(true);
     }
 
@@ -154,7 +164,6 @@ const ItemInfo = () => {
       onPressImageWithAI={onPressImageWithAI}
       onPressImageFromStorage={onPressImageFromStorage}
       isSelectedImage={isSelectedImage}
-      targetUri={targetUri}
       targetItem={items.get(targetId || '')}
     />
   );

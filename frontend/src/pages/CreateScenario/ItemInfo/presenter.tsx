@@ -6,7 +6,7 @@ import LabeledTextInput from '../../../components/generics/LabeledTextInput';
 import ImageSelectModal from '../../../components/generics/ImageSelectModal';
 import ImageSelector from '../../../components/generics/ImageSelector';
 import {Item, ItemCategory} from '../../../models/scenario';
-import { useCreateScenario } from '../createScenario';
+import {useCreateScenario} from '../createScenario';
 
 type Props = {
   showModal: boolean;
@@ -19,7 +19,6 @@ type Props = {
   handleRadioButtonPress: (value: ItemCategory) => void;
   onPressImageWithAI: () => void;
   onPressImageFromStorage: () => void;
-  targetUri: string;
   isSelectedImage: boolean;
   itemType: ItemCategory;
   targetItem?: Item;
@@ -28,20 +27,15 @@ type Props = {
 const ItemInfoPresenter = ({
   showModal,
   openModal,
-  closeModal,
-  next,
   onItemNameTextChange,
   onItemDescriptionTextChange,
   handleRadioButtonPress,
   onPressImageFromStorage,
   onPressImageWithAI,
-  isSelectedImage,
   itemType,
-  targetUri,
   targetItem,
 }: Props) => {
-  const {setPhase, setCreateState, items, setItems, targetId, setTargetId} =
-    useCreateScenario();
+  const {items, targetId, targetImageURL} = useCreateScenario();
 
   return (
     <View>
@@ -59,7 +53,7 @@ const ItemInfoPresenter = ({
           styles.container,
           showModal ? {opacity: 0.5, backgroundColor: '#000'} : null,
         ]}>
-        {isSelectedImage ? (
+        {targetImageURL !== '' ? (
           <View>
             <View
               style={{
@@ -70,7 +64,7 @@ const ItemInfoPresenter = ({
             {/* ================ 表示画像 ==================== */}
             <TouchableOpacity onPress={openModal}>
               <ImageBackground
-                source={{uri: targetUri}}
+                source={{uri: targetImageURL}}
                 style={styles.selectedImage}></ImageBackground>
             </TouchableOpacity>
           </View>
