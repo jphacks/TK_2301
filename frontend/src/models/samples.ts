@@ -7,7 +7,7 @@ export const sampleClueItems: Item[] = [
     mapId: '1F',
     name: '血塗られたナイフ',
     uri: 'binary_data',
-    category: 'Key',
+    category: 'item',
     description: 'An old key that opens a mysterious door in the mansion.',
     coordinate: {
       x: -1,
@@ -19,7 +19,7 @@ export const sampleClueItems: Item[] = [
     mapId: '2F',
     name: '古びたキーボード',
     uri: 'binary_data',
-    category: 'Key',
+    category: 'item',
     description: 'An old key that opens a mysterious door in the mansion.',
     coordinate: {
       x: -1,
@@ -31,7 +31,7 @@ export const sampleClueItems: Item[] = [
     mapId: '2F',
     name: '錆びた鍵',
     uri: 'binary_data',
-    category: 'Key',
+    category: 'item',
     description: 'An old key that opens a mysterious door in the mansion.',
     coordinate: {
       x: -1,
@@ -43,21 +43,23 @@ export const sampleClueItems: Item[] = [
 export const sampleAbstract = {
   title: 'おにぎり食べたの誰だ',
   outline: 'おにぎり食べられた',
+  requiredTime: 10,
   numberOfPlayers: 4,
 };
 
 export const sampleEditingCharacter: Character = {
-  nameKanji: '山田太郎',
-  nameKana: 'ヤマダタロウ',
+  id: 'character01',
+  name: '山田太郎',
   age: 30,
   icon: 'binary_data',
   profession: 'Detective',
-  description: 'A sharp-witted detective with a keen eye for detail.',
-  about: 'Known for solving several high-profile cases.',
+  public_info: 'A sharp-witted detective with a keen eye for detail.',
+  private_info: 'Known for solving several high-profile cases.',
   purpose: 'To find the truth behind the mysterious events at the mansion.',
   type: CharacterType.Criminal,
   timeline: [
     {
+      num: 1,
       text: '殺害。',
     },
   ],

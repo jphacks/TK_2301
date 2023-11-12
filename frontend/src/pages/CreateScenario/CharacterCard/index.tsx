@@ -4,16 +4,18 @@ import {useCreateScenario, CharacterType, CreateState} from '../createScenario';
 import {Character} from '../../../models/scenario';
 
 export type Props = {
+  id?: string;
   character: Character;
   type: CharacterType;
 };
 
-const CharacterCard = ({character, type}: Props) => {
+const CharacterCard = ({id, character, type}: Props) => {
   const {setEditingCharacter, transitNextState, setNowCharacterType, setPhase} =
     useCreateScenario();
   const onPress = () => {
     setEditingCharacter(character);
-    transitNextState(CreateState.OtherCharacter);
+    console.log(id);
+    transitNextState(CreateState.OtherCharacter, id);
     switch (type) {
       case CharacterType.Criminal:
         setNowCharacterType(CharacterType.Criminal);
@@ -26,6 +28,7 @@ const CharacterCard = ({character, type}: Props) => {
   };
   return (
     <CharacterCardPresenter
+      id={id}
       character={character}
       type={type}
       onPress={onPress}

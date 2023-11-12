@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import styles from './style';
 import SquareButton from '../SquareButton';
 import {CreateState, useCreateScenario} from '../createScenario';
@@ -12,13 +12,13 @@ type Props = {
 };
 
 const SelectClueTypePresenter = ({onPress}: Props) => {
-  const {setPhase, floorMaps, transitNextState, phaseData} =
+  const {setPhase, floorMaps, transitNextState, phaseData, items} =
     useCreateScenario();
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View>
-        <View style={styles.headerConteienr}>
+        <View style={styles.headerContainer}>
           <Text style={styles.text}>フロアマップ</Text>
           {floorMaps.size > 0 && (
             <PurpleButton
@@ -49,12 +49,38 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
           })
         )}
       </View>
-      <View style={styles.headerConteienr}>
+      <View style={styles.headerContainer}>
         <Text style={styles.text}>証拠品／情報</Text>
+        {items.size > 0 && (
+          <PurpleButton
+            title={'追加する'}
+            onClick={() => {
+              setPhase(prev => prev + 1);
+              transitNextState(CreateState.ItemInfo);
+            }}
+          />
+        )}
       </View>
-      <SquareButton type="item" onPress={() => onPress('item')} />
+      {items.size == 0 ? (
+        <SquareButton type="room" onPress={() => onPress('room')} />
+      ) : (
+        Array.from(items, ([key, item]) => {
+          return (
+            <SquareCard
+              key={key}
+              label={item.name}
+              onPress={() => {
+                setPhase(prev => prev + 1);
+                transitNextState(CreateState.ItemInfo, key);
+              }}
+              id={key}
+              style={styles.card}
+            />
+          );
+        })
+      )}
 
-      <View style={styles.headerConteienr}>
+      <View style={styles.headerContainer}>
         <Text style={styles.text}>フェーズ</Text>
         <PurpleButton
           title={'追加する'}
@@ -67,11 +93,18 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
       {phaseData.size > 0 && (
         <View>
           {Array.from(phaseData, ([key, value]) => (
-            <PhaseCard phase={value} key={key} />
+            <PhaseCard
+              phase={value}
+              key={key}
+              onPress={() => {
+                setPhase(prev => prev + 1);
+                transitNextState(CreateState.Phase, key);
+              }}
+            />
           ))}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

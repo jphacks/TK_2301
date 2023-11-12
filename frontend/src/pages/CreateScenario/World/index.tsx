@@ -3,7 +3,7 @@ import WorldPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 import {extractJson} from '../utility';
 
-type Data = {item: string[]; trivia: string[]};
+type Data = {item: string[]; trivia: string[]; world: string};
 
 const World = () => {
   const dammyItems = [
@@ -19,41 +19,50 @@ const World = () => {
     '高度が高くなると酸素濃度が低くなる',
   ];
 
-  const {setPhase, setItems, setPhenomena, setShareJson, transitNextState} =
-    useCreateScenario();
-  const [worldItemText, setWorldItemText] = useState('');
+  const {
+    setPhase,
+    setRecievedItems,
+    setRecievedPhenomena,
+    setShareJson,
+    transitNextState,
+    world,
+    setWorld,
+    targetId,
+  } = useCreateScenario();
   const onPress = (name: string) => {
-    setWorldItemText(name);
+    setWorld(name);
   };
   const next = async () => {
     console.log('waiting');
     const data = {
-      phase: 0,
-      world: worldItemText,
+      user_input: world,
     };
-    // 3. Post通信
-    /*const formResponse = await fetch(
-      'https://dpdu6gddt5h6dqs24g2xnfv5240tvcjk.lambda-url.ap-northeast-1.on.aws/',
+
+    // Post通信
+    const formResponse = await fetch(
+      'http://10.235.234.55:8080/test/item-and-trivia/',
       {
-        method: 'POST', // HTTP-Methodを指定する！
-        body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
     );
-    console.log(formResponse);
     const res = await formResponse.json();
-    console.log(res);
-    const resData = extractJson(res);
-    const castedData = resData as Data;
+    const castedData = res as Data;
     setShareJson(castedData);
-    console.log(castedData.item);
-    setItems(castedData.item);
-    setPhenomena(castedData.trivia);*/
-    setItems(dammyItems);
-    setPhenomena(dammyPhenomena);
-    transitNextState(CreateState.Hint);
+    setRecievedItems(castedData.item);
+    setRecievedPhenomena(castedData.trivia);
+
+    /*setItems(dammyItems);
+    setPhenomena(dammyPhenomena);*/
+
+    console.log(targetId);
+    transitNextState(CreateState.Hint, targetId);
     setPhase(prev => prev + 1);
   };
-  return <WorldPresenter onPress={onPress} next={next} value={worldItemText} />;
+  return <WorldPresenter onPress={onPress} next={next} value={world} />;
 };
 
 export default World;

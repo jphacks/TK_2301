@@ -1,30 +1,65 @@
 import React from 'react';
-import {Image, ScrollView, Text, TextInput, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import SquareButton from '../SquareButton';
 import styles from './style';
 import {useCreateScenario} from '../createScenario';
+import ImageSelectModal from '../../../components/generics/ImageSelectModal';
+import CircularIcon from '../../../components/generics/CircularIcon';
 
 type Props = {
+  showImageSelectModal: boolean;
   onPress: (type: string) => void;
+  openImageSelectModal: () => void;
+  onPressImageWithAI: () => void;
+  onPressImageFromStorage: () => void;
 };
 
-const CharacterSheetPresenter = ({onPress}: Props) => {
-  const {editingCharacter, setEditingCharacter} = useCreateScenario();
+const CharacterSheetPresenter = ({
+  onPress,
+  showImageSelectModal,
+  openImageSelectModal,
+  onPressImageFromStorage,
+  onPressImageWithAI,
+}: Props) => {
+  const {editingCharacter, setEditingCharacter, targetImageURL} =
+    useCreateScenario();
   return (
     <View style={styles.container}>
+      {showImageSelectModal && (
+        <ImageSelectModal
+          test={''}
+          label={'証拠品／情報の画像'}
+          onPressImageWithAI={onPressImageWithAI}
+          onPressImageFromStorage={onPressImageFromStorage}
+        />
+      )}
+
       <SquareButton type="ai" onPress={onPress} />
       <ScrollView>
         <View style={styles.characterNameForm}>
-          <Image source={require('./cameraIcon.png')} />
+          <TouchableOpacity onPress={openImageSelectModal} style={styles.icon}>
+            {editingCharacter?.icon === '' ? (
+              <Image source={require('./cameraIcon.png')} />
+            ) : (
+              <CircularIcon url={{uri: targetImageURL}} />
+            )}
+          </TouchableOpacity>
           <TextInput
             style={[styles.input, styles.nameInput]}
             placeholder="キャラクター名"
             placeholderTextColor="#888888"
-            value={editingCharacter?.nameKana}
+            value={editingCharacter?.name}
             onChangeText={text => {
               setEditingCharacter({
                 ...editingCharacter!,
-                nameKana: text,
+                name: text,
               });
             }}
           />
@@ -34,11 +69,11 @@ const CharacterSheetPresenter = ({onPress}: Props) => {
         <TextInput
           style={[styles.input, styles.openInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.description}
+          value={editingCharacter?.public_info}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
-              description: text,
+              public_info: text,
             });
           }}
         />
@@ -47,11 +82,11 @@ const CharacterSheetPresenter = ({onPress}: Props) => {
         <TextInput
           style={[styles.input, styles.privateInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.about}
+          value={editingCharacter?.private_info}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
-              about: text,
+              private_info: text,
             });
           }}
         />
@@ -64,7 +99,7 @@ const CharacterSheetPresenter = ({onPress}: Props) => {
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
-              timeline: text.split('\n').map(t => ({text: t})),
+              timeline: text.split('\n').map((t, i) => ({num: i, text: t})),
             });
           }}
         />

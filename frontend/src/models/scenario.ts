@@ -10,20 +10,22 @@ export type Scenario = {
 export type Abstraction = {
   title: string;
   outline: string;
+  requiredTime: number;
   numberOfPlayers: number;
 };
 
 export type Character = {
-  nameKanji: string;
-  nameKana: string;
+  id: string;
+  name: string;
   age: number;
-  icon: any;
+  icon: string;
   profession: string;
-  description: string;
-  about: string;
+  public_info: string;
+  private_info: string;
   purpose: string;
   type: CharacterType;
   timeline: {
+    num: number;
     text: string;
   }[];
 };
@@ -52,7 +54,7 @@ export type Item = {
   mapId: string; // 配置するマップID
   name: string;
   uri: string;
-  category: string;
+  category: ItemCategory;
   description: string;
   coordinate: {
     x: number;
@@ -60,9 +62,23 @@ export type Item = {
   };
 };
 
+export type ItemCategory = '' | 'item' | 'info';
+
 export type Trick = {
   name: string;
   uncommonSense: string;
   principle: string;
   illusion: string;
+};
+
+export enum ImageType {
+  Default,
+  Character,
+  FloorMap,
+  Item
+}
+
+export type ItemImageCandidate = {
+  name: string;
+  image: string[];
 };

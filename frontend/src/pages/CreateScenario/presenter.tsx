@@ -9,10 +9,13 @@ import {CreateState, useCreateScenario} from './createScenario';
 import CharacterSheet from './CharacterSheet';
 import World from './World';
 import Hint from './Hint';
-import Trick from './Trick';
+import TrickSelector from './TrickSelector';
 import ItemInfo from './ItemInfo';
 import Room from './Room';
 import Phase from './Phase';
+import scenarioCollection from '../../api/firebase/firestore';
+import uuid from 'react-native-uuid';
+import ImageCreate from './ImageCreate';
 
 type Props = {
   tabViewProps: {
@@ -33,8 +36,19 @@ type Props = {
 };
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
-  const {createState, criminal, floorMaps, targetId} = useCreateScenario();
+  const {createState, scenarioId, setScenarioId, setIsNewScenario} =
+    useCreateScenario();
 
+  useEffect(() => {
+    if (scenarioId === '') {
+      const newScenarioId = uuid.v4().toString();
+
+      setIsNewScenario(true);
+      setScenarioId(newScenarioId);
+
+      return;
+    }
+  }, []);
   const renderContent = () => {
     switch (createState) {
       case CreateState.CriminalsCharacter:
@@ -43,15 +57,14 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.World:
         return <World />;
       case CreateState.Hint:
-        return <Hint />;
       case CreateState.ItemInfo:
         return <ItemInfo />;
       case CreateState.Image:
-        return <ItemInfo />;
+        return <ImageCreate />;
       case CreateState.Trick:
-        return <Trick />;
+        return <TrickSelector />;
       case CreateState.Room:
-        return <Room roomId={targetId} />;
+        return <Room />;
       case CreateState.Phase:
         return <Phase />;
       default:

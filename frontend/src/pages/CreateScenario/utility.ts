@@ -1,3 +1,9 @@
+import {
+  ImageLibraryOptions,
+  launchImageLibrary,
+  MediaType,
+} from 'react-native-image-picker';
+
 export const extractJson = (text: string): Object | null => {
   // Use RegExp to extract a JSON object from the text
   const jsonMatch = text.match(/{.*?}/s);
@@ -16,4 +22,14 @@ export const extractJson = (text: string): Object | null => {
     console.log('No JSON object found');
     return null;
   }
+};
+
+export const pickSingleImageFromLocalStorage = async (): Promise<string> => {
+  const photo: MediaType = 'photo';
+  const options: ImageLibraryOptions = {
+    mediaType: photo,
+  };
+
+  const result = await launchImageLibrary(options);
+  return result.assets?.pop()?.uri || '';
 };

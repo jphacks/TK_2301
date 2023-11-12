@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,33 +7,28 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#696969",
-    padding: 16,
-    marginBottom: 40,
+    borderColor: '#696969',
   },
   label: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 20,
-    fontWeight: "bold",
-    paddingBottom: 16,
+    fontWeight: 'bold',
   },
   modalContainer: {
-    backgroundColor: "#323338",
+    backgroundColor: '#323338',
     width: 305,
     padding: 40,
     borderRadius: 10,
-    position: "absolute",
-    top: 200,
   },
   modalText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     paddingBottom: 24,
   },
   closeIcon: {
-    position: "absolute",
+    position: 'absolute',
     top: 16,
     right: 16,
   },
@@ -45,21 +40,21 @@ const styles = StyleSheet.create({
 
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 22,
   },
   modalView: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     height: 500,
     paddingTop: 0,
-    alignItems: "center",
+    alignItems: 'center',
     marginHorizontal: 20,
     marginTop: 100,
-    backgroundColor: "#323338",
+    backgroundColor: '#323338',
     borderRadius: 20,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -67,26 +62,26 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   instructionText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
-    fontWeight: "bold",
-    justifyContent: "center",
-    marginBottom: 20,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    marginBottom: 10,
   },
   modalHeader: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
   },
   itemCard: {
-    color: "white",
-    flexDirection: "row",
-    width: "95%",
+    color: 'white',
+    flexDirection: 'row',
+    width: '95%',
     height: 100,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 10,
-    backgroundColor: "#2A2A2A",
+    backgroundColor: '#2A2A2A',
     borderRadius: 5,
   },
   cardImage: {
@@ -99,15 +94,15 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   cardText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   cardSubText: {
-    color: "#DADEE180",
+    color: '#DADEE180',
     fontSize: 8,
     marginTop: 2,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   modalOverlay: {
     position: 'absolute',
@@ -115,7 +110,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   button: {
     borderRadius: 20,
@@ -123,15 +118,15 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: '#F194FF',
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: '#2196F3',
   },
   textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

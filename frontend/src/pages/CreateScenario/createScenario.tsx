@@ -8,6 +8,8 @@ import {
   Abstraction,
   Trick,
   Phase,
+  ItemImageCandidate,
+  ImageType,
 } from '../../models/scenario';
 import {
   sampleAbstract,
@@ -53,19 +55,52 @@ type CreateScenarioContextType = {
   setNowCharacterType: React.Dispatch<React.SetStateAction<CharacterType>>;
 
   targetId?: string;
-  setTargetId: React.Dispatch<
-    React.SetStateAction<number | string | undefined>
-  >;
+  setTargetId: React.Dispatch<React.SetStateAction<string | undefined>>;
+
+  targetImageURL: string;
+  setTargetImageURL: React.Dispatch<React.SetStateAction<string>>;
+
+  targetImageType: ImageType;
+  setTargetImageType: React.Dispatch<React.SetStateAction<ImageType>>;
 
   phase: number;
   setPhase: React.Dispatch<React.SetStateAction<number>>;
 
+  recievedItems: string[] | undefined;
+  setRecievedItems: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+
+  recievedPhenomena: string[] | undefined;
+  setRecievedPhenomena: React.Dispatch<
+    React.SetStateAction<string[] | undefined>
+  >;
+
+  world: string;
+  setWorld: React.Dispatch<React.SetStateAction<string>>;
+
+  itemImageCandidate: ItemImageCandidate | undefined;
+  setItemImageCandidate: React.Dispatch<
+    React.SetStateAction<ItemImageCandidate | undefined>
+  >;
+
   // ================================ 動的管理するシナリオデータ =============================
+  // 新規作成のシナリオどうかのフラグを保持する
+  isNewScenario: boolean;
+  setIsNewScenario: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // シナリオID. Firestoreへの保存に用いる
+  scenarioId: string;
+  setScenarioId: React.Dispatch<React.SetStateAction<string>>;
+
+  abstraction: Abstraction;
+  setAbstraction: React.Dispatch<React.SetStateAction<Abstraction>>;
+
   // TODO: Map型への変換；　Characterとしてまとめても良いかも？
-  criminal: Character | undefined;
-  setCriminal: React.Dispatch<React.SetStateAction<Character | undefined>>;
-  otherCharacters: Character[];
-  setOtherCharacters: React.Dispatch<React.SetStateAction<Character[]>>;
+  criminal: Character;
+  setCriminal: React.Dispatch<React.SetStateAction<Character>>;
+  otherCharacters: Map<string, Character>;
+  setOtherCharacters: React.Dispatch<
+    React.SetStateAction<Map<string, Character>>
+  >;
 
   floorMaps: Map<string, FloorMap>;
   setFloorMaps: React.Dispatch<React.SetStateAction<Map<string, FloorMap>>>;
@@ -74,14 +109,16 @@ type CreateScenarioContextType = {
   setItems: React.Dispatch<React.SetStateAction<Map<string, Item>>>;
 
   // TODO: Map型への変換
-  tricks: Trick[];
-  setTricks: React.Dispatch<React.SetStateAction<Trick[]>>;
+  itemTricks: Trick[];
+  setItemTricks: React.Dispatch<React.SetStateAction<Trick[]>>;
+
+  triviaTricks: Trick[];
+  setTriviaTricks: React.Dispatch<React.SetStateAction<Trick[]>>;
 
   // TODO: Map型への変換
   phenomena: string[];
   setPhenomena: React.Dispatch<React.SetStateAction<string[]>>;
 
-  // TODO: Map型への変換
   phaseData: Map<string, Phase>;
   setPhaseData: React.Dispatch<React.SetStateAction<Map<string, Phase>>>;
 
@@ -101,7 +138,6 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // ================================ UI制御に必要なState =============================
   const [tabId, setTabId] = useState<number>(1);
   const [phase, setPhase] = useState<number>(1);
-  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
   const [shareJson, setShareJson] = useState({});
   const [createState, setCreateState] = useState(CreateState.Default);
   const [pageStack, setPageStack] = useState([CreateState.Default]);
@@ -111,32 +147,58 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [nowCharacterType, setNowCharacterType] = useState(
     CharacterType.Default,
   );
+  const [recievedItems, setRecievedItems] = useState<string[]>();
+  const [recievedPhenomena, setRecievedPhenomena] = useState<string[]>();
+  const [world, setWorld] = useState<string>('');
 
-  // 編集対象となる要素のID等を設定する変数。仮置き場的なレジスタとして扱って良い
-  const [targetId, setTargetId] = useState<number | string | undefined>(
-    undefined,
+  const [itemImageCandidate, setItemImageCandidate] =
+    useState<ItemImageCandidate>();
+
+  // 編集対象となる要素のID, イメージの画像種類, URLを設定する変数。仮置き場的なレジスタとして扱って良い
+  const [targetId, setTargetId] = useState<string | undefined>(undefined);
+  const [targetImageType, setTargetImageType] = useState<ImageType>(
+    ImageType.Default,
   );
+  const [targetImageURL, setTargetImageURL] = useState<string>('');
 
   // ================================ 動的管理するシナリオデータState =============================
-  const [criminal, setCriminal] = useState<Character>();
-  const [otherCharacters, setOtherCharacters] = useState<Character[]>([]);
+  const [criminal, setCriminal] = useState<Character>({
+    name: '',
+    id: '',
+    icon: '',
+    age: 0,
+    profession: '',
+    public_info: '',
+    private_info: '',
+    purpose: '',
+    type: CharacterType.Criminal,
+    timeline: [],
+  });
+  const [otherCharacters, setOtherCharacters] = useState<
+    Map<string, Character>
+  >(new Map());
+  const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
+  const [scenarioId, setScenarioId] = useState<string>('');
+  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
   const [items, setItems] = useState<Map<string, Item>>(clueItemsMap);
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
-  const [tricks, setTricks] = useState<
-    {
-      name: string;
-      uncommonSense: string;
-      principle: string;
-      illusion: string;
-    }[]
-  >([]);
-  const [phaseData, setPhaseData] = useState<Map<string, Phase>>(new Map());
+  const [itemTricks, setItemTricks] = useState<Trick[]>([]);
+  const [triviaTricks, setTriviaTricks] = useState<Trick[]>([]);
+  const [phaseData, setPhaseData] = useState<Map<string, Phase>>(
+    new Map().set('xxxx', {
+      name: '第１章 事件の始まり',
+      phaseId: 'xxxx',
+      numberOfSurveys: 2,
+      timeLimit: 30,
+    }),
+  );
 
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
   const transitNextState = (createState: CreateState, targetId?: string) => {
-    setTargetId(targetId);
+    setTargetId(targetId || '');
+    setTargetImageURL('');
     setPageStack([...pageStack, createState]);
     setCreateState(createState);
   };
@@ -151,8 +213,31 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     setCreateState(bufStack.pop() || CreateState.Default);
   };
 
-  // ヘッダーのアップロードボタン押下時に発火
-  const uploadScenarioData = async () => {
+  // Firebase Storageに保存されていない画像があれば保存し、URIを書き換える
+  const preprocessItemsForUpload = async () => {
+    const bufItem: Map<string, Item> = new Map(items);
+    const bufItemArray: Item[] = Array.from(items.values());
+
+    for (let i = 0; i < bufItemArray.length; i++) {
+      const item = bufItemArray[i];
+
+      // ローカルの画像で、まだFireStorageに保存されていない場合
+      if (item.uri.startsWith('file://')) {
+        const uploadPath = `items/${item.mapId}.png`;
+        await storage().ref(uploadPath).putFile(item.uri, {
+          contentType: 'image/png',
+        });
+
+        item.uri = uploadPath; // Firebaseに格納したURIで上書きする
+      }
+
+      bufItem.set(item.mapId, item);
+    }
+
+    setItems(bufItem);
+  };
+
+  const preprocessMapFloorForUpload = async () => {
     const bufFloorMaps: Map<string, FloorMap> = new Map(floorMaps);
     const bufFloorArray: FloorMap[] = Array.from(floorMaps.values());
 
@@ -175,18 +260,67 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     }
 
     setFloorMaps(bufFloorMaps);
+  };
+
+  const preprocessCharacterForUpload = async () => {
+    const bufOther: Map<string, Character> = new Map(otherCharacters);
+    const bufOtherArray: Character[] = Array.from(otherCharacters.values());
+
+    // otherCharacters
+    for (let i = 0; i < bufOtherArray.length; i++) {
+      const character = bufOtherArray[i];
+
+      // ローカルの画像で、まだFireStorageに保存されていない場合
+      if (character.icon.startsWith('file://')) {
+        console.log('yes');
+
+        const uploadPath = `character_icons/${character.id}.png`;
+        await storage().ref(uploadPath).putFile(character.icon, {
+          contentType: 'image/png',
+        });
+
+        character.icon = uploadPath; // Firebaseに格納したURIで上書きする
+      }
+
+      bufOther.set(character.id, character);
+    }
+
+    // criminal
+    console.log(criminal);
+    if (criminal?.icon.startsWith('file://')) {
+      console.log('yes');
+
+      const uploadPath = `character_icons/${criminal.id}.png`;
+      await storage().ref(uploadPath).putFile(criminal.icon, {
+        contentType: 'image/png',
+      });
+
+      criminal.icon = uploadPath; // Firebaseに格納したURIで上書きする
+    }
+
+    setOtherCharacters(bufOther);
+    setCriminal(criminal);
+  };
+
+  // ヘッダーのアップロードボタン押下時に発火
+  const uploadScenarioData = async () => {
+    await preprocessItemsForUpload();
+    await preprocessMapFloorForUpload();
+    await preprocessCharacterForUpload();
 
     const data: Scenario = {
       abstraction: abstraction,
-      phases: [], // TODO
+      phases: Array.from(phaseData.values()),
       floorMaps: Array.from(floorMaps.values()),
       items: Array.from(items.values()),
-      characters: [], // TODO
+      characters: [...Array.from(otherCharacters.values()), criminal], // TODO
     };
 
-    console.log(data);
+    // デバッグのためしばらく残しておく
+    console.log('upload', data);
 
-    scenarioCollection.update('UA7B967KQVB4kXCMjt2t', data);
+    if (isNewScenario) scenarioCollection.insert(scenarioId, data);
+    else scenarioCollection.update(scenarioId, data);
   };
 
   return (
@@ -204,8 +338,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setItems,
         phenomena,
         setPhenomena,
-        tricks,
-        setTricks,
+        itemTricks,
+        setItemTricks,
+        triviaTricks,
+        setTriviaTricks,
         editingCharacter,
         setEditingCharacter,
         shareJson,
@@ -225,6 +361,24 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         uploadScenarioData,
         phaseData,
         setPhaseData,
+        recievedItems,
+        setRecievedItems,
+        recievedPhenomena,
+        setRecievedPhenomena,
+        world,
+        setWorld,
+        abstraction,
+        setAbstraction,
+        isNewScenario,
+        setIsNewScenario,
+        scenarioId,
+        setScenarioId,
+        itemImageCandidate,
+        setItemImageCandidate,
+        targetImageURL,
+        setTargetImageURL,
+        targetImageType,
+        setTargetImageType,
       }}>
       {children}
     </CreateScenarioContext.Provider>
