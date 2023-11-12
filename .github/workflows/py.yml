@@ -1,0 +1,61 @@
+name: Python Docker Workflow
+
+on:
+  push:
+    paths:
+      - 'ai_generator/**' # ai_generator以下のディレクトリの変更があったとき
+    branches:
+      - master
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ai_generator/docker_ai
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        context: ./ai_generator/docker_ai
+        file: ./ai_generator/docker_ai/Dockerfile
+        tags: ${{ secrets.DOCKER_USERNAME }}/avocado-py:latest
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install sshpass
+        run: sudo apt-get install sshpass
+
+      - name: Sync docker-compose.yml
+        run: cp ./docker-compose-prod.yml ./docker-compose.yml && sshpass -v -p ${{ secrets.SAKURA_PASSWORD }} scp -o StrictHostKeyChecking=no ./docker-compose.yml ./.env ${{ secrets.SAKURA_USERNAME }}@${{ secrets.SAKURA_IP_PYTHON }}:~
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SAKURA_IP_PYTHON }}
+          username: ${{ secrets.SAKURA_USERNAME }}
+          password: ${{ secrets.SAKURA_PASSWORD }}
+          script: |
+            cd ~
+            docker compose down
+            docker compose pull
+            docker compose up -d

@@ -1,12 +1,12 @@
 version: '3'
 services:
   api:
-    image: jeytogo/chat:latest
+    image: rskymst/avocado-rs:latest
     build:
       context: .
       dockerfile: dockerfile
     # working_dir: /work
-    container_name: avocado_chat
+    container_name: avocado-rs
     # command: cargo run
     ports:
       - "8080:8080"
