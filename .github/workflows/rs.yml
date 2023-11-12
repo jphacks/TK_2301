@@ -2,8 +2,8 @@ name: Build, Test and Deploy to Prod
 
 on: 
   push:
-    paths:
-      - 'backend/**' # backend以下のディレクトリの変更があったとき
+    # paths:
+    #   - 'backend/*' # backend以下のディレクトリの変更があったとき
     branches:
       - master
   workflow_dispatch:
