@@ -1,6 +1,6 @@
 name: Build, Test and Deploy to Prod
 
-on: [push, workflow_dispatch]
+on: 
   push:
     paths:
       - 'backend/**' # backend以下のディレクトリの変更があったとき
