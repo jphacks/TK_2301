@@ -19,7 +19,7 @@ const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
       <View style={styles.headerContainer}>
         <Text style={styles.text}>犯人役のキャラクター</Text>
       </View>
-      {criminal ? (
+      {criminal.name !== '' ? (
         <CharacterCard
           id={criminal.id}
           character={criminal}
