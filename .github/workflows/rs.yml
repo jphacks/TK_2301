@@ -1,11 +1,15 @@
 name: Build, Test and Deploy to Prod
 
 on:
+  # ブランチpushに伴う発火
   push:
     paths:
-      - 'backend/**'
+      - 'backend/**' # backend以下のディレクトリの変更があったとき
     branches:
       - master
+
+  # 手動でワークフロー実行可能にする
+  workflow_dispatch:
 
 defaults:
   run:
