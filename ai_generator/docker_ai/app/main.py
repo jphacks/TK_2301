@@ -1,5 +1,6 @@
 import json
 import os
+import time
 import openai
 from openai import OpenAI
 from typing import Union
@@ -12,6 +13,7 @@ class reqBody(BaseModel):
 def generationSentence(prompt, user_input, param):
 	message_list = [{"role": "system", "content": "あなたはマーダーミステリーのシナリオ作家です。\n" + prompt}]
 	message_list.append({"role": "user", "content": str(user_input)})
+	start = time.time()
 	response = client.chat.completions.create(
 		messages = message_list,
 		model = param["model"],
@@ -20,7 +22,9 @@ def generationSentence(prompt, user_input, param):
 		stop = param["stop"],
 		response_format = {"type": "json_object"}  # 必ずjsonとして出力してくれる新機能！
 	)
-	return response["choices"][0]["message"]["content"]
+	end = time.time()
+	print("response time:", end - start)
+	return response.choices[0].message.content
 
 app = FastAPI()
 client = OpenAI(api_key = os.environ["API_KEY"])
@@ -34,7 +38,7 @@ def read_root():
 本番用
 """
 @app.post("/prod/item-and-trivia")
-def create_scenario_test(reqBody: reqBody):
+def create_scenario(reqBody: reqBody):
 	message = reqBody.user_input
 
 	with open("./parameters.json", mode = "r") as f:
@@ -49,7 +53,7 @@ def create_scenario_test(reqBody: reqBody):
 	return output
 
 @app.post("/prod/trick")
-def create_scenario_test(reqBody: reqBody):
+def create_scenario(reqBody: reqBody):
 	message = reqBody.user_input
 	
 	with open("./parameters.json", mode = "r") as f:
@@ -75,7 +79,7 @@ def create_scenario_test(reqBody: reqBody):
 	return output
 
 @app.post("/prod/criminal-character")
-def create_scenario_test(reqBody: reqBody):
+def create_scenario(reqBody: reqBody):
 	message = reqBody.user_input
 	
 	with open("./parameters.json", mode = "r") as f:
@@ -100,27 +104,25 @@ def create_scenario_test(reqBody: reqBody):
 		"public_info": chara["public_info"],
 		"private_info": chara["private_info"],
 		"timeline": timeline,
-		"purpose": "犯人であるを隠し通す。",
-		"item": [
-			{
-				"name": "testName1",
-				"image": ["testURL1", "testURL2", "testURL3", "testURL4"]
-			},
-			{
-				"name": "testName1",
-				"image": ["testURL1", "testURL2", "testURL3", "testURL4"]
-			}
-		]
+		"purpose": "犯人であるを隠し通す。"
 	}
 
 	return output
 
 @app.post("/prod/normal-character")
-def create_scenario_test(reqBody: reqBody):
+def create_scenario(reqBody: reqBody):
 	message = reqBody.user_input
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
 	output = {"name": "testName","age": "testAge","profession": "testProfession","public_info": "testpublic_info","private_info": "testprivate_info","timeline": [{"num": 1, "text": "testText1"}, {"num": 2, "text": "testText2"}],"purpose": "testPurpose"}
+	return output
+
+# 画像生成　中身はまだ
+@app.post("/prod/image/item")
+def create_image_test(reqBody: reqBody):
+	message = reqBody.user_input
+	print(json.dumps(message, indent=2, ensure_ascii=False))
+	output = {"name": message,"image":["item/XXX1.png","item/XXX2.png","item/XXX3.png","item/XXX4.png"]}
 	return output
 
 """
@@ -147,7 +149,7 @@ def create_scenario_test(reqBody: reqBody):
 	message = reqBody.user_input
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
-	output = {"name":"testName","age":"testAge","profession":"testProfession","public_info":"testpublic_info","private_info":"testprivate_info","timeline":[{"num":1,"text":"testText1"},{"num":2,"text":"testText2"}],"purpose":"testPurpose","item":[{"name":"testName1","image":["testURL1","testURL2","testURL3","testURL4"]},{"name":"testName2","image":["testURL1","testURL2","testURL3","testURL4"]}]}
+	output = {"name":"testName","age":"testAge","profession":"testProfession","public_info":"testpublic_info","private_info":"testprivate_info","timeline":[{"num":1,"text":"testText1"},{"num":2,"text":"testText2"}],"purpose":"testPurpose"}
 	return output
 
 @app.post("/test/normal-character")
@@ -156,4 +158,11 @@ def create_scenario_test(reqBody: reqBody):
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
 	output = {"name": "testName","age": "testAge","profession": "testProfession","public_info": "testpublic_info","private_info": "testprivate_info","timeline": [{"num": 1, "text": "testText1"}, {"num": 2, "text": "testText2"}],"purpose": "testPurpose"}
+	return output
+
+@app.post("/test/image/item")
+def create_image_test(reqBody: reqBody):
+	message = reqBody.user_input
+	print(json.dumps(message, indent=2, ensure_ascii=False))
+	output = {"name": message,"image":["item/XXX1.png","item/XXX2.png","item/XXX3.png","item/XXX4.png"]}
 	return output
