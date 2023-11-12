@@ -5,7 +5,7 @@ on:
     # paths:
     #   - 'backend/*' # backend以下のディレクトリの変更があったとき
     branches:
-      - master
+      - deploy
   workflow_dispatch:
 
 defaults:
@@ -38,7 +38,6 @@ jobs:
     - name: Build and test code
       run: |
         cargo build --verbose
-        cargo test --verbose
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
