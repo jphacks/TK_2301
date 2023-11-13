@@ -71,7 +71,7 @@ async fn main() -> std::io::Result<()> {
     let app_state = Arc::new(AtomicUsize::new(0));
     let server = server::ChatServer::new(app_state.clone()).start();
 
-    log::info!("starting HTTP server at http://0.0.0.0:8080");
+    log::info!("starting HTTP server at http://0.0.0.0:8085");
 
     HttpServer::new(move || {
         App::new()
@@ -82,7 +82,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default()) // ミドルウェア設定
     })
     .workers(2)
-    .bind(("0.0.0.0", 8080))?
+    .bind(("0.0.0.0", 8085))?
     .run()
     .await
 }

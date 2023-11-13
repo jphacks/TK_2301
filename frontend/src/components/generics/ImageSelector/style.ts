@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#60626D',
   },
   text: {
-    color: "#DADEE180",
-    textAlign: "center",
-    borderRadius: 4
+    color: '#DADEE180',
+    textAlign: 'center',
+    borderRadius: 4,
   },
   input: {
     borderWidth: 1,

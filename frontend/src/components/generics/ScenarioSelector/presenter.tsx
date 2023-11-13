@@ -2,13 +2,15 @@ import React from 'react';
 import {Pressable, Text, View, Image, ScrollView} from 'react-native';
 import styles from './style';
 import ScenarioItem from '../ScenarioItem';
+import {Scenario} from '../../../models/scenario';
 
 type Props = {
   title: string;
   navigation: any;
+  scenarios: Scenario[];
 };
 
-const ScenarioSelectorPresenter = ({title, navigation}: Props) => {
+const ScenarioSelectorPresenter = ({title, navigation, scenarios}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.topHeader}>
@@ -19,15 +21,11 @@ const ScenarioSelectorPresenter = ({title, navigation}: Props) => {
         </Pressable>
       </View>
       <ScrollView horizontal>
-        {[0, 1, 2, 3, 4, 5].map(i => {
+        {scenarios.map((scenario, index) => {
           return (
             <ScenarioItem
-              key={i}
-              thumbnail={require('./a.png')}
-              title={'マーダーミステリーゲーム'}
-              rating={4}
-              numberOfPlayers={3}
-              timeRequired={1}
+              key={index}
+              scenario={scenario}
               navigation={navigation}
             />
           );

@@ -40,7 +40,7 @@ const World = () => {
 
     // Post通信
     const formResponse = await fetch(
-      'http://10.235.234.55:8080/test/item-and-trivia/',
+      'http://172.31.17.121:8080/test/item-and-trivia/',
       {
         method: 'POST',
         body: JSON.stringify(data),

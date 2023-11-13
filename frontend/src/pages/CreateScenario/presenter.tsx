@@ -57,6 +57,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.World:
         return <World />;
       case CreateState.Hint:
+        return <Hint />;
       case CreateState.ItemInfo:
         return <ItemInfo />;
       case CreateState.Image:

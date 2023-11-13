@@ -13,25 +13,13 @@ import ScenarioSelector from '../../components/generics/ScenarioSelector';
 import ServerCard from '../../components/generics/ServerCard';
 import {colorCode} from '../../styles/general';
 import Characters from '../../components/generics/Characters';
+import {Scenario} from '../../models/scenario';
 
 type Props = {
-  thumbnail: any;
-  title: string;
-  rating: number;
-  numberOfPlayers: number;
-  timeLimit: string;
-  author: string;
-  authorIcon: any;
-  outline: string;
-  characters: {
-    icon: any;
-    nameKanji: string;
-    nameKana: string;
-    age: number;
-    profession: string;
-    description: string;
-  }[];
+  scenario: Scenario;
   scenarioFlow: string[];
+  authorIcon: any;
+  author: string;
   impressions: {
     icon: any;
     name: string;
@@ -43,15 +31,9 @@ type Props = {
 };
 
 const ScenarioDetailsPresenter: FC<Props> = ({
-  thumbnail,
-  title,
-  rating,
-  numberOfPlayers,
-  timeLimit,
-  author,
+  scenario,
   authorIcon,
-  outline,
-  characters,
+  author,
   scenarioFlow,
   impressions,
   isCapacity,
@@ -64,18 +46,25 @@ const ScenarioDetailsPresenter: FC<Props> = ({
       <IconScroll />
 
       <ScrollView style={{backgroundColor: colorCode.primaryBackground}}>
-        <Image source={thumbnail} style={styles.image} />
+        <Image
+          source={{uri: scenario.abstraction.thumbnail}}
+          style={styles.image}
+        />
 
         <View style={styles.container}>
           <View style={styles.card}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{scenario.abstraction.title}</Text>
             <View style={styles.evaluation}>
-              <Text style={styles.rating}>{rating.toFixed(1)}</Text>
-              <Evaluation rating={rating} />
+              <Text style={styles.rating}>{4.0}</Text>
+              <Evaluation rating={4} />
             </View>
             <View style={styles.info}>
-              <Text style={styles.infoText}>{numberOfPlayers}人/</Text>
-              <Text style={styles.infoText}>{timeLimit}</Text>
+              <Text style={styles.infoText}>
+                {scenario.abstraction.numberOfPlayers}人/
+              </Text>
+              <Text style={styles.infoText}>
+                {scenario.abstraction.requiredTime}
+              </Text>
             </View>
           </View>
 
@@ -90,10 +79,12 @@ const ScenarioDetailsPresenter: FC<Props> = ({
           </View>
 
           <View style={styles.outline}>
-            <Text style={styles.outlineText}>{outline}</Text>
+            <Text style={styles.outlineText}>
+              {scenario.abstraction.outline}
+            </Text>
           </View>
 
-          <Characters characters={characters} />
+          <Characters characters={scenario.characters} />
 
           <View style={styles.scenarioFlowContainer}>
             <Text style={styles.sectionTitle}>シナリオの流れ</Text>
