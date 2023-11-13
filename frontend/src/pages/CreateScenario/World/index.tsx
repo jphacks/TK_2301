@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import WorldPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 import {extractJson} from '../utility';
+import AIserverInstance from '../../../api/server';
 
 type Data = {item: string[]; trivia: string[]; world: string};
 
@@ -39,17 +40,19 @@ const World = () => {
     };
 
     // Post通信
-    const formResponse = await fetch(
-      'http://172.31.17.121:8080/test/item-and-trivia/',
-      {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    const res = await formResponse.json();
+    // const formResponse = await fetch(
+    //   'http://10.235.234.55:8080/test/item-and-trivia/',
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify(data),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   },
+    // );
+    // const res = await formResponse.json();
+    const res = await AIserverInstance.fetch('test/item-and-trivia/', data);
+
     const castedData = res as Data;
     setShareJson(castedData);
     setRecievedItems(castedData.item);

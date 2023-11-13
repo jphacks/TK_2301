@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import HintPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 import Create from 'agora-rn-uikit/src/Rtc/Create';
+import AIserverInstance from '../../../api/server';
 
 const Hint = () => {
   const [sendItems, setSendItems] = useState<string[]>([]);
@@ -26,39 +27,26 @@ const Hint = () => {
   const next = async () => {
     shareJson.item = sendItems;
     shareJson.trivia = sendPhenomena;
+
     const bodyData = JSON.stringify({
       world: world,
       item: sendItems,
       trivia: sendPhenomena,
     }).toString();
+
     const data = {
       user_input: `${bodyData}`,
     };
+    
+    console.log('hoge')
+    const res = await AIserverInstance.fetch('test/trick/', data);
 
-    const formResponse = await fetch('http://172.31.17.121:8080/test/trick', {
-      method: 'POST', // HTTP-Methodを指定する！
-      body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const res = await formResponse.json();
     setItemTricks([...res.item]);
     setTriviaTricks([...res.trivia]);
 
-    /*setTricks([
-      {
-        name: '滑落時にブレーキとして機能しないピッケル ',
-        uncommonSense:
-          '能力(ピッケルの効果を知っている登山者が滑落したと思わせるが、実は滑落しない) ピッケルの刃部分が折り畳み式であり、使い方を間違えると正しく機能しない。または、特定の素材の氷や雪ではピッケルが滑るような特殊なコーティングがされている。',
-        principle: '',
-        illusion: '',
-      },
-    ]);*/
-
-    transitNextState(CreateState.Trick, targetId);
     setPhase(prev => prev + 1);
+    transitNextState(CreateState.Trick, targetId);
+
   };
   return <HintPresenter funcs={{addItem, addPhenomena}} next={next} />;
 };

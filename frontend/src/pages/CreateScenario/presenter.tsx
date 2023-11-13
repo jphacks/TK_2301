@@ -16,6 +16,7 @@ import Phase from './Phase';
 import scenarioCollection from '../../api/firebase/firestore';
 import uuid from 'react-native-uuid';
 import ImageCreate from './ImageCreate';
+import HintItem from './Hint/HintItem';
 
 type Props = {
   tabViewProps: {
