@@ -46,7 +46,9 @@ type CreateScenarioContextType = {
   setPageStack: React.Dispatch<React.SetStateAction<CreateState[]>>;
 
   editingCharacter: Character | undefined;
-  setEditingCharacter: React.Dispatch<React.SetStateAction<Character>>;
+  setEditingCharacter: React.Dispatch<
+    React.SetStateAction<Character | undefined>
+  >;
 
   shareJson: any;
   setShareJson: React.Dispatch<React.SetStateAction<any>>;
@@ -141,9 +143,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [shareJson, setShareJson] = useState({});
   const [createState, setCreateState] = useState(CreateState.Default);
   const [pageStack, setPageStack] = useState([CreateState.Default]);
-  const [editingCharacter, setEditingCharacter] = useState<Character>(
-    sampleEditingCharacter,
-  );
+  const [editingCharacter, setEditingCharacter] = useState<Character>();
   const [nowCharacterType, setNowCharacterType] = useState(
     CharacterType.Default,
   );
@@ -307,6 +307,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     await preprocessItemsForUpload();
     await preprocessMapFloorForUpload();
     await preprocessCharacterForUpload();
+
+    console.log(abstraction);
 
     const data: Scenario = {
       abstraction: abstraction,

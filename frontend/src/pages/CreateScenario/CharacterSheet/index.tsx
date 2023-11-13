@@ -26,6 +26,12 @@ const CharacterSheet = () => {
   const closeImageSelectModal = () => setShowImageSelectModal(false);
   const openImageSelectModal = () => setShowImageSelectModal(true);
 
+  console.log('11111111111111111111111111111');
+  console.log(targetId);
+  console.log(nowCharacterType);
+  console.log(editingCharacter);
+  console.log(criminal);
+
   useEffect(() => {
     if (targetId === '') {
       const newId = uuid.v4().toString();
@@ -81,14 +87,19 @@ const CharacterSheet = () => {
       setEditingCharacter(otherCharacters.get(targetId!)!);
     }
 
-    if (nowCharacterType === CharacterType.Criminal) {
+    if (
+      nowCharacterType === CharacterType.Criminal &&
+      editingCharacter === undefined
+    ) {
       console.log(targetId);
+      console.log(criminal);
       setEditingCharacter(criminal);
     }
 
     if (
-      editingCharacter?.icon.startsWith('character_icons/') ||
-      editingCharacter?.icon.startsWith('images/')
+      editingCharacter?.icon &&
+      (editingCharacter.icon.startsWith('character_icons/') ||
+        editingCharacter.icon.startsWith('images/'))
     ) {
       // 既にFireStorageに保存されている場合
       const get = async () => {

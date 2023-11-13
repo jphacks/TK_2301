@@ -40,7 +40,7 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
 
     socketRef.current = new WebSocket(
-      'ws://0.0.0.0:8080/ws?user_id=4NvyfXM7sVT5mckHovqWyLnisrf1&user_name=test',
+      'ws://0.0.0.0:8085/ws?user_id=4NvyfXM7sVT5mckHovqWyLnisrf1&user_name=test',
     );
 
     socketRef.current.onopen = () => {

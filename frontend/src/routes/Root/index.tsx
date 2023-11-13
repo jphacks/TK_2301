@@ -10,6 +10,7 @@ import ScenarioDetailsPage from '../../pages/ScenarioDetails';
 import {ServerSelectPage} from '../../pages/ServerSelect';
 import GamePage from '../../pages/Game';
 import CreateScenarioPage from '../../pages/CreateScenario';
+import {Scenario} from '../../models/scenario';
 
 const Stack = createNativeStackNavigator<RootRoutesParamList>();
 
@@ -22,14 +23,12 @@ export type RootRoutesParamList = {
   EventRoomPage: undefined;
   ScenarioSelectionPage: undefined;
   ScenarioDetailsPage: {
-    thumbnail: any;
-    title: string;
-    rating: number;
-    numberOfPeople: number;
-    timeLimit: string;
+    scenario: Scenario;
   };
   ServerSelect: undefined;
-  GamePage: undefined;
+  GamePage: {
+    scenario: Scenario;
+  };
   CreateScenario: undefined;
 };
 
@@ -80,15 +79,14 @@ export const RootRoutes = ({isInitializedFirebase}: Props) => {
         options={{title: 'ScenarioSelection'}}
       />
       <Stack.Screen
-        component={ScenarioDetailsPage}
-        name="ScenarioDetailsPage"
-        options={{title: 'ScenarioDetails'}}
-      />
-
-      <Stack.Screen
         component={GamePage}
         name="GamePage"
         options={{title: 'Game'}}
+      />
+      <Stack.Screen
+        component={ScenarioDetailsPage}
+        name="ScenarioDetailsPage"
+        options={{title: 'ScenarioDetails'}}
       />
     </Stack.Navigator>
   );

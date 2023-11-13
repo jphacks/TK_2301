@@ -12,6 +12,7 @@ export type Abstraction = {
   outline: string;
   requiredTime: number;
   numberOfPlayers: number;
+  thumbnail: string;
 };
 
 export type Character = {
@@ -75,7 +76,7 @@ export enum ImageType {
   Default,
   Character,
   FloorMap,
-  Item
+  Item,
 }
 
 export type ItemImageCandidate = {

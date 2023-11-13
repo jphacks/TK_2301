@@ -1,52 +1,47 @@
 import React from 'react';
 import ScenarioItemPresenter from './presenter';
+import {Scenario} from '../../../models/scenario';
 
 type Props = {
-  thumbnail: any;
-  title: string;
-  rating: number;
-  numberOfPlayers: number;
-  timeRequired: number;
+  scenario: Scenario;
   navigation: any;
 };
 
-const ScenarioItem = ({
-  thumbnail,
-  title,
-  rating,
-  numberOfPlayers,
-  timeRequired,
-  navigation,
-}: Props) => {
+const ScenarioItem = ({scenario, navigation}: Props) => {
   function decimalToHoursAndMinutes(decimalTime: number): string {
-    const hours = Math.floor(decimalTime);
-    const minutes = Math.round((decimalTime - hours) * 60);
+    const hours = Math.floor(decimalTime / 60);
+    // 分を計算
+    const minutes = decimalTime % 60;
 
-    if (minutes === 0) {
-      return `${hours}時間`;
-    } else {
-      return `${hours}時間${minutes}分`;
+    // 結果の文字列を構築
+    let result = '';
+    if (hours > 0) {
+      result += `${hours}時間`;
     }
+    if (minutes > 0) {
+      if (result.length > 0) {
+        result += ' ';
+      }
+      result += `${minutes}分`;
+    }
+
+    return result;
   }
 
-  const formattedTimeLimit = decimalToHoursAndMinutes(timeRequired);
+  const formattedTimeLimit = decimalToHoursAndMinutes(
+    scenario.abstraction.requiredTime,
+  );
 
   const onClick = () => {
     navigation.navigate('ScenarioDetailsPage', {
-      thumbnail,
-      title,
-      rating,
-      numberOfPlayers,
+      scenario,
       timeRequired: formattedTimeLimit,
     });
   };
 
   return (
     <ScenarioItemPresenter
-      thumbnail={thumbnail}
-      title={title}
-      rating={rating}
-      numberOfPeople={numberOfPlayers}
+      scenario={scenario}
       timeLimit={formattedTimeLimit}
       onClick={onClick}
     />

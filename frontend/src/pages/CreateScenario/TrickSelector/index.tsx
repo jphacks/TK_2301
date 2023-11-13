@@ -28,7 +28,7 @@ const TrickSelector = () => {
     };
 
     const formResponse = await fetch(
-      'http://10.235.234.55:8080/test/criminal-character',
+      'http://172.31.17.121:8080/test/criminal-character',
       {
         method: 'POST', // HTTP-Methodを指定する！
         body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
@@ -40,6 +40,8 @@ const TrickSelector = () => {
 
     const res = await formResponse.json();
 
+    res.id = targetId;
+    res.icon = ''; // iconが返ってくるようになるまでの仮
     setEditingCharacter(res);
     setItemImageCandidate(res.item);
 

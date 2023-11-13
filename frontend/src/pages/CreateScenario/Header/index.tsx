@@ -22,6 +22,7 @@ const Header = ({navigation}: Props) => {
     transitPrevState,
     tabId,
     editingCharacter,
+    setEditingCharacter,
     nowCharacterType,
     setCriminal,
     otherCharacters,
