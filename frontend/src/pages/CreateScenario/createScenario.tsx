@@ -31,6 +31,7 @@ export enum CreateState {
   Image,
   Room,
   Phase,
+  Ending,
 }
 
 const clueItemsMap = new Map<string, Item>();
