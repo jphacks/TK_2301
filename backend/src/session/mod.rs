@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::server::{
     self,
-    handler::{Connect, Disconnect},
+    handler::{Connect, Disconnect}, Src,
 };
 
 mod handler;
@@ -53,6 +53,14 @@ impl WsChatSession {
 
             ctx.ping(b"");
         });
+    }
+
+    fn get_src(&self) -> Src {
+        Src {
+            room_id: self.room_id, 
+            user_id: self.user_id.clone(),
+            user_name: self.user_name.clone(), 
+        } 
     }
 }
 
