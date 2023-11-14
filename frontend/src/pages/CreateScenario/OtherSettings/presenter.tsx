@@ -23,7 +23,7 @@ const OtherSettingsPresenter = ({
 
   const tabs = ['2人用', '3人用', '4人用', '5人用', '6人用']; // ここにタブを追加
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <ImageSelector
         text={'シナリオのサムネイル'}
         onPress={() => {}}
@@ -82,7 +82,7 @@ const OtherSettingsPresenter = ({
         defaultValue={targetAbstraction.outline}
         onChangeText={onOutLineChange}
       />
-    </View>
+    </ScrollView>
   );
 };
 

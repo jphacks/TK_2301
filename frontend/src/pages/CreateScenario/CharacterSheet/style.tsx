@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     borderColor: '#696969',
     padding: 16,
     color: '#fff',
+
   },
   nameInput: {
     height: 48,
@@ -34,8 +35,8 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   purposeInput: {
-    height: 48,
-    marginBottom: 40,
+    height: 70,
+    marginBottom: 180,
   },
   label: {
     color: '#fff',

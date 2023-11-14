@@ -116,6 +116,8 @@ const CharacterSheetPresenter = ({
             });
           }}
         />
+        {/* <View style={styles.dummyMargin}/> */}
+
       </ScrollView>
     </View>
   );
