@@ -58,10 +58,10 @@ async fn get_count(count: web::Data<AtomicUsize>) -> impl Responder {
     format!("Visitors: {current_count}")
 }
 
-lazy_static! {
-    static ref PORT: u16 = std::env::var("PORT").expect("PORT is not set").parse::<u16>().expect("port is not a number");
-    static ref ADDR: String = std::env::var("ADDR").expect("ADDR is not set");
-}
+// lazy_static! {
+//     static ref PORT: u16 = std::env::var("PORT").expect("PORT is not set").parse::<u16>().expect("port is not a number");
+//     static ref ADDR: String = std::env::var("ADDR").expect("ADDR is not set");
+// }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -73,11 +73,22 @@ async fn main() -> std::io::Result<()> {
     );
     dotenv().ok();
 
+    let (ADDR, PORT) = if cfg!(debug_assertions) {
+        // デバッグビルド時の値
+        (
+            std::env::var("ADDR").expect("ADDR is not set"),
+            std::env::var("PORT").expect("PORT is not set").parse::<u16>().expect("port is not a number"),
+        )
+    } else {
+        // リリースビルド時の値
+        ("0.0.0.0".to_owned(), 8080)
+    };
+
     // チャットサーバのアクタ生成
     let app_state = Arc::new(AtomicUsize::new(0));
     let server = server::ChatServer::new(app_state.clone()).start();
 
-    log::info!("starting HTTP server at http://{}:{}", *ADDR, *PORT);
+    log::info!("starting HTTP server at http://{ADDR}:{PORT}");
 
     HttpServer::new(move || {
         App::new()
