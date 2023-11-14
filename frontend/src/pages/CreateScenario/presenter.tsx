@@ -36,8 +36,13 @@ type Props = {
 };
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
-  const {createState, scenarioId, setScenarioId, setIsNewScenario, uploadScenarioData} =
-    useCreateScenario();
+  const {
+    createState,
+    scenarioId,
+    setScenarioId,
+    setIsNewScenario,
+    uploadScenarioData,
+  } = useCreateScenario();
 
   useEffect(() => {
     if (scenarioId === '') {
@@ -98,7 +103,11 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
 
   return (
     <View style={styles.container}>
-      <ConfirmModal titleTextContent={'シナリオを投稿する'} buttonTextContent={'投稿する'} onPressConfirm={uploadScenarioData}/>
+      <ConfirmModal
+        titleTextContent={'シナリオを投稿する'}
+        buttonTextContent={'投稿する'}
+        onPressConfirm={uploadScenarioData}
+      />
       <Header navigation={navigation} />
       {renderContent()}
     </View>

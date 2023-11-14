@@ -206,7 +206,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
   const [scenarioId, setScenarioId] = useState<string>('');
   const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
-  const [items, setItems] = useState<Map<string, Item>>(clueItemsMap);
+  const [items, setItems] = useState<Map<string, Item>>(new Map());
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
   const [itemTricks, setItemTricks] = useState<Trick[]>([]);
@@ -262,7 +262,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
       // ローカルの画像で、まだFireStorageに保存されていない場合
       if (item.uri.startsWith('file://')) {
-        const uploadPath = `items/${item.mapId}.png`;
+        const uploadPath = `items/${item.itemId}.png`;
         await storage().ref(uploadPath).putFile(item.uri, {
           contentType: 'image/png',
         });
@@ -270,7 +270,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         item.uri = uploadPath; // Firebaseに格納したURIで上書きする
       }
 
-      bufItem.set(item.mapId, item);
+      bufItem.set(item.itemId, item);
     }
 
     setItems(bufItem);
