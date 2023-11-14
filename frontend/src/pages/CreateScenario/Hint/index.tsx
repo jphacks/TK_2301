@@ -15,6 +15,7 @@ const Hint = () => {
     transitNextState,
     world,
     targetId,
+    fetchDataFromServerWithInteract
   } = useCreateScenario();
 
   const addItem = (item: string) => {
@@ -38,8 +39,8 @@ const Hint = () => {
       user_input: `${bodyData}`,
     };
     
-    console.log('hoge')
-    const res = await AIserverInstance.fetch('test/trick/', data);
+
+    const res = await fetchDataFromServerWithInteract('test/trick/', data);
 
     setItemTricks([...res.item]);
     setTriviaTricks([...res.trivia]);

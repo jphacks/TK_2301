@@ -19,6 +19,7 @@ const CharacterSheet = () => {
     setTargetImageURL,
     setTargetImageType,
     criminal,
+    setOtherCharacters,
   } = useCreateScenario();
 
   const [showImageSelectModal, setShowImageSelectModal] = React.useState(false);
@@ -33,12 +34,15 @@ const CharacterSheet = () => {
   console.log(criminal);
 
   useEffect(() => {
+    console.log('effected', targetId);
+
     if (targetId === '') {
       const newId = uuid.v4().toString();
       setTargetId(newId);
       console.log('----------');
       console.log(newId);
 
+      console.log('effected', editingCharacter);
       switch (nowCharacterType) {
         case CharacterType.Criminal:
           setEditingCharacter({
@@ -60,7 +64,7 @@ const CharacterSheet = () => {
           });
           break;
         case CharacterType.Other:
-          setEditingCharacter({
+          const newCharacter = {
             id: newId,
             name: '',
             age: 0,
@@ -76,15 +80,18 @@ const CharacterSheet = () => {
                 text: '',
               },
             ],
-          });
+          };
+          setEditingCharacter(newCharacter);
+          otherCharacters.set(newId, newCharacter);
+          setOtherCharacters(otherCharacters);
           break;
       }
       return;
     }
 
     if (nowCharacterType === CharacterType.Other) {
-      console.log(targetId);
-      setEditingCharacter(otherCharacters.get(targetId!)!);
+      const other = otherCharacters.get(targetId!)
+      setEditingCharacter(other);
     }
 
     if (
