@@ -97,7 +97,7 @@ cargo run --example cli
 ```
 /get <item_id> 
 ```
-対象に以下のメッセージがブロードキャストで送信される
+対象に以下のメッセージがマルチキャストで送信される
 ```
 !someone_get <item_id>
 ```
