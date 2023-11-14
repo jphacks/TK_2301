@@ -4,37 +4,35 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState
-} from "react"
+  useState,
+} from 'react';
 
 type FloorContextType = {
-  showSurveyCard: boolean
-  setShowSurveyCard: React.Dispatch<React.SetStateAction<boolean>>
-  showItemCard: boolean
-  setShowItemCard: React.Dispatch<React.SetStateAction<boolean>>
-  itemId: number | undefined
-  setItemId: React.Dispatch<React.SetStateAction<number | undefined>>
-  surveyedItems: number[]
-  setSurveyedItems: React.Dispatch<React.SetStateAction<number[]>>
-}
+  showSurveyCard: boolean;
+  setShowSurveyCard: React.Dispatch<React.SetStateAction<boolean>>;
+  showItemCard: boolean;
+  setShowItemCard: React.Dispatch<React.SetStateAction<boolean>>;
+  itemId: string | undefined;
+  setItemId: React.Dispatch<React.SetStateAction<string | undefined>>;
+  surveyedItems: string[];
+  setSurveyedItems: React.Dispatch<React.SetStateAction<string[]>>;
+};
 
-const FloorContext = createContext<FloorContextType | undefined>(undefined)
+const FloorContext = createContext<FloorContextType | undefined>(undefined);
 
 export function useFloor() {
-  const context = useContext(FloorContext)
+  const context = useContext(FloorContext);
   if (!context) {
-    throw new Error("useUser must be used within a UserProvider")
+    throw new Error('useUser must be used within a UserProvider');
   }
-  return context
+  return context;
 }
 
-export const FloorProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
-  const [showSurveyCard, setShowSurveyCard] = useState(false)
-  const [showItemCard, setShowItemCard] = useState(false)
-  const [itemId, setItemId] = useState<number>()
-  const [surveyedItems, setSurveyedItems] = useState<number[]>([])
+export const FloorProvider: React.FC<{children: ReactNode}> = ({children}) => {
+  const [showSurveyCard, setShowSurveyCard] = useState(false);
+  const [showItemCard, setShowItemCard] = useState(false);
+  const [itemId, setItemId] = useState<string>();
+  const [surveyedItems, setSurveyedItems] = useState<string[]>([]);
 
   return (
     <FloorContext.Provider
@@ -46,10 +44,9 @@ export const FloorProvider: React.FC<{ children: ReactNode }> = ({
         itemId,
         setItemId,
         surveyedItems,
-        setSurveyedItems
-      }}
-    >
+        setSurveyedItems,
+      }}>
       {children}
     </FloorContext.Provider>
-  )
-}
+  );
+};

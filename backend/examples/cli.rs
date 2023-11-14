@@ -9,7 +9,7 @@ use uuid::Uuid;
 use websocket::client::ClientBuilder;
 use websocket::{Message, OwnedMessage};
 
-const CONNECTION: &'static str = "ws://0.0.0.0:8085/ws";
+const CONNECTION: &'static str = "http://163.43.128.144:8080/ws";
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -21,7 +21,7 @@ fn main() {
     };
 
     let addr = format!(
-        "ws://0.0.0.0:8085/ws?user_id={}&user_name={}",
+        "http://163.43.128.144:8080/ws?user_id={}&user_name={}",
         &user_id, &user_name
     );
     println!("Connecting to {}", addr);

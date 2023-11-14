@@ -1,39 +1,31 @@
-import React, { useEffect, useState } from "react"
-import TimerPresenter from "./presenter"
+import React, {useEffect, useState} from 'react';
+import TimerPresenter from './presenter';
 
 type Props = {
-  initialTime: string
-  setNowPhase: React.Dispatch<React.SetStateAction<number>>
-}
+  initialTime: number;
+  setNowPhase: React.Dispatch<React.SetStateAction<number>>;
+};
 
-const Timer = ({ initialTime, setNowPhase }: Props) => {
-  const [minutes, setMinutes] = useState(parseInt(initialTime.split(":")[0]))
-  const [seconds, setSeconds] = useState(parseInt(initialTime.split(":")[1]))
+const Timer = ({initialTime, setNowPhase}: Props) => {
+  const [time, setTime] = useState(initialTime * 60);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null
-    if (minutes > 0 || seconds > 0) {
-      timer = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds(seconds - 1)
-        } else if (minutes > 0) {
-          setMinutes(minutes - 1)
-          setSeconds(59)
-        }
-      }, 1000)
-    } else {
-      console.log("Timer has finished.")
-      setNowPhase((prev: number) => prev + 1)
+    if (time == 0) {
+      setNowPhase((prev: number) => prev + 1);
     }
+    const timer = time > 0 && setInterval(() => setTime(time - 1), 1000);
+    return () => clearInterval(timer as NodeJS.Timeout);
+  }, [time]);
 
-    return () => {
-      if (timer) {
-        clearInterval(timer)
-      }
-    }
-  }, [minutes, seconds])
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds
+      .toString()
+      .padStart(2, '0')}`;
+  };
 
-  return <TimerPresenter minutes={minutes} seconds={seconds} />
-}
+  return <TimerPresenter time={formatTime(time)} />;
+};
 
-export default Timer
+export default Timer;

@@ -12,11 +12,13 @@ import FloorMap from './FloorMap';
 import {useTabbar} from '../../context/tabbar.context';
 import Info from './Info';
 import Vote from './Vote';
+import {Phase} from '../../models/scenario';
 
 type Props = {
   nowPhase: number;
   navigation: any;
   setNowPhase: React.Dispatch<React.SetStateAction<number>>;
+  phases: Phase[];
 } & ContainerProps;
 
 const GamePresenter = ({
@@ -24,11 +26,12 @@ const GamePresenter = ({
   nowPhase,
   navigation,
   setNowPhase,
+  phases,
 }: Props) => {
   const {showInfo} = useTabbar();
   const renderContent = () => {
-    switch (nowPhase) {
-      case 0:
+    switch (phases[nowPhase].phaseId) {
+      case 'character':
         return (
           <ScrollView style={styles.normalContainer}>
             {scenario.characters.map((character, index) => (
@@ -38,7 +41,7 @@ const GamePresenter = ({
             ))}
           </ScrollView>
         );
-      case 1:
+      case 'story':
         return (
           <View style={styles.normalContainer}>
             <Text style={{color: '#fff'}}>
@@ -46,19 +49,20 @@ const GamePresenter = ({
             </Text>
           </View>
         );
-      case 2:
-        return (
-          <View style={styles.floorMapContainer}>
-            <FloorMap
-              floorMap={scenario.floorMaps}
-              numberOfSurveys={scenario.numberOfSurveys}
-            />
-          </View>
-        );
-      case 3:
+      case 'vote':
         return (
           <View style={styles.normalContainer}>
             <Vote characters={scenario.characters} />
+          </View>
+        );
+      default:
+        return (
+          <View style={styles.floorMapContainer}>
+            <FloorMap
+              floorMaps={scenario.floorMaps}
+              items={scenario.items}
+              numberOfSurveys={phases[nowPhase].numberOfSurveys}
+            />
           </View>
         );
     }
@@ -67,7 +71,7 @@ const GamePresenter = ({
     <View style={{flex: 1}}>
       <GameHeader
         props={{
-          title: scenario.phase[nowPhase],
+          phase: phases[nowPhase],
           navigation,
           nowPhase,
           setNowPhase,

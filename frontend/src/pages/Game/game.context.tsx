@@ -1,38 +1,35 @@
-import React, { ReactNode, createContext, useContext, useState } from "react"
-import auth from "firebase/auth"
+import React, {ReactNode, createContext, useContext, useState} from 'react';
+import auth from 'firebase/auth';
 
 type CharacterInfo = {
-  characterName: string | null
-  uid: string | null
-}
+  characterName: string | null;
+  uid: string | null;
+};
 
 type GameContextType = {
-  myCharacter?: CharacterInfo
+  myCharacter?: CharacterInfo;
   setMyCharacter: React.Dispatch<
     React.SetStateAction<CharacterInfo | undefined>
-  >
-  selectedCharacters?: CharacterInfo[]
-  setSelectedCharacters: React.Dispatch<
-    React.SetStateAction<CharacterInfo[] | undefined>
-  >
-}
+  >;
+  selectedCharacters?: CharacterInfo[];
+  setSelectedCharacters: React.Dispatch<React.SetStateAction<CharacterInfo[]>>;
+};
 
-const GameContext = createContext<GameContextType | undefined>(undefined)
+const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export function useGame() {
-  const context = useContext(GameContext)
+  const context = useContext(GameContext);
   if (!context) {
-    throw new Error("useUser must be used within a UserProvider")
+    throw new Error('useUser must be used within a UserProvider');
   }
-  return context
+  return context;
 }
 
-export const GameProvider: React.FC<{ children: ReactNode }> = ({
-  children
-}) => {
-  const [myCharacter, setMyCharacter] = useState<CharacterInfo>()
-  const [selectedCharacters, setSelectedCharacters] =
-    useState<CharacterInfo[]>()
+export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
+  const [myCharacter, setMyCharacter] = useState<CharacterInfo>();
+  const [selectedCharacters, setSelectedCharacters] = useState<CharacterInfo[]>(
+    [],
+  );
 
   return (
     <GameContext.Provider
@@ -40,10 +37,9 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({
         myCharacter,
         setMyCharacter,
         selectedCharacters,
-        setSelectedCharacters
-      }}
-    >
+        setSelectedCharacters,
+      }}>
       {children}
     </GameContext.Provider>
-  )
-}
+  );
+};
