@@ -15,7 +15,9 @@ import Room from './Room';
 import Phase from './Phase';
 import uuid from 'react-native-uuid';
 import ImageCreate from './ImageCreate';
+import HintItem from './Hint/HintItem';
 import ConfirmModal from './ConfirmModal';
+import Ending from './Ending';
 
 type Props = {
   tabViewProps: {
@@ -73,6 +75,8 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
         return <Room />;
       case CreateState.Phase:
         return <Phase />;
+      case CreateState.Ending:
+        return <Ending />;
       default:
         return (
           <TabView
