@@ -93,6 +93,10 @@ type CreateScenarioContextType = {
   isUploading: boolean;
   setIsUploading: React.Dispatch<React.SetStateAction<boolean>>;
 
+  // サーバとのやり取り中、ロード画面を表示させるために使う
+  isConfirm: boolean;
+  setIsConfirm: React.Dispatch<React.SetStateAction<boolean>>;
+
   // ================================ 動的管理するシナリオデータ =============================
   // 新規作成のシナリオどうかのフラグを保持する
   isNewScenario: boolean;
@@ -175,6 +179,13 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [targetImageURL, setTargetImageURL] = useState<string>('');
   const [isFetching, setIsFetching] = useState<boolean>(false); // 生成中モーダル表示のために用いる
   const [isUploading, setIsUploading] = useState<boolean>(false); // TODO: 保存中モーダル表示のために用いる
+  const [isConfirm, setIsConfirm] = useState<boolean>(false);
+
+  const openConfirmModal = () => setIsConfirm(true);
+  const closeConfirmModal = () => setIsConfirm(false);
+
+  const openFetchingModal = () => setIsFetching(true);
+  const closeFetchingModal = () => setIsFetching(false);
 
   // ================================ 動的管理するシナリオデータState =============================
   const [criminal, setCriminal] = useState<Character>({
@@ -332,7 +343,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
   // ヘッダーのアップロードボタン押下時に発火
   const uploadScenarioData = async () => {
-    setIsFetching(true); // 保存中モーダルON
+    closeConfirmModal();
+    openFetchingModal();
 
     await preprocessItemsForUpload();
     await preprocessMapFloorForUpload();
@@ -344,14 +356,14 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       abstraction: abstraction,
       phases: Array.from(phaseData.values()),
       floorMaps: Array.from(floorMaps.values()),
-      items: Array.from(items.values()),
+      items: [...Array.from(items.values())],
       characters: [...Array.from(otherCharacters.values()), criminal], // TODO
     };
 
     // デバッグのためしばらく残しておく
     console.log('upload', data);
 
-    setIsFetching(false); // 保存中モーダルOFF
+    closeFetchingModal();
 
     if (isNewScenario) scenarioCollection.insert(scenarioId, data);
     else scenarioCollection.update(scenarioId, data);
@@ -416,6 +428,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         isFetching,
         setIsFetching,
         fetchDataFromServerWithInteract,
+        isUploading,
+        setIsUploading,
+        isConfirm,
+        setIsConfirm,
       }}>
       {children}
     </CreateScenarioContext.Provider>

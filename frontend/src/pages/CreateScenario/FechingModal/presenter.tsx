@@ -12,13 +12,11 @@ const FetchingModalPresenter = ({textContent}: Props) => {
   const {isFetching} = useCreateScenario();
 
   return (
-    <View style={styles.container}>
       <Spinner
         visible={isFetching}
         textContent={textContent}
         textStyle={styles.text}
       />
-    </View>
   );
 };
 

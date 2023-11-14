@@ -1,6 +1,8 @@
 import React from 'react';
 import {Image, Pressable, Text, View} from 'react-native';
 import styles from './style';
+import FetchingModal from '../FechingModal';
+import { useCreateScenario } from '../createScenario';
 
 type Props = {
   back: () => void;
@@ -9,15 +11,18 @@ type Props = {
 };
 
 const HeaderPresenter = ({back, text, onPressUploadIcon}: Props) => {
+  const {setIsConfirm} = useCreateScenario()
+
   return (
     <View style={styles.header}>
+      <FetchingModal textContent={'保存中...'}/>
       <Pressable onPress={back} style={styles.backContainer}>
         <Image style={styles.backIcon} source={require('./back.png')} />
       </Pressable>
 
       <Text style={styles.where}>{text}</Text>
 
-      <Pressable onPress={onPressUploadIcon} style={styles.uploadIconContainer}>
+      <Pressable onPress={() => {setIsConfirm(true)}} style={styles.uploadIconContainer}>
         <Image style={styles.backIcon} source={require('./upload.png')} />
       </Pressable>
     </View>
