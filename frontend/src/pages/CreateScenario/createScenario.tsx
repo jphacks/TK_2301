@@ -18,6 +18,7 @@ import {
 } from '../../models/samples';
 import scenarioCollection from '../../api/firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import AIserverInstance from '../../api/server';
 
 export enum CreateState {
   Default,
@@ -84,6 +85,14 @@ type CreateScenarioContextType = {
     React.SetStateAction<ItemImageCandidate | undefined>
   >;
 
+  // サーバとのやり取り中、ロード画面を表示させるために使う
+  isFetching: boolean;
+  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // サーバとのやり取り中、ロード画面を表示させるために使う
+  isUploading: boolean;
+  setIsUploading: React.Dispatch<React.SetStateAction<boolean>>;
+
   // ================================ 動的管理するシナリオデータ =============================
   // 新規作成のシナリオどうかのフラグを保持する
   isNewScenario: boolean;
@@ -128,6 +137,10 @@ type CreateScenarioContextType = {
   transitNextState: (createState: CreateState, targetId?: string) => void;
   transitPrevState: () => void;
   uploadScenarioData: () => void;
+  fetchDataFromServerWithInteract: (
+    endpoint: string,
+    data: any,
+  ) => Promise<any>;
 };
 
 export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
@@ -160,6 +173,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     ImageType.Default,
   );
   const [targetImageURL, setTargetImageURL] = useState<string>('');
+  const [isFetching, setIsFetching] = useState<boolean>(false); // 生成中モーダル表示のために用いる
+  const [isUploading, setIsUploading] = useState<boolean>(false); // TODO: 保存中モーダル表示のために用いる
 
   // ================================ 動的管理するシナリオデータState =============================
   const [criminal, setCriminal] = useState<Character>({
@@ -197,6 +212,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
   const transitNextState = (createState: CreateState, targetId?: string) => {
+    console.log('next', targetId);
     setTargetId(targetId || '');
     setTargetImageURL('');
     setPageStack([...pageStack, createState]);
@@ -211,6 +227,18 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     setPageStack([...bufStack]); // NOTE: ディープコピーにすることで後述の副作用を回避
 
     setCreateState(bufStack.pop() || CreateState.Default);
+  };
+
+  // UI制御も兼ねた、データフェッチ関数
+  const fetchDataFromServerWithInteract = async (
+    endpoint: string,
+    data: any,
+  ): Promise<any> => {
+    setIsFetching(true); // 生成中モーダルON
+    const res = await AIserverInstance.fetch(endpoint, data);
+    setIsFetching(false); // 生成中モーダルOFF
+
+    return res;
   };
 
   // Firebase Storageに保存されていない画像があれば保存し、URIを書き換える
@@ -304,6 +332,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
   // ヘッダーのアップロードボタン押下時に発火
   const uploadScenarioData = async () => {
+    setIsFetching(true); // 保存中モーダルON
+
     await preprocessItemsForUpload();
     await preprocessMapFloorForUpload();
     await preprocessCharacterForUpload();
@@ -320,6 +350,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
     // デバッグのためしばらく残しておく
     console.log('upload', data);
+
+    setIsFetching(false); // 保存中モーダルOFF
 
     if (isNewScenario) scenarioCollection.insert(scenarioId, data);
     else scenarioCollection.update(scenarioId, data);
@@ -381,6 +413,9 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setTargetImageURL,
         targetImageType,
         setTargetImageType,
+        isFetching,
+        setIsFetching,
+        fetchDataFromServerWithInteract,
       }}>
       {children}
     </CreateScenarioContext.Provider>

@@ -45,7 +45,7 @@ const CharacterSheetPresenter = ({
       <ScrollView>
         <View style={styles.characterNameForm}>
           <TouchableOpacity onPress={openImageSelectModal} style={styles.icon}>
-            {editingCharacter?.icon === '' ? (
+            {targetImageURL === '' ? (
               <Image source={require('./cameraIcon.png')} />
             ) : (
               <CircularIcon url={{uri: targetImageURL}} />

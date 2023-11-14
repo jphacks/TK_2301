@@ -4,6 +4,8 @@ import styles from './style';
 import {useCreateScenario} from '../createScenario';
 import HintItem from './HintItem';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
+import Spinner from 'react-native-loading-spinner-overlay';
+import FetchingModal from '../FechingModal';
 
 type Props = {
   funcs: {
@@ -17,6 +19,8 @@ const HintPresenter = ({funcs, next}: Props) => {
   const {recievedItems, recievedPhenomena} = useCreateScenario();
   return (
     <ScrollView>
+      <FetchingModal textContent={'生成中...'} />
+
       <View style={styles.container}>
         <Text style={styles.text}>
           犯行に関わるアイテムを1~5個選んでください
