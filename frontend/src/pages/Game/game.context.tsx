@@ -1,5 +1,6 @@
 import React, {ReactNode, createContext, useContext, useState} from 'react';
 import auth from 'firebase/auth';
+import {GameItem} from '../../models/scenario';
 
 type CharacterInfo = {
   characterName: string | null;
@@ -13,6 +14,8 @@ type GameContextType = {
   >;
   selectedCharacters?: CharacterInfo[];
   setSelectedCharacters: React.Dispatch<React.SetStateAction<CharacterInfo[]>>;
+  items: GameItem[];
+  setItems: React.Dispatch<React.SetStateAction<GameItem[]>>;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -30,6 +33,7 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [selectedCharacters, setSelectedCharacters] = useState<CharacterInfo[]>(
     [],
   );
+  const [items, setItems] = useState<GameItem[]>([]);
 
   return (
     <GameContext.Provider
@@ -38,6 +42,8 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
         setMyCharacter,
         selectedCharacters,
         setSelectedCharacters,
+        items,
+        setItems,
       }}>
       {children}
     </GameContext.Provider>

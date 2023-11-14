@@ -13,7 +13,12 @@ type Props = {
 const SurveyCardPresenter = ({item, surveysCount, showItem, close}: Props) => {
   const {surveyedItems} = useFloor();
   const renderContent = () => {
-    if (surveysCount === 0) {
+    console.log(item?.isAvailable);
+    if (!item?.isAvailable) {
+      <View>
+        <Text style={styles.text}>他の人がすでに取得しました</Text>
+      </View>;
+    } else if (surveysCount === 0) {
       return (
         <View>
           <Text style={styles.text}>調査回数が0回になりました</Text>

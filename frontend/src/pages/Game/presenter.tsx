@@ -12,13 +12,14 @@ import FloorMap from './FloorMap';
 import {useTabbar} from '../../context/tabbar.context';
 import Info from './Info';
 import Vote from './Vote';
-import {Phase} from '../../models/scenario';
+import {GameItem, Phase} from '../../models/scenario';
 
 type Props = {
   nowPhase: number;
   navigation: any;
   setNowPhase: React.Dispatch<React.SetStateAction<number>>;
   phases: Phase[];
+  items: GameItem[];
 } & ContainerProps;
 
 const GamePresenter = ({
@@ -27,6 +28,7 @@ const GamePresenter = ({
   navigation,
   setNowPhase,
   phases,
+  items,
 }: Props) => {
   const {showInfo} = useTabbar();
   const renderContent = () => {
@@ -60,7 +62,6 @@ const GamePresenter = ({
           <View style={styles.floorMapContainer}>
             <FloorMap
               floorMaps={scenario.floorMaps}
-              items={scenario.items}
               numberOfSurveys={phases[nowPhase].numberOfSurveys}
             />
           </View>

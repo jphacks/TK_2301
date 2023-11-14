@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import FloorPresenter from './presenter';
 import {FloorProvider} from './floor.context';
-import {FloorMap, Item} from '../../../models/scenario';
+import {FloorMap, GameItem, Item} from '../../../models/scenario';
 import scenarioCollection from '../../../api/firebase/firestore';
 
 export type Props = {
   floor: FloorMap;
-  itemList: Item[];
+  itemList: GameItem[];
   surveysCount: number;
   minusSurveysCount: () => void;
 };

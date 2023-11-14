@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import AboutPresenter from './presenters';
-import {CharactersProps} from '../..';
 import {useGame} from '../../game.context';
 import {Character} from '../../../../models/scenario';
 

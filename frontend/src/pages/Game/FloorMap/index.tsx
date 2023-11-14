@@ -1,22 +1,25 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FloorMapPresenter from './presenter';
-import {FloorMap, Item} from '../../../models/scenario';
+import {FloorMap, GameItem, Item} from '../../../models/scenario';
+import {useGame} from '../game.context';
 
 export type FloorProps = {};
 
 export type Props = {
   floorMaps: FloorMap[];
-  items: Item[];
   numberOfSurveys: number;
 };
 
-const Floor = ({floorMaps, numberOfSurveys, items}: Props) => {
+const Floor = ({floorMaps, numberOfSurveys}: Props) => {
   const [isFloorEntered, setIsFloorEntered] = useState(false);
   const [floor, setFloor] = useState<FloorMap>();
-  const [itemList, setItemList] = useState<Item[]>([]);
+  const [itemList, setItemList] = useState<GameItem[]>([]);
   const [surveysCount, setSurveysCount] = useState(numberOfSurveys);
+
+  const {items} = useGame();
+
   const enter = (floorInfo: FloorMap) => {
-    const newItemList: Item[] = [];
+    const newItemList: GameItem[] = [];
     items.map(item => {
       if (item.mapId === floorInfo.mapId) {
         newItemList.push(item);
@@ -32,13 +35,22 @@ const Floor = ({floorMaps, numberOfSurveys, items}: Props) => {
     setFloor(undefined);
   };
 
+  useEffect(() => {
+    console.log('initial items');
+    console.log(items);
+  }, []);
+
+  useEffect(() => {
+    console.log('items');
+    console.log(items);
+  }, [items]);
+
   const minusSurveysCount = () => {
     setSurveysCount(surveysCount - 1);
   };
   return (
     <FloorMapPresenter
       floorMaps={floorMaps}
-      items={items}
       itemList={itemList}
       enter={enter}
       isFloorEntered={isFloorEntered}

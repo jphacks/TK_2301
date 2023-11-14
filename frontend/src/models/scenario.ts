@@ -63,6 +63,10 @@ export type Item = {
   };
 };
 
+export type GameItem = {
+  isAvailable: boolean;
+} & Item;
+
 export type ItemCategory = '' | 'item' | 'info';
 
 export type Trick = {

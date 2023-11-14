@@ -6,7 +6,6 @@ import {useWindowDimensions} from 'react-native';
 import Characters from './Characters';
 import About from './About';
 import Purpose from './Purpose';
-import {ScenarioType} from '..';
 import {Scenario} from '../../../models/scenario';
 
 export type CharactersProps = {

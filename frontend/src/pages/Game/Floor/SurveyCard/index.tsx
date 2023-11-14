@@ -1,10 +1,10 @@
 import React from 'react';
 import SurveyCardPresenter from './presenter';
 import {useFloor} from '../floor.context';
-import {Item} from '../../../../models/scenario';
+import {GameItem, Item} from '../../../../models/scenario';
 
 export type Props = {
-  item: Item | undefined;
+  item: GameItem | undefined;
   surveysCount: number;
 };
 

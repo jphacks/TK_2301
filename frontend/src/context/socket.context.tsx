@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import {Room} from '../type';
 import {useGame} from '../pages/Game/game.context';
+import {GameItem} from '../models/scenario';
 
 type SocketContextType = {
   socketRef: React.MutableRefObject<WebSocket | undefined>;
@@ -28,7 +29,13 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [receivedMessage, setReceivedMessage] = useState<string>('');
   const socketRef = useRef<WebSocket>();
-  const {setMyCharacter, selectedCharacters, setSelectedCharacters} = useGame();
+  const {
+    setMyCharacter,
+    selectedCharacters,
+    setSelectedCharacters,
+    items,
+    setItems,
+  } = useGame();
 
   useEffect(() => {
     connectWebSocket();
@@ -58,12 +65,23 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         if (dataArray[0] === '!json') {
           setRooms(JSON.parse(dataArray[1]));
         } else if (dataArray[0] === '!select') {
-          // {characterName: dataArray[2], uid: dataArray[3]}を追加する
           const characterInfo = {
             characterName: dataArray[2],
             uid: dataArray[1],
           };
           setSelectedCharacters(prev => [...prev, characterInfo]);
+        } else if (dataArray[0] === '!someone_get') {
+          console.log('newItem');
+          console.log(items);
+          const newItems: GameItem[] = [];
+          items.map(item => {
+            if (item.itemId === dataArray[1]) {
+              item.isAvailable = false;
+            }
+            newItems.push(item);
+          });
+
+          setItems(newItems);
         }
       } catch (error) {
         throw new Error('Failed to parse the second element as JSON');

@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import ItemCardPresenter from './presenter';
 import {useFloor} from '../floor.context';
-import {Item} from '../../../../models/scenario';
+import {GameItem, Item} from '../../../../models/scenario';
 import scenarioCollection from '../../../../api/firebase/firestore';
 
 export type Props = {
-  item: Item | undefined;
+  item: GameItem | undefined;
   minusSurveysCount: () => void;
 };
 
