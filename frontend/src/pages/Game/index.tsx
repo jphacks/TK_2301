@@ -3,8 +3,8 @@ import GamePresenter from './presenter';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootRoutesParamList} from '../../routes/Root';
 import {useTabbar} from '../../context/tabbar.context';
-import {GameProvider} from './game.context';
-import {Scenario} from '../../models/scenario';
+import {GameProvider, useGame} from './game.context';
+import {Phase, Scenario} from '../../models/scenario';
 
 // floorMapからitemsを外に出す。itemにfloorMapのidを持たせる
 export type ScenarioType = {
@@ -57,7 +57,40 @@ type NavigationProps = NativeStackScreenProps<RootRoutesParamList, 'GamePage'>;
 const Game: FC<NavigationProps> = ({navigation, route}) => {
   const {setIsInfoVisible, setIsChatVisible, setIsSettingsVisible} =
     useTabbar();
+  const {selectedCharacters} = useGame();
   const {scenario} = route.params;
+
+  useEffect(() => {
+    console.log('selectedCharacters');
+    console.log(selectedCharacters);
+  }, [selectedCharacters]);
+
+  // 初期フェーズの設定
+  const initialPhases: Phase[] = [
+    {
+      name: 'キャラクター選択',
+      phaseId: 'character',
+      numberOfSurveys: 0,
+      timeLimit: 0,
+    },
+    {
+      name: 'ストーリー読み込み',
+      phaseId: 'story',
+      numberOfSurveys: 0,
+      timeLimit: 1,
+    },
+  ];
+
+  const combinedPhases = [
+    ...initialPhases,
+    ...route.params.scenario.phases,
+    {name: '投票', phaseId: 'vote', numberOfSurveys: 0, timeLimit: 0},
+    {name: 'エンディング', phaseId: 'ending', numberOfSurveys: 0, timeLimit: 0},
+    {name: '振り返り', phaseId: 'review', numberOfSurveys: 0, timeLimit: 0},
+  ];
+
+  const [phases, setPhases] = useState<Phase[]>(combinedPhases);
+
   /*const scenario = {
     title: 'マーダーミステリーゲーム',
     outline: '',
@@ -205,6 +238,7 @@ const Game: FC<NavigationProps> = ({navigation, route}) => {
     nowPhase,
     navigation,
     setNowPhase,
+    phases,
   };
   return <GamePresenter {...props} />;
 };

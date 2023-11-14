@@ -17,7 +17,7 @@ const CreateScenaio = ({navigation}: Props) => {
   const [routes] = useState([
     {key: 'first', title: 'キャラクター作成'},
     {key: 'second', title: '手がかり作成'},
-    {key: 'third', title: 'その他の作成'},
+    {key: 'third', title: '基本情報の作成'},
   ]);
 
   const renderScene = SceneMap({

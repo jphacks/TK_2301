@@ -8,7 +8,12 @@ const CharacterCardPresenter = ({character}: ContainerProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.nameContainer}>
-        <Image source={{uri: icon}} style={styles.icon} />
+        <Image
+          source={{
+            uri: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297',
+          }}
+          style={styles.icon}
+        />
         <Text style={styles.name}>
           {name}({age})
         </Text>

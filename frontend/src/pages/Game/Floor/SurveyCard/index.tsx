@@ -1,29 +1,22 @@
-import React from "react"
-import SurveyCardPresenter from "./presenter"
-import { useFloor } from "../floor.context"
+import React from 'react';
+import SurveyCardPresenter from './presenter';
+import {useFloor} from '../floor.context';
+import {Item} from '../../../../models/scenario';
 
 export type Props = {
-  item:
-    | {
-        id: number
-        image: any
-        name: string
-        category: string
-        description: string
-      }
-    | undefined
-  surveysCount: number
-}
+  item: Item | undefined;
+  surveysCount: number;
+};
 
-const SurveyCard = ({ item, surveysCount }: Props) => {
-  const { setShowSurveyCard, setShowItemCard, setItemId } = useFloor()
+const SurveyCard = ({item, surveysCount}: Props) => {
+  const {setShowSurveyCard, setShowItemCard, setItemId} = useFloor();
   const showItem = () => {
-    setShowSurveyCard(false)
-    setShowItemCard(true)
-  }
+    setShowSurveyCard(false);
+    setShowItemCard(true);
+  };
   const close = () => {
-    setShowSurveyCard(false)
-  }
+    setShowSurveyCard(false);
+  };
   return (
     <SurveyCardPresenter
       item={item}
@@ -31,7 +24,7 @@ const SurveyCard = ({ item, surveysCount }: Props) => {
       showItem={showItem}
       close={close}
     />
-  )
-}
+  );
+};
 
-export default SurveyCard
+export default SurveyCard;

@@ -1,31 +1,34 @@
-import React from "react"
-import ItemCardPresenter from "./presenter"
-import { useFloor } from "../floor.context"
+import React, {useEffect} from 'react';
+import ItemCardPresenter from './presenter';
+import {useFloor} from '../floor.context';
+import {Item} from '../../../../models/scenario';
+import scenarioCollection from '../../../../api/firebase/firestore';
 
 export type Props = {
-  item:
-    | {
-        id: number
-        image: any
-        name: string
-        category: string
-        description: string
-      }
-    | undefined
-  minusSurveysCount: () => void
-}
+  item: Item | undefined;
+  minusSurveysCount: () => void;
+};
 
-const ItemCard = ({ item, minusSurveysCount }: Props) => {
-  const { setShowItemCard, setSurveyedItems } = useFloor()
+const ItemCard = ({item, minusSurveysCount}: Props) => {
+  const {setShowItemCard, setSurveyedItems} = useFloor();
+
+  useEffect(() => {
+    const getUri = async () => {
+      if (item) {
+        item.uri = await scenarioCollection.getImageUrl(item.uri);
+      }
+    };
+    getUri();
+  }, [item]);
 
   const get = () => {
-    minusSurveysCount()
-    setSurveyedItems((prev) => [...prev, item?.id as number])
-    setShowItemCard(false)
-  }
+    minusSurveysCount();
+    setSurveyedItems(prev => [...prev, item?.itemId ?? '']);
+    setShowItemCard(false);
+  };
   const close = () => {
-    setShowItemCard(false)
-  }
+    setShowItemCard(false);
+  };
   return (
     <ItemCardPresenter
       item={item}
@@ -33,7 +36,7 @@ const ItemCard = ({ item, minusSurveysCount }: Props) => {
       close={close}
       minusSurveysCount={minusSurveysCount}
     />
-  )
-}
+  );
+};
 
-export default ItemCard
+export default ItemCard;

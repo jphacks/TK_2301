@@ -1,9 +1,14 @@
-import React from "react"
-import VotePresenter from "./presenter"
-import { CharactersProps } from "../"
+import React from 'react';
+import VotePresenter from './presenter';
+import {CharactersProps} from '../';
+import {Character} from '../../../models/scenario';
 
-const Vote = ({ characters }: CharactersProps) => {
-  return <VotePresenter />
-}
+type Props = {
+  characters: Character[];
+};
 
-export default Vote
+const Vote = ({characters}: Props) => {
+  return <VotePresenter />;
+};
+
+export default Vote;

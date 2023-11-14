@@ -40,7 +40,7 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
 
     socketRef.current = new WebSocket(
-      'ws://0.0.0.0:8085/ws?user_id=4NvyfXM7sVT5mckHovqWyLnisrf1&user_name=test',
+      'http://163.43.128.144:8080/ws?user_id=4NvyfXM7sVT5mckHovqWyLnisrf1&user_name=test',
     );
 
     socketRef.current.onopen = () => {
@@ -59,10 +59,11 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           setRooms(JSON.parse(dataArray[1]));
         } else if (dataArray[0] === '!select') {
           // {characterName: dataArray[2], uid: dataArray[3]}を追加する
-          setSelectedCharacters([
-            ...(selectedCharacters || []),
-            {characterName: dataArray[3], uid: dataArray[2]},
-          ]);
+          const characterInfo = {
+            characterName: dataArray[2],
+            uid: dataArray[1],
+          };
+          setSelectedCharacters(prev => [...prev, characterInfo]);
         }
       } catch (error) {
         throw new Error('Failed to parse the second element as JSON');
