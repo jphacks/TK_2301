@@ -6,7 +6,7 @@ import styles from './style';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
 import {Trick} from '../../../models/scenario';
 import Spinner from 'react-native-loading-spinner-overlay';
-import FetchingModal from '../FechingModal';
+import FetchingModal from '../FetchingModal';
 
 type Props = {
   selectedItemTricks: Trick[];

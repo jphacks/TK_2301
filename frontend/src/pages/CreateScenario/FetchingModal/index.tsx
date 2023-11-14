@@ -6,7 +6,7 @@ export type Props = {
 };
 
 const FetchingModal = ({textContent}: Props) => {
-  return <FetchingModalPresenter textContent={textContent}  />;
+  return <FetchingModalPresenter textContent={textContent} />;
 };
 
 export default FetchingModal;

@@ -187,6 +187,9 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const openFetchingModal = () => setIsFetching(true);
   const closeFetchingModal = () => setIsFetching(false);
 
+  const openUploadingModal = () => setIsUploading(true);
+  const closeUploadingModal = () => setIsUploading(false);
+
   // ================================ 動的管理するシナリオデータState =============================
   const [criminal, setCriminal] = useState<Character>({
     name: '',
@@ -343,8 +346,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
   // ヘッダーのアップロードボタン押下時に発火
   const uploadScenarioData = async () => {
+    openUploadingModal()
     closeConfirmModal();
-    openFetchingModal();
 
     await preprocessItemsForUpload();
     await preprocessMapFloorForUpload();
@@ -363,7 +366,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     // デバッグのためしばらく残しておく
     console.log('upload', data);
 
-    closeFetchingModal();
+    closeUploadingModal();
 
     if (isNewScenario) scenarioCollection.insert(scenarioId, data);
     else scenarioCollection.update(scenarioId, data);

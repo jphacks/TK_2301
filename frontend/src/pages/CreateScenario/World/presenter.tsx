@@ -3,7 +3,7 @@ import {Text, TextInput, View} from 'react-native';
 import styles from './style';
 import WorldItem from './WorldItem';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
-import FetchingModal from '../FechingModal';
+import FetchingModal from '../FetchingModal';
 
 type Props = {
   onPress: (type: string) => void;

@@ -5,7 +5,7 @@ import {useCreateScenario} from '../createScenario';
 import HintItem from './HintItem';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
 import Spinner from 'react-native-loading-spinner-overlay';
-import FetchingModal from '../FechingModal';
+import FetchingModal from '../FetchingModal';
 
 type Props = {
   funcs: {
