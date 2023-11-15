@@ -27,7 +27,7 @@ def generationSentence(prompt, user_input, param):
 	return response.choices[0].message.content
 
 app = FastAPI()
-client = OpenAI(api_key = os.environ["API_KEY"])
+client = OpenAI(api_key = os.environ["OPENAI_API_KEY"])
 
 # そもそもの通信ができているかのテスト用
 @app.get("/")
