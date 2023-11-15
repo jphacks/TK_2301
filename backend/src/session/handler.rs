@@ -250,7 +250,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsChatSession {
                                 item_id: v[1].to_owned(),
                             });
                         }
-                        "/entry" => {
+                        "/enter" => {
                             if v.len() != 2 {
                                 ctx.text("error: expected arguments is 2");
                                 return;
