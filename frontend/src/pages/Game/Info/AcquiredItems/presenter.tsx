@@ -20,6 +20,7 @@ const AcquiredItemsPresenter = ({
   item,
   setShowMyItem,
 }: Props) => {
+  const {usersOnTheFloor} = useGame();
   return (
     <View>
       {reshapedMyItems.map((myItem, index) => {

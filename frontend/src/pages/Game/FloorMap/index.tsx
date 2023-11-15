@@ -18,7 +18,7 @@ const Floor = ({floorMaps, numberOfSurveys}: Props) => {
   const [surveysCount, setSurveysCount] = useState(numberOfSurveys);
   const {socketRef} = useSocket();
 
-  const {items} = useGame();
+  const {items, usersOnTheFloor} = useGame();
 
   const enter = (floorInfo: FloorMap) => {
     socketRef.current?.send(`/enter ${floorInfo.mapId}`);
@@ -32,8 +32,9 @@ const Floor = ({floorMaps, numberOfSurveys}: Props) => {
     setFloor(floorInfo);
     setIsFloorEntered(true);
   };
-  const exit = () => {
+  const exit = (floorInfo: FloorMap) => {
     console.log('exit');
+    socketRef.current?.send(`/exit ${floorInfo.mapId}`);
     setIsFloorEntered(false);
     setFloor(undefined);
   };

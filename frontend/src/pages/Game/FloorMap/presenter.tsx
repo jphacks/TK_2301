@@ -9,7 +9,7 @@ type Props = {
   enter: (floorInfo: FloorMap) => void;
   floor: FloorMap | undefined;
   isFloorEntered: boolean;
-  exit: () => void;
+  exit: (floorInfo: FloorMap) => void;
   surveysCount: number;
   minusSurveysCount: () => void;
   itemList: GameItem[];
@@ -29,7 +29,9 @@ const FloorMapPresenter = ({
     <View>
       <View style={styles.header}>
         {isFloorEntered && (
-          <Pressable onPress={exit} style={styles.backContainer}>
+          <Pressable
+            onPress={() => floor && exit(floor)}
+            style={styles.backContainer}>
             <Image style={styles.backIcon} source={require('./back.png')} />
           </Pressable>
         )}

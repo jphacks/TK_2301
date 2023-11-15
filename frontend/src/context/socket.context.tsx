@@ -85,13 +85,29 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           });
         } else if (dataArray[0] === '!hand_recv') {
           setMyItems(prev => [...prev, dataArray[1]]);
-        } else if (dataArray[0] === '!enter') {
+        } else if (dataArray[0] === '!entry') {
           setUsersOnTheFloor(prev => {
             const newMap = new Map(prev);
-            newMap.set(dataArray[1], []);
+            // key: dataArray[1]がある場合には、valueにdataArray[2]を追加、なければ新規作成してvalueにdataArray[2]を追加
+            const users = newMap.get(dataArray[1]);
+            if (users) {
+              newMap.set(dataArray[1], [...users, dataArray[2]]);
+            } else {
+              newMap.set(dataArray[1], [dataArray[2]]);
+            }
             return newMap;
           });
         } else if (dataArray[0] === '!exit') {
+          setUsersOnTheFloor(prev => {
+            const newMap = new Map(prev);
+            // key: dataArray[1], value: [dataArray[2]]を削除
+            const users = newMap.get(dataArray[1]);
+            if (users) {
+              const newUsers = users.filter(user => user !== dataArray[2]);
+              newMap.set(dataArray[1], newUsers);
+            }
+            return newMap;
+          });
         } else if (dataArray[0] === '!vote') {
         }
       } catch (error) {

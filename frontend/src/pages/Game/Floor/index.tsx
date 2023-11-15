@@ -3,6 +3,7 @@ import FloorPresenter from './presenter';
 import {FloorProvider} from './floor.context';
 import {FloorMap, GameItem, Item} from '../../../models/scenario';
 import scenarioCollection from '../../../api/firebase/firestore';
+import {useGame} from '../game.context';
 
 export type Props = {
   floor: FloorMap;
