@@ -4,8 +4,6 @@ services:
     build: .
     volumes:
       - ./app:/app
-    env_file:
-      - .env
     ports:
       - "8080:8080"
     tty: true
