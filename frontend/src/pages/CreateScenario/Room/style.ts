@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 20,
     marginTop: 100,
+    paddingBottom: 100,
     backgroundColor: '#323338',
     borderRadius: 20,
     shadowColor: '#000',
@@ -101,6 +102,12 @@ const styles = StyleSheet.create({
   cardSubText: {
     color: '#DADEE180',
     fontSize: 8,
+    marginTop: 2,
+    fontWeight: 'bold',
+  },
+  noItemText: {
+    color: '#DADEE180',
+    fontSize: 16,
     marginTop: 2,
     fontWeight: 'bold',
   },

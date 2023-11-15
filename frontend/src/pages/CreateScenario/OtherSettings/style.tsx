@@ -11,6 +11,11 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 16,
   },
+  imageContainer: {
+    marginTop: 20,
+    height: 200,
+    width: '100%',
+  },
   input: {
     color: 'white',
     height: 40,

@@ -19,6 +19,7 @@ const CharacterSheet = () => {
     setTargetImageURL,
     setTargetImageType,
     criminal,
+    setOtherCharacters,
   } = useCreateScenario();
 
   const [showImageSelectModal, setShowImageSelectModal] = React.useState(false);
@@ -26,13 +27,22 @@ const CharacterSheet = () => {
   const closeImageSelectModal = () => setShowImageSelectModal(false);
   const openImageSelectModal = () => setShowImageSelectModal(true);
 
+  console.log('11111111111111111111111111111');
+  console.log(targetId);
+  console.log(nowCharacterType);
+  console.log(editingCharacter);
+  console.log(criminal);
+
   useEffect(() => {
+    console.log('effected', targetId);
+
     if (targetId === '') {
       const newId = uuid.v4().toString();
       setTargetId(newId);
       console.log('----------');
       console.log(newId);
 
+      console.log('effected', editingCharacter);
       switch (nowCharacterType) {
         case CharacterType.Criminal:
           setEditingCharacter({
@@ -54,7 +64,7 @@ const CharacterSheet = () => {
           });
           break;
         case CharacterType.Other:
-          setEditingCharacter({
+          const newCharacter = {
             id: newId,
             name: '',
             age: 0,
@@ -70,25 +80,33 @@ const CharacterSheet = () => {
                 text: '',
               },
             ],
-          });
+          };
+          setEditingCharacter(newCharacter);
+          otherCharacters.set(newId, newCharacter);
+          setOtherCharacters(otherCharacters);
           break;
       }
       return;
     }
 
     if (nowCharacterType === CharacterType.Other) {
-      console.log(targetId);
-      setEditingCharacter(otherCharacters.get(targetId!)!);
+      const other = otherCharacters.get(targetId!)
+      setEditingCharacter(other);
     }
 
-    if (nowCharacterType === CharacterType.Criminal) {
+    if (
+      nowCharacterType === CharacterType.Criminal &&
+      editingCharacter === undefined
+    ) {
       console.log(targetId);
+      console.log(criminal);
       setEditingCharacter(criminal);
     }
 
     if (
-      editingCharacter?.icon.startsWith('character_icons/') ||
-      editingCharacter?.icon.startsWith('images/')
+      editingCharacter?.icon &&
+      (editingCharacter.icon.startsWith('character_icons/') ||
+        editingCharacter.icon.startsWith('images/'))
     ) {
       // 既にFireStorageに保存されている場合
       const get = async () => {

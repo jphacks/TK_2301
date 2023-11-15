@@ -1,19 +1,13 @@
-import React from "react"
-import CharactersPresenter from "./presenter"
+import React from 'react';
+import CharactersPresenter from './presenter';
+import {Character} from '../../../models/scenario';
 
 export type Props = {
-  characters: {
-    icon: any
-    nameKanji: string
-    nameKana: string
-    age: number
-    profession: string
-    description: string
-  }[]
-}
+  characters: Character[];
+};
 
-const Characters = ({ characters }: Props) => {
-  return <CharactersPresenter characters={characters} />
-}
+const Characters = ({characters}: Props) => {
+  return <CharactersPresenter characters={characters} />;
+};
 
-export default Characters
+export default Characters;

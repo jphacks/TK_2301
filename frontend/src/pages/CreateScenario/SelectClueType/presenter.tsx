@@ -62,7 +62,7 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
         )}
       </View>
       {items.size == 0 ? (
-        <SquareButton type="room" onPress={() => onPress('room')} />
+        <SquareButton type="item" onPress={() => onPress('item')} />
       ) : (
         Array.from(items, ([key, item]) => {
           return (

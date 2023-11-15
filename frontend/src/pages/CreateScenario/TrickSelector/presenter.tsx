@@ -5,6 +5,8 @@ import TrickItem from './TrickItem';
 import styles from './style';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
 import {Trick} from '../../../models/scenario';
+import Spinner from 'react-native-loading-spinner-overlay';
+import FetchingModal from '../FetchingModal';
 
 type Props = {
   selectedItemTricks: Trick[];
@@ -24,6 +26,8 @@ const TrickSelectorPresenter = ({
   const {itemTricks, triviaTricks} = useCreateScenario();
   return (
     <ScrollView>
+      <FetchingModal textContent={'生成中...'} />
+
       <View style={styles.container}>
         {itemTricks.map((trick, index) => {
           return (

@@ -17,6 +17,14 @@ pub struct ChatServer {
     rooms: HashMap<Uuid, Room>,
 }
 
+// メッセージの送信元の情報
+#[derive(Debug)]
+pub struct Src {
+    pub room_id: Uuid,
+    pub user_id: String,
+    pub user_name: String,
+}
+
 impl ChatServer {
     pub fn new(_visitor_count: Arc<AtomicUsize>) -> ChatServer {
         let mut rooms = HashMap::new();

@@ -18,6 +18,7 @@ import {
 } from '../../models/samples';
 import scenarioCollection from '../../api/firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import AIserverInstance from '../../api/server';
 
 export enum CreateState {
   Default,
@@ -46,7 +47,9 @@ type CreateScenarioContextType = {
   setPageStack: React.Dispatch<React.SetStateAction<CreateState[]>>;
 
   editingCharacter: Character | undefined;
-  setEditingCharacter: React.Dispatch<React.SetStateAction<Character>>;
+  setEditingCharacter: React.Dispatch<
+    React.SetStateAction<Character | undefined>
+  >;
 
   shareJson: any;
   setShareJson: React.Dispatch<React.SetStateAction<any>>;
@@ -81,6 +84,18 @@ type CreateScenarioContextType = {
   setItemImageCandidate: React.Dispatch<
     React.SetStateAction<ItemImageCandidate | undefined>
   >;
+
+  // サーバとのやり取り中、ロード画面を表示させるために使う
+  isFetching: boolean;
+  setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // サーバとのやり取り中、ロード画面を表示させるために使う
+  isUploading: boolean;
+  setIsUploading: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // サーバとのやり取り中、ロード画面を表示させるために使う
+  isConfirm: boolean;
+  setIsConfirm: React.Dispatch<React.SetStateAction<boolean>>;
 
   // ================================ 動的管理するシナリオデータ =============================
   // 新規作成のシナリオどうかのフラグを保持する
@@ -126,6 +141,10 @@ type CreateScenarioContextType = {
   transitNextState: (createState: CreateState, targetId?: string) => void;
   transitPrevState: () => void;
   uploadScenarioData: () => void;
+  fetchDataFromServerWithInteract: (
+    endpoint: string,
+    data: any,
+  ) => Promise<any>;
 };
 
 export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
@@ -141,9 +160,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [shareJson, setShareJson] = useState({});
   const [createState, setCreateState] = useState(CreateState.Default);
   const [pageStack, setPageStack] = useState([CreateState.Default]);
-  const [editingCharacter, setEditingCharacter] = useState<Character>(
-    sampleEditingCharacter,
-  );
+  const [editingCharacter, setEditingCharacter] = useState<Character>();
   const [nowCharacterType, setNowCharacterType] = useState(
     CharacterType.Default,
   );
@@ -160,6 +177,18 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     ImageType.Default,
   );
   const [targetImageURL, setTargetImageURL] = useState<string>('');
+  const [isFetching, setIsFetching] = useState<boolean>(false); // 生成中モーダル表示のために用いる
+  const [isUploading, setIsUploading] = useState<boolean>(false); // TODO: 保存中モーダル表示のために用いる
+  const [isConfirm, setIsConfirm] = useState<boolean>(false);
+
+  const openConfirmModal = () => setIsConfirm(true);
+  const closeConfirmModal = () => setIsConfirm(false);
+
+  const openFetchingModal = () => setIsFetching(true);
+  const closeFetchingModal = () => setIsFetching(false);
+
+  const openUploadingModal = () => setIsUploading(true);
+  const closeUploadingModal = () => setIsUploading(false);
 
   // ================================ 動的管理するシナリオデータState =============================
   const [criminal, setCriminal] = useState<Character>({
@@ -180,7 +209,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
   const [scenarioId, setScenarioId] = useState<string>('');
   const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
-  const [items, setItems] = useState<Map<string, Item>>(clueItemsMap);
+  const [items, setItems] = useState<Map<string, Item>>(new Map());
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
   const [itemTricks, setItemTricks] = useState<Trick[]>([]);
@@ -197,6 +226,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
   const transitNextState = (createState: CreateState, targetId?: string) => {
+    console.log('next', targetId);
     setTargetId(targetId || '');
     setTargetImageURL('');
     setPageStack([...pageStack, createState]);
@@ -213,6 +243,18 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     setCreateState(bufStack.pop() || CreateState.Default);
   };
 
+  // UI制御も兼ねた、データフェッチ関数
+  const fetchDataFromServerWithInteract = async (
+    endpoint: string,
+    data: any,
+  ): Promise<any> => {
+    setIsFetching(true); // 生成中モーダルON
+    const res = await AIserverInstance.fetch(endpoint, data);
+    setIsFetching(false); // 生成中モーダルOFF
+
+    return res;
+  };
+
   // Firebase Storageに保存されていない画像があれば保存し、URIを書き換える
   const preprocessItemsForUpload = async () => {
     const bufItem: Map<string, Item> = new Map(items);
@@ -223,7 +265,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
       // ローカルの画像で、まだFireStorageに保存されていない場合
       if (item.uri.startsWith('file://')) {
-        const uploadPath = `items/${item.mapId}.png`;
+        const uploadPath = `items/${item.itemId}.png`;
         await storage().ref(uploadPath).putFile(item.uri, {
           contentType: 'image/png',
         });
@@ -231,7 +273,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         item.uri = uploadPath; // Firebaseに格納したURIで上書きする
       }
 
-      bufItem.set(item.mapId, item);
+      bufItem.set(item.itemId, item);
     }
 
     setItems(bufItem);
@@ -304,20 +346,27 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
   // ヘッダーのアップロードボタン押下時に発火
   const uploadScenarioData = async () => {
+    openUploadingModal()
+    closeConfirmModal();
+
     await preprocessItemsForUpload();
     await preprocessMapFloorForUpload();
     await preprocessCharacterForUpload();
+
+    console.log(abstraction);
 
     const data: Scenario = {
       abstraction: abstraction,
       phases: Array.from(phaseData.values()),
       floorMaps: Array.from(floorMaps.values()),
-      items: Array.from(items.values()),
+      items: [...Array.from(items.values())],
       characters: [...Array.from(otherCharacters.values()), criminal], // TODO
     };
 
     // デバッグのためしばらく残しておく
     console.log('upload', data);
+
+    closeUploadingModal();
 
     if (isNewScenario) scenarioCollection.insert(scenarioId, data);
     else scenarioCollection.update(scenarioId, data);
@@ -379,6 +428,13 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setTargetImageURL,
         targetImageType,
         setTargetImageType,
+        isFetching,
+        setIsFetching,
+        fetchDataFromServerWithInteract,
+        isUploading,
+        setIsUploading,
+        isConfirm,
+        setIsConfirm,
       }}>
       {children}
     </CreateScenarioContext.Provider>

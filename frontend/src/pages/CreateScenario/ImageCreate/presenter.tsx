@@ -4,6 +4,7 @@ import styles from './style';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
 import {ItemImageCandidate} from '../../../models/scenario';
 import Spinner from 'react-native-loading-spinner-overlay';
+import FetchingModal from '../FetchingModal';
 
 type Props = {
   onChangeText: (text: string) => void;
@@ -13,7 +14,6 @@ type Props = {
   fetchedImage: boolean;
   itemImageCandidate: ItemImageCandidate[] | undefined;
   candidateImageUri: string[];
-  isFetchingImage: boolean;
   focusedImageUri: string;
   setFocusedImageUri: React.Dispatch<React.SetStateAction<string>>;
   onPressDecideImage: () => void;
@@ -25,18 +25,13 @@ const ImageCreatePresenter = ({
   image,
   fetchedImage,
   candidateImageUri,
-  isFetchingImage,
   focusedImageUri,
   setFocusedImageUri,
   onPressDecideImage,
 }: Props) => {
   return (
     <View style={styles.container}>
-      <Spinner
-        visible={isFetchingImage}
-        textContent={'Loading...'}
-        textStyle={styles.text}
-      />
+      <FetchingModal textContent={'生成中...'} />
 
       {fetchedImage && (
         <View style={styles.proposedImageContainer}>

@@ -1,20 +1,17 @@
-import React from "react"
-import { Text, View } from "react-native"
-import styles from "./style"
+import React from 'react';
+import {Text, View} from 'react-native';
+import styles from './style';
 
 type Props = {
-  minutes: number
-  seconds: number
-}
+  time: string;
+};
 
-const TimerPresenter = ({ minutes, seconds }: Props) => {
+const TimerPresenter = ({time}: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>
-        {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
-      </Text>
+      <Text style={styles.text}>{time}</Text>
     </View>
-  )
-}
+  );
+};
 
-export default TimerPresenter
+export default TimerPresenter;

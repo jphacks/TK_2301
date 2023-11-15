@@ -20,6 +20,8 @@ RUN cargo build --release --bin app
 
 FROM ubuntu AS runtime
 COPY --from=builder /app/target/release/app /usr/local/bin
+COPY --from=builder /app/.env /usr/local/bin
+
 ENTRYPOINT ["/usr/local/bin/app"]
 EXPOSE 8080
 

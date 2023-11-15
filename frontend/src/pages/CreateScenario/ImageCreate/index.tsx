@@ -18,7 +18,6 @@ const ImageCreate = () => {
   const [showItemModal, setShowItemModal] = useState(false);
 
   const [fetchedImage, setFetchedImage] = useState(false);
-  const [isFetchingImage, setIsFetchingImage] = useState(false);
 
   const {
     setTargetImageURL,
@@ -33,6 +32,8 @@ const ImageCreate = () => {
     setItemImageCandidate,
     editingCharacter,
     setEditingCharacter,
+    isFetching, 
+    setIsFetching,
   } = useCreateScenario();
 
   const onChangeText = (text: string) => {
@@ -105,7 +106,7 @@ const ImageCreate = () => {
 
     if (candidateImageUri === undefined) return;
 
-    setIsFetchingImage(true);
+    setIsFetching(true);
     const imageURLBuf = [];
 
     for (const refUri of candidateImageUri) {
@@ -119,7 +120,7 @@ const ImageCreate = () => {
     setCandidateImageUri(imageURLBuf);
     setFetchedImage(true);
     setShowItemModal(true);
-    setIsFetchingImage(false);
+    setIsFetching(false);
   };
 
   return (
@@ -131,7 +132,6 @@ const ImageCreate = () => {
       fetchedImage={fetchedImage}
       itemImageCandidate={undefined}
       candidateImageUri={candidateImageUri}
-      isFetchingImage={isFetchingImage}
       focusedImageUri={focusedImageUri}
       setFocusedImageUri={setFocusedImageUri}
       onPressDecideImage={onPressDecideImage}

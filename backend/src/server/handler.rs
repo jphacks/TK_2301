@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::{auth::ENTRY_ROOM_UUID, server::room::{RoomUserInfo, Ballot}};
-use super::{ChatServer, Room};
+use super::{ChatServer, Room, Src};
 
 #[derive(Message)]
 #[rtype(result = "()")]
@@ -587,5 +587,71 @@ impl Handler<Vote> for ChatServer {
                 });
             }
         }
+    }
+}
+
+#[derive(Message, Debug)]
+#[rtype(result = "()")]
+pub struct Get {
+    pub src: Src,
+    pub item_id: String,
+}
+
+impl Handler<Get> for ChatServer {
+    type Result = ();
+
+    fn handle(
+        &mut self, 
+        Get {
+            src: Src {room_id, user_id: _, user_name},
+            item_id,
+        }: Get,
+        _: &mut Context<Self>) {
+        log::info!("[GET] {user_name}: get item({item_id})");
+        self.multicast_message(&room_id, &format!("!someone_get {item_id}"), "");
+    }
+}
+
+#[derive(Message, Debug)]
+#[rtype(result = "()")]
+pub struct Entry {
+    pub src: Src,
+    pub map_id: String,
+}
+
+impl Handler<Entry> for ChatServer {
+    type Result = ();
+
+    fn handle(
+        &mut self, 
+        Entry {
+            src: Src {room_id, user_id, user_name},
+            map_id,
+        }: Entry,
+        _: &mut Context<Self>) {
+        log::info!("[ENTRY] {user_name}: entry({map_id})");
+        self.multicast_message(&room_id, &format!("!entry {map_id} {user_id}"), "");
+    }
+}
+
+#[derive(Message, Debug)]
+#[rtype(result = "()")]
+pub struct Exit {
+    pub src: Src,
+    pub map_id: String,
+}
+
+impl Handler<Exit> for ChatServer {
+    type Result = ();
+
+    fn handle(
+        &mut self, 
+        Exit {
+            src: Src {room_id, user_id, user_name},
+            map_id,
+        }: Exit,
+        _: &mut Context<Self>) {
+        log::info!("[EXIT] {user_name}: exit({map_id})");
+        self.multicast_message(&room_id, &format!("!exit {map_id} {user_id}"), "");
     }
 }

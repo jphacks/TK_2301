@@ -69,7 +69,11 @@ const ItemInfoPresenter = ({
             </TouchableOpacity>
           </View>
         ) : (
-          <ImageSelector onPress={openModal} text={''} style={{height: 200}} />
+          <ImageSelector
+            onPress={openModal}
+            text={'部屋の画像'}
+            style={{height: 200}}
+          />
         )}
 
         <LabeledTextInput

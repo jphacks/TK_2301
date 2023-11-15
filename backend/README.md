@@ -28,7 +28,7 @@ cargo run --example cli
 
 #### 入室
 ```
-/join_room <room_id>
+!join_room <room_id>
 ```
 - 部屋にはいる
 
@@ -37,10 +37,10 @@ cargo run --example cli
 /ack
 ```
 - 進行の可否を承認する
-- ブロードキャストで以下のデータが返される
+- マルチキャストで以下のデータが返される
 
 ```
-"/res_ack cOIxxPe5EvctIbY3hkUiEFI406ELAWq9"
+"!res_ack cOIxxPe5EvctIbY3hkUiEFI406ELAWq9"
 ```
 
 #### ACKキャンセル
@@ -49,10 +49,10 @@ cargo run --example cli
 ```
 - 進行の可否の承認をキャンセルする
 - `ack_cancel` にしようかと思ったけど、タイポを防ぐために短くした
-- ブロードキャストで以下のデータが返される
+- マルチキャストで以下のデータが返される
 
 ```
-"/res_rm_ack cOIxxPe5EvctIbY3hkUiEFI406ELAWq9"
+"!res_rm_ack cOIxxPe5EvctIbY3hkUiEFI406ELAWq9"
 ```
 
 
@@ -60,10 +60,10 @@ cargo run --example cli
 ```
 /sce <scenario_id>
 ```
-- ブロードキャストで以下のデータが返される
+- マルチキャストで以下のデータが返される
 
 ```
-"/res_sce {\"scenario_id\":\"656e7472-795f-5f5f-5f5f-5f5f5f5f5f5f\",\"proposer\":{\"user_id\":\"JxonjEGjuUkkjbz5G62GZ8uq1c4a3b1C\",\"user_name\":\"O9QUH\"}}"
+"!res_sce {\"scenario_id\":\"656e7472-795f-5f5f-5f5f-5f5f5f5f5f5f\",\"proposer\":{\"user_id\":\"JxonjEGjuUkkjbz5G62GZ8uq1c4a3b1C\",\"user_name\":\"O9QUH\"}}"
 ```
 
 #### シナリオ選択入出
@@ -71,10 +71,10 @@ cargo run --example cli
 /join_sce <scenario_id>
 ```
 
-- ブロードキャストで以下のデータが返される
+- マルチキャストで以下のデータが返される
 
 ```
-"/res_join_sce {\"scenario_id\":\"656e7472-795f-5f5f-5f5f-5f5f5f5f5f5f\",\"participant\":{\"user_id\":\"O72DCIxYwjSuX2n6qfSe4HFVwiIrQWDs\",\"user_name\":\"5FaUb\"}}"
+"!res_join_sce {\"scenario_id\":\"656e7472-795f-5f5f-5f5f-5f5f5f5f5f5f\",\"participant\":{\"user_id\":\"O72DCIxYwjSuX2n6qfSe4HFVwiIrQWDs\",\"user_name\":\"5FaUb\"}}"
 ```
 
 #### 部屋のプレイヤー人数指定
@@ -90,7 +90,16 @@ cargo run --example cli
 ```
 対象に以下のメッセージがユニキャストで送信される
 ```
-/hand_recv <item_id> <送信者のuser_id>
+!hand_recv <item_id> <送信者のuser_id>
+```
+
+#### アイテム取得
+```
+/get <item_id> 
+```
+対象に以下のメッセージがマルチキャストで送信される
+```
+!someone_get <item_id>
 ```
 
 ### デバッグ用コマンド
@@ -139,3 +148,4 @@ ACKコマンドを受信した場合、
 ```
 
 というように表示される。
+ 

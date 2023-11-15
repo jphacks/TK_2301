@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import WorldPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 import {extractJson} from '../utility';
+import AIserverInstance from '../../../api/server';
 
 type Data = {item: string[]; trivia: string[]; world: string};
 
@@ -28,35 +29,25 @@ const World = () => {
     world,
     setWorld,
     targetId,
+    fetchDataFromServerWithInteract,
   } = useCreateScenario();
   const onPress = (name: string) => {
     setWorld(name);
   };
   const next = async () => {
-    console.log('waiting');
     const data = {
       user_input: world,
     };
 
-    // Post通信
-    const formResponse = await fetch(
-      'http://10.235.234.55:8080/test/item-and-trivia/',
-      {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
+    const res = await fetchDataFromServerWithInteract(
+      'test/item-and-trivia/',
+      data,
     );
-    const res = await formResponse.json();
+
     const castedData = res as Data;
     setShareJson(castedData);
     setRecievedItems(castedData.item);
     setRecievedPhenomena(castedData.trivia);
-
-    /*setItems(dammyItems);
-    setPhenomena(dammyPhenomena);*/
 
     console.log(targetId);
     transitNextState(CreateState.Hint, targetId);

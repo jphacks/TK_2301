@@ -5,13 +5,25 @@ use std::sync::mpsc::channel;
 use std::thread;
 
 use rand::distributions::{Alphanumeric, DistString};
-use uuid::Uuid;
 use websocket::client::ClientBuilder;
 use websocket::{Message, OwnedMessage};
+use lazy_static::lazy_static;
+use dotenvy::dotenv;
 
-const CONNECTION: &'static str = "ws://0.0.0.0:8080/ws";
+
+#[macro_use]
+extern crate lazy_static;
+
+lazy_static! {
+    static ref HOST: String = format!(
+        "ws://{}:{}/ws", 
+        std::env::var("ADDR").expect("ADDR is not set"),
+        std::env::var("PORT").expect("PORT is not set").parse::<u16>().expect("PORT is not a number"), 
+    );
+}
 
 fn main() {
+    dotenv().ok();
     let args: Vec<String> = std::env::args().collect();
 
     let (user_id, user_name) = if args.len() == 3 {
@@ -21,8 +33,10 @@ fn main() {
     };
 
     let addr = format!(
-        "ws://0.0.0.0:8080/ws?user_id={}&user_name={}",
-        &user_id, &user_name
+        "{}?user_id={}&user_name={}",
+        *HOST,
+        &user_id, 
+        &user_name
     );
     println!("Connecting to {}", addr);
 

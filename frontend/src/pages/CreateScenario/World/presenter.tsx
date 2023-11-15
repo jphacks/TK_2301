@@ -3,6 +3,7 @@ import {Text, TextInput, View} from 'react-native';
 import styles from './style';
 import WorldItem from './WorldItem';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
+import FetchingModal from '../FetchingModal';
 
 type Props = {
   onPress: (type: string) => void;
@@ -19,6 +20,7 @@ const WorldPresenter = ({onPress, next, value}: Props) => {
   ];
   return (
     <View style={styles.container}>
+      <FetchingModal textContent={'生成中...'} />
       <Text style={[styles.text, {textAlign: 'center'}]}>
         舞台の世界観を入れてみましょう
       </Text>

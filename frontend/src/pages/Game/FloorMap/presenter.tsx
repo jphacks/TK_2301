@@ -3,18 +3,22 @@ import {Pressable, Text, View, Image} from 'react-native';
 import {Props as ContainerProps, FloorProps} from './index';
 import styles from './style';
 import Floor from '../Floor';
+import {FloorMap, Item} from '../../../models/scenario';
 
 type Props = {
-  enter: (floorInfo: FloorProps) => void;
-  floor: FloorProps | undefined;
+  enter: (floorInfo: FloorMap) => void;
+  floor: FloorMap | undefined;
   isFloorEntered: boolean;
   exit: () => void;
   surveysCount: number;
   minusSurveysCount: () => void;
+  itemList: Item[];
 } & ContainerProps;
 
 const FloorMapPresenter = ({
-  floorMap,
+  floorMaps,
+  items,
+  itemList,
   enter,
   isFloorEntered,
   floor,
@@ -31,25 +35,26 @@ const FloorMapPresenter = ({
           </Pressable>
         )}
         <Text style={styles.where}>
-          {isFloorEntered && floor ? floor?.floorName : 'フロアマップ'}
+          {isFloorEntered && floor ? floor?.name : 'フロアマップ'}
         </Text>
       </View>
 
       {isFloorEntered && floor ? (
         <Floor
           floor={floor}
+          itemList={itemList}
           surveysCount={surveysCount}
           minusSurveysCount={minusSurveysCount}
         />
       ) : (
         <>
-          {floorMap.map((floor, index) => {
+          {floorMaps.map((floor, index) => {
             return (
               <Pressable
                 key={index}
                 style={styles.container}
                 onPress={() => enter(floor)}>
-                <Text style={styles.text}>{floor.floorName}</Text>
+                <Text style={styles.text}>{floor.name}</Text>
                 <Image source={require('./enter.png')} />
               </Pressable>
             );

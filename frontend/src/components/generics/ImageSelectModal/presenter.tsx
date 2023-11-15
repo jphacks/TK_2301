@@ -8,7 +8,7 @@ type Props = {
   url: any;
 } & ContainerProps;
 
-const ImageSelectModalPresenter = ({url, label, onPressImageWithAI, onPressImageFromStorage}: Props) => {
+const ImageSelectModalPresenter = ({label, onPressImageWithAI, onPressImageFromStorage}: Props) => {
   return (
     <View style={{alignItems: "center", zIndex: 30}}>
       <View style={styles.modalContainer}>

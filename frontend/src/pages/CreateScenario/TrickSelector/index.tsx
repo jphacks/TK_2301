@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import TrickSelectorPresenter from './presenter';
 import {CharacterType, CreateState, useCreateScenario} from '../createScenario';
 import {Trick} from '../../../models/scenario';
+import AIserverInstance from '../../../api/server';
 
 const TrickSelector = () => {
   const {
@@ -15,6 +16,7 @@ const TrickSelector = () => {
   } = useCreateScenario();
   const [selectedItemTricks, setSelectedItemTricks] = useState<Trick[]>([]);
   const [selectedTriviaTricks, setSelectedTriviaTricks] = useState<Trick[]>([]);
+  const {nowCharacterType, otherCharacters, setOtherCharacters, fetchDataFromServerWithInteract} = useCreateScenario();
 
   const onPress = async () => {
     // fetchする
@@ -27,19 +29,10 @@ const TrickSelector = () => {
       user_input: `${bodyData}`,
     };
 
-    const formResponse = await fetch(
-      'http://10.235.234.55:8080/test/criminal-character',
-      {
-        method: 'POST', // HTTP-Methodを指定する！
-        body: JSON.stringify(data), // リクエストボディーにフォームデータを設定
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
+    const res = await fetchDataFromServerWithInteract('test/criminal-character', data)
 
-    const res = await formResponse.json();
-
+    res.id = targetId;
+    res.icon = ''; // iconが返ってくるようになるまでの仮
     setEditingCharacter(res);
     setItemImageCandidate(res.item);
 
@@ -47,7 +40,13 @@ const TrickSelector = () => {
     setTabId(1);
 
     console.log(targetId);
-    transitNextState(CreateState.OtherCharacter, targetId);
+    if (nowCharacterType === CharacterType.Other) {
+      otherCharacters.set(targetId || '', res);
+      setOtherCharacters(otherCharacters);
+      transitNextState(CreateState.OtherCharacter, targetId);
+    } else {
+      transitNextState(CreateState.CriminalsCharacter, targetId);
+    }
   };
   return (
     <TrickSelectorPresenter

@@ -14,16 +14,18 @@ const CharacterCard = ({id, character, type}: Props) => {
     useCreateScenario();
   const onPress = () => {
     setEditingCharacter(character);
-    console.log(id);
-    transitNextState(CreateState.OtherCharacter, id);
+    setNowCharacterType(type);
+
     switch (type) {
       case CharacterType.Criminal:
-        setNowCharacterType(CharacterType.Criminal);
+        transitNextState(CreateState.CriminalsCharacter, id);
         break;
       case CharacterType.Other:
         setNowCharacterType(CharacterType.Other);
+        transitNextState(CreateState.OtherCharacter, id);
         break;
     }
+
     setPhase(prev => prev + 1);
   };
   return (

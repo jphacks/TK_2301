@@ -15,6 +15,7 @@ import ImageSelector from '../../../components/generics/ImageSelector';
 import ImageSelectModal from '../../../components/generics/ImageSelectModal';
 import {Item} from '../../../models/scenario';
 import {useCreateScenario} from '../createScenario';
+import storage from '@react-native-firebase/storage';
 
 type Props = {
   openModal: () => void;
@@ -37,13 +38,11 @@ const PIN_ICON_HEIGHT_DIFF = 52;
 const RoomPresenter = ({
   openModal,
   showModal,
-  closeModal,
   onPressImageFromStorage,
   onPressImageWithAI,
   isSelectedImage,
   showItemModal,
   reverseVisible,
-  targetUri,
 }: Props) => {
   const [currentPressedX, setCurrentPressedX] = useState(0);
   const [currentPressedY, setCurrentPressedY] = useState(0);
@@ -144,35 +143,53 @@ const RoomPresenter = ({
       <Modal animationType="slide" transparent={true} visible={showItemModal}>
         <TouchableOpacity style={styles.modalView} onPress={reverseVisible}>
           <Text style={styles.modalHeader}>追加できる証拠品／情報</Text>
-          {Array.from(items, ([key, item]) => {
-            return (
-              <TouchableOpacity
-                style={styles.itemCard}
-                key={`modal.${key}.${item.itemId}`}
-                onPress={() => {
-                  item.mapId = targetId || '';
-                  item.coordinate = {
-                    x: currentPressedX,
-                    y: currentPressedY,
-                  };
+          {items.size !== 0 ? (
+            Array.from(items, ([key, item]) => {
+              const placedMapName = floorMaps.get(item.mapId)?.name || '未配置';
+              let imageUrl = item.uri;
 
-                  items.set(key, item);
-                  setItems(items);
+              // TODO: Firebase用の画像表示。非同期通信ができないから厳しい...
+              if (
+                imageUrl.startsWith('floor_maps/') ||
+                imageUrl.startsWith('images/')
+              ) {
+                // 既にFireStorageに保存されている場合
+                const get = async () => {
+                  imageUrl = await storage().ref(imageUrl).getDownloadURL();
+                };
 
-                  reverseVisible();
-                }}>
-                <Image
-                  source={require('./images/sample.png')}
-                  style={styles.cardImage}></Image>
-                <View style={styles.cardTextContainer}>
-                  <Text style={styles.cardText}>{item.name}</Text>
-                  {item.coordinate !== undefined && (
-                    <Text style={styles.cardSubText}>{item.mapId}</Text>
-                  )}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+                get();
+              }
+
+              return (
+                <TouchableOpacity
+                  style={styles.itemCard}
+                  key={`modal.${key}.${item.itemId}`}
+                  onPress={() => {
+                    item.mapId = targetId || '';
+                    item.coordinate = {
+                      x: currentPressedX,
+                      y: currentPressedY,
+                    };
+
+                    items.set(key, item);
+                    setItems(items);
+
+                    reverseVisible();
+                  }}>
+                  <Image
+                    source={{uri: imageUrl}}
+                    style={styles.cardImage}></Image>
+                  <View style={styles.cardTextContainer}>
+                    <Text style={styles.cardText}>{item.name}</Text>
+                    <Text style={styles.cardSubText}>{placedMapName}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })
+          ) : (
+            <Text style={styles.noItemText}>まだアイテムがありません</Text>
+          )}
         </TouchableOpacity>
       </Modal>
     </View>

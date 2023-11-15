@@ -13,9 +13,9 @@ import TrickSelector from './TrickSelector';
 import ItemInfo from './ItemInfo';
 import Room from './Room';
 import Phase from './Phase';
-import scenarioCollection from '../../api/firebase/firestore';
 import uuid from 'react-native-uuid';
 import ImageCreate from './ImageCreate';
+import ConfirmModal from './ConfirmModal';
 
 type Props = {
   tabViewProps: {
@@ -36,8 +36,13 @@ type Props = {
 };
 
 const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
-  const {createState, scenarioId, setScenarioId, setIsNewScenario} =
-    useCreateScenario();
+  const {
+    createState,
+    scenarioId,
+    setScenarioId,
+    setIsNewScenario,
+    uploadScenarioData,
+  } = useCreateScenario();
 
   useEffect(() => {
     if (scenarioId === '') {
@@ -57,6 +62,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
       case CreateState.World:
         return <World />;
       case CreateState.Hint:
+        return <Hint />;
       case CreateState.ItemInfo:
         return <ItemInfo />;
       case CreateState.Image:
@@ -97,6 +103,11 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
 
   return (
     <View style={styles.container}>
+      <ConfirmModal
+        titleTextContent={'シナリオを投稿する'}
+        buttonTextContent={'投稿する'}
+        onPressConfirm={uploadScenarioData}
+      />
       <Header navigation={navigation} />
       {renderContent()}
     </View>

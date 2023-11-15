@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Pressable, ScrollView, Text, TextInput, View} from 'react-native';
 import styles from './style';
 import {Abstraction} from '../../../models/scenario';
+import ImageSelector from '../../../components/generics/ImageSelector';
 
 type Props = {
   targetAbstraction: Abstraction;
@@ -22,7 +23,13 @@ const OtherSettingsPresenter = ({
 
   const tabs = ['2人用', '3人用', '4人用', '5人用', '6人用']; // ここにタブを追加
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <ImageSelector
+        text={'シナリオのサムネイル'}
+        onPress={() => {}}
+        style={styles.imageContainer}
+      />
+
       <Text style={styles.text}>タイトル</Text>
       <TextInput
         style={styles.input}
@@ -75,7 +82,7 @@ const OtherSettingsPresenter = ({
         defaultValue={targetAbstraction.outline}
         onChangeText={onOutLineChange}
       />
-    </View>
+    </ScrollView>
   );
 };
 

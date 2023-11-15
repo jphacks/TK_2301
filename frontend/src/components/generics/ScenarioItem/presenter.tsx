@@ -1,39 +1,35 @@
-import React from "react"
-import { View, Image, Text, Pressable } from "react-native"
-import styles from "./style"
-import Evaluation from "../Evaluation"
+import React from 'react';
+import {View, Image, Text, Pressable} from 'react-native';
+import styles from './style';
+import Evaluation from '../Evaluation';
+import {Scenario} from '../../../models/scenario';
 
 type Props = {
-  thumbnail: any
-  title: string
-  rating: number
-  numberOfPeople: number
-  timeLimit: string
-  onClick: () => void
-}
+  scenario: Scenario;
+  timeLimit: string;
+  onClick: () => void;
+};
 
-const ScenarioItemPresenter = ({
-  thumbnail,
-  title,
-  rating,
-  numberOfPeople,
-  timeLimit,
-  onClick
-}: Props) => {
+const ScenarioItemPresenter = ({scenario, timeLimit, onClick}: Props) => {
   return (
     <Pressable style={styles.container} onPress={onClick}>
-      <Image source={thumbnail} style={styles.thumbnail} />
-      <Text style={styles.title}>{title}</Text>
+      <Image
+        source={{uri: scenario.abstraction.thumbnail}}
+        style={styles.thumbnail}
+      />
+      <Text style={styles.title}>{scenario.abstraction.title}</Text>
       <View style={styles.evaluation}>
-        <Text style={styles.rating}>{rating.toFixed(1)}</Text>
-        <Evaluation rating={rating} />
+        <Text style={styles.rating}>{4.0}</Text>
+        <Evaluation rating={4} />
       </View>
       <View style={styles.info}>
-        <Text style={styles.infoText}>{numberOfPeople}人/</Text>
+        <Text style={styles.infoText}>
+          {scenario.abstraction.numberOfPlayers}人/
+        </Text>
         <Text style={styles.infoText}>{timeLimit}</Text>
       </View>
     </Pressable>
-  )
-}
+  );
+};
 
-export default ScenarioItemPresenter
+export default ScenarioItemPresenter;
