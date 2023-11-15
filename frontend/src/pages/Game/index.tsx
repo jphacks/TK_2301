@@ -5,6 +5,7 @@ import {RootRoutesParamList} from '../../routes/Root';
 import {useTabbar} from '../../context/tabbar.context';
 import {GameProvider, useGame} from './game.context';
 import {GameItem, Phase, Scenario} from '../../models/scenario';
+import {useSocket} from '../../context/socket.context';
 
 export type Props = {
   scenario: Scenario;
@@ -14,7 +15,7 @@ type NavigationProps = NativeStackScreenProps<RootRoutesParamList, 'GamePage'>;
 const Game: FC<NavigationProps> = ({navigation, route}) => {
   const {setIsInfoVisible, setIsChatVisible, setIsSettingsVisible} =
     useTabbar();
-  const {items, setItems} = useGame();
+  const {nowPhase, updateItems} = useGame();
   const {scenario} = route.params;
 
   /*useEffect(() => {
@@ -49,19 +50,8 @@ const Game: FC<NavigationProps> = ({navigation, route}) => {
   const [phases, setPhases] = useState<Phase[]>(combinedPhases);
 
   useEffect(() => {
-    const newItems: GameItem[] = [];
-    scenario.items.map(item => {
-      const newItem: GameItem = {
-        ...item,
-        isAvailable: true,
-      };
-      newItems.push(newItem);
-    });
-    setItems(newItems);
-  }, [scenario]);
-
-  // タブバーの可視、不可視を管理するstate
-  const [nowPhase, setNowPhase] = useState(0);
+    updateItems(scenario.items);
+  }, []);
 
   useEffect(() => {
     if (nowPhase === 1) {
@@ -76,9 +66,7 @@ const Game: FC<NavigationProps> = ({navigation, route}) => {
     scenario,
     nowPhase,
     navigation,
-    setNowPhase,
     phases,
-    items,
   };
   return <GamePresenter {...props} />;
 };

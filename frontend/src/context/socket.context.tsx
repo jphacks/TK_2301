@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import {Room} from '../type';
 import {useGame} from '../pages/Game/game.context';
-import {GameItem} from '../models/scenario';
+import {GameItem, Item} from '../models/scenario';
 
 type SocketContextType = {
   socketRef: React.MutableRefObject<WebSocket | undefined>;
@@ -30,11 +30,11 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [receivedMessage, setReceivedMessage] = useState<string>('');
   const socketRef = useRef<WebSocket>();
   const {
-    setMyCharacter,
-    selectedCharacters,
     setSelectedCharacters,
-    items,
     setItems,
+    setNowPhase,
+    setMyItems,
+    setUsersOnTheFloor,
   } = useGame();
 
   useEffect(() => {
@@ -65,23 +65,34 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         if (dataArray[0] === '!json') {
           setRooms(JSON.parse(dataArray[1]));
         } else if (dataArray[0] === '!select') {
+          console.log(dataArray[0]);
           const characterInfo = {
             characterName: dataArray[2],
             uid: dataArray[1],
           };
           setSelectedCharacters(prev => [...prev, characterInfo]);
+          console.log('setSelectedCharacters');
+        } else if (dataArray[0] === '!confirm_ack') {
+          setNowPhase((prev: number) => prev + 1);
         } else if (dataArray[0] === '!someone_get') {
-          console.log('newItem');
-          console.log(items);
-          const newItems: GameItem[] = [];
-          items.map(item => {
-            if (item.itemId === dataArray[1]) {
-              item.isAvailable = false;
-            }
-            newItems.push(item);
+          setItems(prev => {
+            return prev.map(item => {
+              if (item.itemId === dataArray[1]) {
+                item.isAvailable = false;
+              }
+              return item;
+            });
           });
-
-          setItems(newItems);
+        } else if (dataArray[0] === '!hand_recv') {
+          setMyItems(prev => [...prev, dataArray[1]]);
+        } else if (dataArray[0] === '!enter') {
+          setUsersOnTheFloor(prev => {
+            const newMap = new Map(prev);
+            newMap.set(dataArray[1], []);
+            return newMap;
+          });
+        } else if (dataArray[0] === '!exit') {
+        } else if (dataArray[0] === '!vote') {
         }
       } catch (error) {
         throw new Error('Failed to parse the second element as JSON');

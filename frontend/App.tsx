@@ -18,7 +18,6 @@ import {GameProvider} from './src/pages/Game/game.context';
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [isInitializedFirebase, setIsInitializedFirebase] = useState(false);
-
   // 初回描画時にFirebase初期化
   useEffect(() => {
     const initFirebase = async () => {

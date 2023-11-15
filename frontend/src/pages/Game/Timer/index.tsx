@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import TimerPresenter from './presenter';
+import {useGame} from '../game.context';
 
 type Props = {
   initialTime: number;
-  setNowPhase: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const Timer = ({initialTime, setNowPhase}: Props) => {
+const Timer = ({initialTime}: Props) => {
   const [time, setTime] = useState(initialTime * 60);
+  const {setNowPhase} = useGame();
 
   useEffect(() => {
     if (time == 0) {

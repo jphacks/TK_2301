@@ -17,19 +17,10 @@ import {GameItem, Phase} from '../../models/scenario';
 type Props = {
   nowPhase: number;
   navigation: any;
-  setNowPhase: React.Dispatch<React.SetStateAction<number>>;
   phases: Phase[];
-  items: GameItem[];
 } & ContainerProps;
 
-const GamePresenter = ({
-  scenario,
-  nowPhase,
-  navigation,
-  setNowPhase,
-  phases,
-  items,
-}: Props) => {
+const GamePresenter = ({scenario, nowPhase, navigation, phases}: Props) => {
   const {showInfo} = useTabbar();
   const renderContent = () => {
     switch (phases[nowPhase].phaseId) {
@@ -74,8 +65,6 @@ const GamePresenter = ({
         props={{
           phase: phases[nowPhase],
           navigation,
-          nowPhase,
-          setNowPhase,
         }}
       />
       <IconScroll />
