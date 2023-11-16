@@ -278,7 +278,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
           contentType: 'image/png',
         });
 
-        item.uri = uploadPath; // Firebaseに格納したURIで上書きする
+        item.uri = await storage().ref(uploadPath).getDownloadURL();
       }
 
       bufItem.set(item.itemId, item);
@@ -303,7 +303,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
           contentType: 'image/png',
         });
 
-        map.uri = uploadPath; // Firebaseに格納したURIで上書きする
+        map.uri = await storage().ref(uploadPath).getDownloadURL(); // Firebaseに格納したURIで上書きする
       }
 
       bufFloorMaps.set(map.mapId, map);
@@ -329,7 +329,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
           contentType: 'image/png',
         });
 
-        character.icon = uploadPath; // Firebaseに格納したURIで上書きする
+        character.icon = await storage().ref(uploadPath).getDownloadURL(); // Firebaseに格納したURIで上書きする
       }
 
       bufOther.set(character.id, character);
@@ -345,7 +345,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         contentType: 'image/png',
       });
 
-      criminal.icon = uploadPath; // Firebaseに格納したURIで上書きする
+      criminal.icon = await storage().ref(uploadPath).getDownloadURL(); // Firebaseに格納したURIで上書きする
     }
 
     setOtherCharacters(bufOther);

@@ -115,24 +115,6 @@ const CharacterSheet = () => {
       setEditingCharacter(criminal);
     }
 
-    if (
-      editingCharacter?.icon &&
-      (editingCharacter.icon.startsWith('character_icons/') ||
-        editingCharacter.icon.startsWith('images/'))
-    ) {
-      // 既にFireStorageに保存されている場合
-      const get = async () => {
-        const uri = await storage()
-          .ref(editingCharacter?.icon)
-          .getDownloadURL();
-        setTargetImageURL(uri);
-      };
-
-      get();
-    } else {
-      setTargetImageURL(editingCharacter?.icon!);
-    }
-
     setTargetImageURL(editingCharacter?.icon || '');
   }, []);
 
