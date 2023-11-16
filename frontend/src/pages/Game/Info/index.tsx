@@ -6,8 +6,8 @@ import {useWindowDimensions} from 'react-native';
 import Characters from './Characters';
 import About from './About';
 import Purpose from './Purpose';
-import {ScenarioType} from '..';
 import {Scenario} from '../../../models/scenario';
+import AcquiredItems from './AcquiredItems';
 
 export type CharactersProps = {
   characters: {
@@ -34,6 +34,7 @@ const Info = ({scenario}: Props) => {
     {key: 'first', title: '登場人物'},
     {key: 'second', title: 'あなたについて'},
     {key: 'third', title: 'あなたの目標'},
+    {key: 'fourth', title: 'あなたの持ち物'},
   ]);
   const {setShowInfo} = useTabbar();
   const close = () => {
@@ -44,6 +45,7 @@ const Info = ({scenario}: Props) => {
     first: () => <Characters characters={scenario.characters} />,
     second: () => <About characters={scenario.characters} />,
     third: () => <Purpose />,
+    fourth: () => <AcquiredItems />,
   });
 
   const tabViewProps = {

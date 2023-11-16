@@ -7,30 +7,6 @@ import {useSocket} from '../../context/socket.context';
 type Props = NativeStackScreenProps<RootRoutesParamList, 'ScenarioDetailsPage'>;
 const ScenarioDetails: FC<Props> = ({navigation, route}) => {
   const [isCapacity, setIsCapacity] = useState(true);
-  const {socketRef} = useSocket();
-
-  useEffect(() => {
-    const handleMessage = (event: WebSocketMessageEvent) => {
-      // ここでサーバーからのメッセージを処理する
-      const dataArray = event.data.split(' ');
-      try {
-        if (dataArray[0] === '') {
-          //const data = JSON.parse(event.data)
-          //console.log("Received message from server:", data)
-        }
-      } catch (error) {
-        throw new Error('Failed to parse the second element as JSON');
-      }
-    };
-
-    // メッセージ受信時のイベントハンドラーを設定
-    socketRef.current?.addEventListener('message', handleMessage);
-
-    // コンポーネントのクリーンアップ時にイベントハンドラーを削除
-    return () => {
-      socketRef.current?.removeEventListener('message', handleMessage);
-    };
-  }, []);
 
   const nowPlay = () => {
     //socketRef.current?.send(`/sce suLlIwGrJLQgP3A0U0WP`)

@@ -1,22 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FloorMapPresenter from './presenter';
-import {FloorMap, Item} from '../../../models/scenario';
+import {FloorMap, GameItem, Item} from '../../../models/scenario';
+import {useGame} from '../game.context';
+import {useSocket} from '../../../context/socket.context';
 
 export type FloorProps = {};
 
 export type Props = {
   floorMaps: FloorMap[];
-  items: Item[];
   numberOfSurveys: number;
 };
 
-const Floor = ({floorMaps, numberOfSurveys, items}: Props) => {
+const Floor = ({floorMaps, numberOfSurveys}: Props) => {
   const [isFloorEntered, setIsFloorEntered] = useState(false);
   const [floor, setFloor] = useState<FloorMap>();
-  const [itemList, setItemList] = useState<Item[]>([]);
+  const [itemList, setItemList] = useState<GameItem[]>([]);
   const [surveysCount, setSurveysCount] = useState(numberOfSurveys);
+  const {socketRef} = useSocket();
+
+  const {items, usersOnTheFloor} = useGame();
+
   const enter = (floorInfo: FloorMap) => {
-    const newItemList: Item[] = [];
+    socketRef.current?.send(`/enter ${floorInfo.mapId}`);
+    const newItemList: GameItem[] = [];
     items.map(item => {
       if (item.mapId === floorInfo.mapId) {
         newItemList.push(item);
@@ -26,8 +32,9 @@ const Floor = ({floorMaps, numberOfSurveys, items}: Props) => {
     setFloor(floorInfo);
     setIsFloorEntered(true);
   };
-  const exit = () => {
+  const exit = (floorInfo: FloorMap) => {
     console.log('exit');
+    socketRef.current?.send(`/exit ${floorInfo.mapId}`);
     setIsFloorEntered(false);
     setFloor(undefined);
   };
@@ -38,7 +45,6 @@ const Floor = ({floorMaps, numberOfSurveys, items}: Props) => {
   return (
     <FloorMapPresenter
       floorMaps={floorMaps}
-      items={items}
       itemList={itemList}
       enter={enter}
       isFloorEntered={isFloorEntered}

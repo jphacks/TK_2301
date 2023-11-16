@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import QuestionPresenter from './presenter';
 import {useFloor} from '../floor.context';
-import {Item} from '../../../../models/scenario';
+import {GameItem, Item} from '../../../../models/scenario';
 import {Dimensions} from 'react-native';
 
 type Props = {
-  item: Item;
+  item: GameItem;
 };
 
 const QuestionIcon = ({item}: Props) => {
