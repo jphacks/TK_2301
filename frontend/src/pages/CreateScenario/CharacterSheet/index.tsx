@@ -20,6 +20,8 @@ const CharacterSheet = () => {
     setTargetImageType,
     criminal,
     setOtherCharacters,
+    setEndings, 
+    endings
   } = useCreateScenario();
 
   const [showImageSelectModal, setShowImageSelectModal] = React.useState(false);
@@ -39,6 +41,16 @@ const CharacterSheet = () => {
     if (targetId === '') {
       const newId = uuid.v4().toString();
       setTargetId(newId);
+      
+      // エンディングの追加
+      endings.set(newId, {
+        characterId: '',
+        characterName: '',
+        storySerifLine: [],
+        outline: ''
+      }); 
+      setEndings(endings);
+
       console.log('----------');
       console.log(newId);
 
