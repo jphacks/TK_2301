@@ -369,6 +369,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       floorMaps: Array.from(floorMaps.values()),
       items: [...Array.from(items.values())],
       characters: [...Array.from(otherCharacters.values()), criminal], // TODO
+      endings: [...Array.from(endings.values())],
     };
 
     // デバッグのためしばらく残しておく

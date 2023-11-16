@@ -6,6 +6,7 @@ export type Scenario = {
   phases: Phase[];
   floorMaps: FloorMap[];
   items: Item[];
+  endings?: Ending[];
 };
 
 export type Abstraction = {
