@@ -8,7 +8,7 @@ const CharactersPresenter = ({characters}: Props) => {
   return (
     <ScrollView style={styles.normalContainer}>
       {characters.map((character, index) => (
-        <View style={{paddingBottom: 10}}>
+        <View key={index} style={{paddingBottom: 10}}>
           <SelectCharacterCard key={index} character={character} />
         </View>
       ))}

@@ -4,6 +4,7 @@ import {Props as ContainerProps} from './index';
 import styles from './style';
 import PrimaryButton from '../../../../components/generics/PrimaryButton';
 import {useFloor} from '../floor.context';
+import {useGame} from '../../game.context';
 
 type Props = {
   showItem: () => void;
@@ -11,18 +12,25 @@ type Props = {
 } & ContainerProps;
 
 const SurveyCardPresenter = ({item, surveysCount, showItem, close}: Props) => {
-  const {surveyedItems} = useFloor();
+  const {myItems} = useGame();
   const renderContent = () => {
+    console.log(item?.isAvailable);
     if (surveysCount === 0) {
       return (
         <View>
           <Text style={styles.text}>調査回数が0回になりました</Text>
         </View>
       );
-    } else if (item && surveyedItems.includes(item.itemId)) {
+    } else if (item && myItems.includes(item.itemId)) {
       return (
         <View>
           <Text style={styles.text}>すでに調査済みです</Text>
+        </View>
+      );
+    } else if (!item?.isAvailable) {
+      return (
+        <View>
+          <Text style={styles.text}>他の人がすでに取得しました</Text>
         </View>
       );
     } else if (surveysCount > 0) {

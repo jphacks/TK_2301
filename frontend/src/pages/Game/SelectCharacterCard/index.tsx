@@ -15,10 +15,11 @@ const SelectCharacterCard = ({character}: Props) => {
   const {user} = useUser();
 
   const [selectedUserId, setSelectedUserId] = useState<string>();
+  const [isSelect, setIsSelect] = useState<boolean>(false);
 
   const onPress = (characterName: string) => {
     selectedCharacters?.map(selectedCharacter => {
-      if (selectedCharacter.characterName === characterName) {
+      if (isSelect) {
         return;
       }
     });
@@ -35,6 +36,7 @@ const SelectCharacterCard = ({character}: Props) => {
     selectedCharacters?.map(selectedCharacter => {
       if (selectedCharacter.characterName === character.name) {
         setSelectedUserId(selectedCharacter.uid ?? undefined);
+        setIsSelect(true);
       }
     });
   }, [selectedCharacters]);

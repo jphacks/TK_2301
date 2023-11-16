@@ -10,7 +10,7 @@ type Props = {
 } & ContainerProps;
 
 const GameHaderPresenter = ({props, onClick}: Props) => {
-  const {phase, setNowPhase, nowPhase, navigation} = props;
+  const {phase, navigation} = props;
   console.log(phase);
   const switchRender = () => {
     if (phase.timeLimit === 0) {
@@ -22,13 +22,7 @@ const GameHaderPresenter = ({props, onClick}: Props) => {
         />
       );
     } else {
-      return (
-        <Timer
-          key={phase.phaseId}
-          initialTime={phase.timeLimit}
-          setNowPhase={props.setNowPhase}
-        />
-      );
+      return <Timer key={phase.phaseId} initialTime={phase.timeLimit} />;
     }
   };
   return (

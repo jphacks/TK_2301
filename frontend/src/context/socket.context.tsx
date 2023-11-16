@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import {Room} from '../type';
 import {useGame} from '../pages/Game/game.context';
+import {GameItem, Item} from '../models/scenario';
 
 type SocketContextType = {
   socketRef: React.MutableRefObject<WebSocket | undefined>;
@@ -28,7 +29,13 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [receivedMessage, setReceivedMessage] = useState<string>('');
   const socketRef = useRef<WebSocket>();
-  const {setMyCharacter, selectedCharacters, setSelectedCharacters} = useGame();
+  const {
+    setSelectedCharacters,
+    setItems,
+    setNowPhase,
+    setMyItems,
+    setUsersOnTheFloor,
+  } = useGame();
 
   useEffect(() => {
     connectWebSocket();
@@ -58,12 +65,50 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         if (dataArray[0] === '!json') {
           setRooms(JSON.parse(dataArray[1]));
         } else if (dataArray[0] === '!select') {
-          // {characterName: dataArray[2], uid: dataArray[3]}を追加する
+          console.log(dataArray[0]);
           const characterInfo = {
             characterName: dataArray[2],
             uid: dataArray[1],
           };
           setSelectedCharacters(prev => [...prev, characterInfo]);
+          console.log('setSelectedCharacters');
+        } else if (dataArray[0] === '!confirm_ack') {
+          setNowPhase((prev: number) => prev + 1);
+        } else if (dataArray[0] === '!someone_get') {
+          setItems(prev => {
+            return prev.map(item => {
+              if (item.itemId === dataArray[1]) {
+                item.isAvailable = false;
+              }
+              return item;
+            });
+          });
+        } else if (dataArray[0] === '!hand_recv') {
+          setMyItems(prev => [...prev, dataArray[1]]);
+        } else if (dataArray[0] === '!entry') {
+          setUsersOnTheFloor(prev => {
+            const newMap = new Map(prev);
+            // key: dataArray[1]がある場合には、valueにdataArray[2]を追加、なければ新規作成してvalueにdataArray[2]を追加
+            const users = newMap.get(dataArray[1]);
+            if (users) {
+              newMap.set(dataArray[1], [...users, dataArray[2]]);
+            } else {
+              newMap.set(dataArray[1], [dataArray[2]]);
+            }
+            return newMap;
+          });
+        } else if (dataArray[0] === '!exit') {
+          setUsersOnTheFloor(prev => {
+            const newMap = new Map(prev);
+            // key: dataArray[1], value: [dataArray[2]]を削除
+            const users = newMap.get(dataArray[1]);
+            if (users) {
+              const newUsers = users.filter(user => user !== dataArray[2]);
+              newMap.set(dataArray[1], newUsers);
+            }
+            return newMap;
+          });
+        } else if (dataArray[0] === '!vote') {
         }
       } catch (error) {
         throw new Error('Failed to parse the second element as JSON');

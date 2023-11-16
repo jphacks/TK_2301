@@ -27,7 +27,7 @@ def generationSentence(prompt, user_input, param):
 	return response.choices[0].message.content
 
 app = FastAPI()
-client = OpenAI(api_key = os.environ["API_KEY"])
+client = OpenAI(api_key = os.environ["OPENAI_API_KEY"])
 
 # そもそもの通信ができているかのテスト用
 @app.get("/")
@@ -106,7 +106,6 @@ def create_scenario(reqBody: reqBody):
 		"timeline": timeline,
 		"purpose": "犯人であるを隠し通す。"
 	}
-
 	return output
 
 @app.post("/prod/normal-character")
@@ -115,14 +114,6 @@ def create_scenario(reqBody: reqBody):
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
 	output = {"name": "testName","age": "testAge","profession": "testProfession","public_info": "testpublic_info","private_info": "testprivate_info","timeline": [{"num": 1, "text": "testText1"}, {"num": 2, "text": "testText2"}],"purpose": "testPurpose"}
-	return output
-
-# 画像生成　中身はまだ
-@app.post("/prod/image/item")
-def create_image_test(reqBody: reqBody):
-	message = reqBody.user_input
-	print(json.dumps(message, indent=2, ensure_ascii=False))
-	output = {"name": message,"image":["item/XXX1.png","item/XXX2.png","item/XXX3.png","item/XXX4.png"]}
 	return output
 
 """
@@ -166,3 +157,8 @@ def create_image_test(reqBody: reqBody):
 	print(json.dumps(message, indent=2, ensure_ascii=False))
 	output = {"name": message,"image":["item/XXX1.png","item/XXX2.png","item/XXX3.png","item/XXX4.png"]}
 	return output
+
+@app.get("/test/env")
+def read_env():
+	test_env = os.environ["TEST_ENV"]
+	return {"TEST_ENV": test_env}

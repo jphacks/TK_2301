@@ -347,7 +347,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
   // ヘッダーのアップロードボタン押下時に発火
   const uploadScenarioData = async () => {
-    openUploadingModal()
+    openUploadingModal();
     closeConfirmModal();
 
     await preprocessItemsForUpload();

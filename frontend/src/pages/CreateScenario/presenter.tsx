@@ -15,6 +15,7 @@ import Room from './Room';
 import Phase from './Phase';
 import uuid from 'react-native-uuid';
 import ImageCreate from './ImageCreate';
+import HintItem from './Hint/HintItem';
 import ConfirmModal from './ConfirmModal';
 import HintItem from './Hint/HintItem';
 import Ending from './Ending';
