@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TouchableHighlight, View} from 'react-native';
+import {Text, TouchableHighlight, TouchableOpacity, View} from 'react-native';
 import {Props as ContainerProps} from './index';
 import styles from './style';
 import CircularIcon from '../CircularIcon';
@@ -17,7 +17,7 @@ const CharacterVoteButtonPresenter = ({
   onPress
 }: Props) => {
   return (
-    <TouchableHighlight style={[styles.container, style]} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
       {isNone ? (
         <Text style={styles.mainText}>この中に犯人はいない</Text>
       ) : (
@@ -34,7 +34,7 @@ const CharacterVoteButtonPresenter = ({
           )}
         </View>
       )}
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 

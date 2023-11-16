@@ -7,7 +7,7 @@ export type Props = {
   forPlayingGame: boolean; // trueの場合、チェックボタンがつく
   isSelected?: boolean; // 選択されたとき、チェックがつく
   style: any;
-  isNone?: boolean; // シナリオ作成画面において、「この中に誰もいません」を表示させるために使う
+  isNone?: boolean; // シナリオ作成画面において、「この中に犯人はいない」を表示させるために使う
   onPress: () => void;
 };
 
