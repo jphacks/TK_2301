@@ -7,7 +7,8 @@ export type Props = {
   forPlayingGame: boolean; // trueの場合、チェックボタンがつく
   isSelected?: boolean; // 選択されたとき、チェックがつく
   style: any;
-  isNone? : boolean; // シナリオ作成画面において、「この中に誰もいません」を表示させるために使う
+  isNone?: boolean; // シナリオ作成画面において、「この中に誰もいません」を表示させるために使う
+  onPress: () => void;
 };
 
 const CharacterVoteButton = ({
@@ -15,7 +16,8 @@ const CharacterVoteButton = ({
   forPlayingGame,
   isSelected,
   style,
-  isNone
+  isNone,
+  onPress,
 }: Props) => {
   return (
     <CharacterVoteButtonPresenter
@@ -24,6 +26,7 @@ const CharacterVoteButton = ({
       isSelected={isSelected}
       style={style}
       isNone={isNone}
+      onPress={onPress}
     />
   );
 };
