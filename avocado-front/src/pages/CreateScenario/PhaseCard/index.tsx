@@ -5,10 +5,11 @@ import {Phase} from '../../../models/scenario';
 export type Props = {
   phase: Phase;
   onPress: () => void;
+  onPressDots?: () => void;
 };
 
-const PhaseCard = ({phase, onPress}: Props) => {
-  return <PhaseCardPresenter phase={phase} onPress={onPress} />;
+const PhaseCard = ({phase, onPress, onPressDots}: Props) => {
+  return <PhaseCardPresenter phase={phase} onPress={onPress} onPressDots={onPressDots} />;
 };
 
 export default PhaseCard;

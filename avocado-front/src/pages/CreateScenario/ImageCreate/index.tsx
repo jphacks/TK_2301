@@ -136,6 +136,7 @@ const ImageCreate = () => {
       focusedImageUri={focusedImageUri}
       setFocusedImageUri={setFocusedImageUri}
       onPressDecideImage={onPressDecideImage}
+      targetImageType={targetImageType}
     />
   );
 };
