@@ -84,6 +84,6 @@ jobs:
           password: ${{ secrets.SAKURA_PASSWORD }}
           script: |
             cd ~
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d
+            docker compose down
+            docker compose pull
+            docker compose up -d
