@@ -10,11 +10,12 @@ import {
   Phase,
   ItemImageCandidate,
   ImageType,
+  Ending,
 } from '../../models/scenario';
 import {
   sampleAbstract,
+  sampleCharacterMapData,
   sampleClueItems,
-  sampleEditingCharacter,
 } from '../../models/samples';
 import {createScenarioFirestore} from '../../api/firebase/firestore';
 import {getStorage, ref as storageRef, uploadBytes} from 'firebase/storage';
@@ -31,7 +32,7 @@ export enum CreateState {
   Image,
   Room,
   Phase,
-  Ending,
+  EndingContent,
 }
 
 const clueItemsMap = new Map<string, Item>();
@@ -138,6 +139,9 @@ type CreateScenarioContextType = {
   phaseData: Map<string, Phase>;
   setPhaseData: React.Dispatch<React.SetStateAction<Map<string, Phase>>>;
 
+  endings: Map<string, Ending>;
+  setEndings: React.Dispatch<React.SetStateAction<Map<string, Ending>>>;
+
   // ================================ その他オリジナル関数 =============================
   transitNextState: (createState: CreateState, targetId?: string) => void;
   transitPrevState: () => void;
@@ -206,7 +210,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   });
   const [otherCharacters, setOtherCharacters] = useState<
     Map<string, Character>
-  >(new Map());
+  >(sampleCharacterMapData);
   const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
   const [scenarioId, setScenarioId] = useState<string>('');
   const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
@@ -223,6 +227,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       timeLimit: 30,
     }),
   );
+  const [endings, setEndings] = useState<Map<string, Ending>>(new Map());
 
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
@@ -256,11 +261,12 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     return res;
   };
 
-  // Firebase Storageに保存されていない画像があれば保存し、URIを書き換える
+  // Firebase Storageに保存されていない画像があれば保存し、URLを書き換える
   const preprocessItemsForUpload = async () => {
     const bufItem: Map<string, Item> = new Map(items);
     const bufItemArray: Item[] = Array.from(items.values());
     const storage = getStorage();
+    const scenarioFirestore = createScenarioFirestore();
 
     for (let i = 0; i < bufItemArray.length; i++) {
       const item = bufItemArray[i];
@@ -275,7 +281,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
           contentType: 'image/png',
         });
 
-        item.uri = uploadPath; // Firebaseに格納したURIで上書きする
+        item.uri = await scenarioFirestore.getImageUrl(uploadPath); // Firebaseに格納したURLで上書きする
       }
 
       bufItem.set(item.itemId, item);
@@ -288,6 +294,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     const bufFloorMaps: Map<string, FloorMap> = new Map(floorMaps);
     const bufFloorArray: FloorMap[] = Array.from(floorMaps.values());
     const storage = getStorage();
+    const scenarioFirestore = createScenarioFirestore();
 
     for (let i = 0; i < bufFloorArray.length; i++) {
       const map = bufFloorArray[i];
@@ -301,7 +308,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
           contentType: 'image/png',
         });
 
-        map.uri = uploadPath; // Firebaseに格納したURIで上書きする
+        map.uri = await scenarioFirestore.getImageUrl(uploadPath); // Firebaseに格納したURLで上書きする
       }
 
       bufFloorMaps.set(map.mapId, map);
@@ -314,6 +321,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     const bufOther: Map<string, Character> = new Map(otherCharacters);
     const bufOtherArray: Character[] = Array.from(otherCharacters.values());
     const storage = getStorage();
+    const scenarioFirestore = createScenarioFirestore();
 
     // otherCharacters
     for (let i = 0; i < bufOtherArray.length; i++) {
@@ -328,7 +336,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
           contentType: 'image/png',
         });
 
-        character.icon = uploadPath; // Firebaseに格納したURIで上書きする
+        character.icon = await scenarioFirestore.getImageUrl(uploadPath);; // Firebaseに格納したURLで上書きする
       }
 
       bufOther.set(character.id, character);
@@ -344,7 +352,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         contentType: 'image/png',
       });
 
-      criminal.icon = uploadPath; // Firebaseに格納したURIで上書きする
+      criminal.icon = uploadPath; // Firebaseに格納したURLで上書きする
     }
 
     setOtherCharacters(bufOther);
@@ -442,6 +450,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setIsUploading,
         isConfirm,
         setIsConfirm,
+        endings,
+        setEndings,
       }}>
       {children}
     </CreateScenarioContext.Provider>
