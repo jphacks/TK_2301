@@ -9,10 +9,11 @@ const styles = StyleSheet.create({
   nameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 32,
+    paddingTop: 20,
     paddingBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#484B5B',
+    justifyContent: 'space-between',
   },
   icon: {
     width: 32,

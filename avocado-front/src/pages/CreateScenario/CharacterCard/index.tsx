@@ -7,9 +7,10 @@ export type Props = {
   id?: string;
   character: Character;
   type: CharacterType;
+  deleteFunction: () => void;
 };
 
-const CharacterCard = ({id, character, type}: Props) => {
+const CharacterCard = ({id, character, type, deleteFunction}: Props) => {
   const {setEditingCharacter, transitNextState, setNowCharacterType, setPhase} =
     useCreateScenario();
   const onPress = () => {
@@ -34,6 +35,7 @@ const CharacterCard = ({id, character, type}: Props) => {
       character={character}
       type={type}
       onPress={onPress}
+      deleteFunction={deleteFunction}
     />
   );
 };

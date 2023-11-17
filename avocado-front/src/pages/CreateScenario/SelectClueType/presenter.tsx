@@ -12,8 +12,16 @@ type Props = {
 };
 
 const SelectClueTypePresenter = ({onPress}: Props) => {
-  const {setPhase, floorMaps, transitNextState, phaseData, items} =
-    useCreateScenario();
+  const {
+    setPhase,
+    floorMaps,
+    transitNextState,
+    phaseData,
+    setPhaseData,
+    items,
+    setItems,
+    setFloorMaps,
+  } = useCreateScenario();
 
   return (
     <ScrollView style={styles.container}>
@@ -44,6 +52,11 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
                 }}
                 id={key}
                 style={styles.card}
+                deleteFunction={() => {
+                  const newMap = new Map(floorMaps);
+                  newMap.delete(key);
+                  setFloorMaps(newMap);
+                }}
               />
             );
           })
@@ -68,13 +81,18 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
           return (
             <SquareCard
               key={key}
+              id={key}
               label={item.name}
               onPress={() => {
                 setPhase(prev => prev + 1);
                 transitNextState(CreateState.ItemInfo, key);
               }}
-              id={key}
               style={styles.card}
+              deleteFunction={() => {
+                const newMap = new Map(items);
+                newMap.delete(key);
+                setItems(newMap);
+              }}
             />
           );
         })
@@ -99,6 +117,11 @@ const SelectClueTypePresenter = ({onPress}: Props) => {
               onPress={() => {
                 setPhase(prev => prev + 1);
                 transitNextState(CreateState.Phase, key);
+              }}
+              deleteFunction={() => {
+                const newMap = new Map(phaseData);
+                newMap.delete(key);
+                setPhaseData(newMap);
               }}
             />
           ))}
