@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import CharacterVoteButtonPresenter from './presenter';
 import {Character} from '../../../models/scenario';
 
@@ -19,6 +19,9 @@ const CharacterVoteButton = ({
   isNone,
   onPress,
 }: Props) => {
+  useEffect(() => {
+    console.log('CharacterVoteButton');
+  }, [isSelected]);
   return (
     <CharacterVoteButtonPresenter
       character={character}

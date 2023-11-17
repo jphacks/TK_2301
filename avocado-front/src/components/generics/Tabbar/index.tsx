@@ -1,15 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import TabbarPresenter from './presenter';
 import {ImageSourcePropType} from 'react-native';
 import {useTabbar} from '../../../context/tabbar.context';
 import {useUser} from '../../../context/user.context';
-import {storage} from 'react-native-firebase';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootRoutesParamList} from '../../../routes/Root';
 
 type Props = {
   isGame: boolean;
-  navigation?: any;
+  navigation?: NativeStackNavigationProp<
+    RootRoutesParamList,
+    'ScenarioSelectionPage',
+    undefined
+  >;
 };
-const Tabbar = ({isGame, navigation}: Props) => {
+const Tabbar: FC<Props> = ({isGame, navigation}) => {
   const {user} = useUser();
   const [icon, setIcon] = useState<string>('');
   const {
@@ -65,7 +70,10 @@ const Tabbar = ({isGame, navigation}: Props) => {
           path: require('./icons/home.png'),
           title: 'ホーム',
           opacity: 1,
-          onPress: () => {},
+          onPress: () => {
+            console.log('home');
+            navigation?.navigate('ServerSelect');
+          },
         },
         {
           path: require('./icons/scenario.png'),
@@ -82,7 +90,7 @@ const Tabbar = ({isGame, navigation}: Props) => {
           title: '作成',
           opacity: 0.5,
           onPress: () => {
-            navigation.navigate('CreateScenario');
+            navigation?.navigate('CreateScenario');
           },
         },
         {

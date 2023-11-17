@@ -14,7 +14,7 @@ const CharacterVoteButtonPresenter = ({
   isSelected,
   style,
   isNone,
-  onPress
+  onPress,
 }: Props) => {
   return (
     <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
@@ -22,13 +22,16 @@ const CharacterVoteButtonPresenter = ({
         <Text style={styles.mainText}>この中に犯人はいない</Text>
       ) : (
         <View style={styles.characterContainer}>
-          <CircularIcon
-            styles={styles.icon}
-            url={character?.icon}></CircularIcon>
-          <Text
-            style={
-              styles.mainText
-            }>{`${character?.name} (${character?.age})`}</Text>
+          <View style={styles.characterInfo}>
+            <CircularIcon
+              styles={styles.icon}
+              url={character?.icon}></CircularIcon>
+            <Text
+              style={
+                styles.mainText
+              }>{`${character?.name} (${character?.age})`}</Text>
+          </View>
+
           {forPlayingGame && (
             <PurpleCheckIcon isChecked={isSelected || false} />
           )}

@@ -11,7 +11,6 @@ type Props = {
 
 const GameHaderPresenter = ({props, onClick}: Props) => {
   const {phase, navigation} = props;
-  console.log(phase);
   const switchRender = () => {
     if (phase.timeLimit === 0) {
       return (

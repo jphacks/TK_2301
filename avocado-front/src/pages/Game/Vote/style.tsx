@@ -1,11 +1,14 @@
-import { StyleSheet } from "react-native"
+import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   text: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 13,
-    paddingVertical: 30
-  }
-})
+    paddingVertical: 30,
+  },
+  voteButton: {
+    paddingVertical: 8,
+  },
+});
 
-export default styles
+export default styles;

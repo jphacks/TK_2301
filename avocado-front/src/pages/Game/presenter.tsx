@@ -48,6 +48,18 @@ const GamePresenter = ({scenario, nowPhase, navigation, phases}: Props) => {
             <Vote characters={scenario.characters} />
           </View>
         );
+      case 'ending':
+        return (
+          <View style={styles.normalContainer}>
+            <Text style={{color: '#fff'}}>エンディングです</Text>
+          </View>
+        );
+      case 'review':
+        return (
+          <View style={styles.normalContainer}>
+            <Text style={{color: '#fff'}}>振り返りです</Text>
+          </View>
+        );
       default:
         return (
           <View style={styles.floorMapContainer}>

@@ -26,6 +26,8 @@ type GameContextType = {
   setUsersOnTheFloor: React.Dispatch<
     React.SetStateAction<Map<string, string[]>>
   >;
+  votedCharacterName: string;
+  setVotedCharacterName: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -63,6 +65,7 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [usersOnTheFloor, setUsersOnTheFloor] = useState<Map<string, string[]>>(
     new Map(),
   );
+  const [votedCharacterName, setVotedCharacterName] = useState<string>('');
 
   const updateItems = (items: Item[]) => {
     const newItems: GameItem[] = [];
@@ -97,6 +100,8 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
         getItem,
         usersOnTheFloor,
         setUsersOnTheFloor,
+        votedCharacterName,
+        setVotedCharacterName,
       }}>
       {children}
     </GameContext.Provider>

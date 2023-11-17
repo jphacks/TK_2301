@@ -3,6 +3,7 @@ import GameHaderPresenter from './presenter';
 import {useSocket} from '../../../context/socket.context';
 import {Phase} from '../../../models/scenario';
 import {useGame} from '../game.context';
+import {useUser} from '../../../context/user.context';
 
 export type Props = {
   props: {
@@ -13,9 +14,15 @@ export type Props = {
 
 const GameHeader = ({props}: Props) => {
   const {socketRef} = useSocket();
+  const {votedCharacterName} = useGame();
+  const {user} = useUser();
 
   const onClick = () => {
-    socketRef.current?.send(`/ack`);
+    if (props.phase.name === '投票') {
+      socketRef.current?.send(`/vote ${votedCharacterName} ${user?.uid}`);
+    } else {
+      socketRef.current?.send(`/ack`);
+    }
   };
   return <GameHaderPresenter props={props} onClick={onClick} />;
 };

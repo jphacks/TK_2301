@@ -108,7 +108,8 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
             }
             return newMap;
           });
-        } else if (dataArray[0] === '!vote') {
+        } else if (dataArray[0] === '!confirm_vote') {
+          setNowPhase((prev: number) => prev + 1);
         }
       } catch (error) {
         throw new Error('Failed to parse the second element as JSON');
