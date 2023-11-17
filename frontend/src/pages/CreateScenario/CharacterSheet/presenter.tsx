@@ -48,7 +48,7 @@ const CharacterSheetPresenter = ({
             {targetImageURL === '' ? (
               <Image source={require('./cameraIcon.png')} />
             ) : (
-              <CircularIcon url={{uri: targetImageURL}} />
+              <CircularIcon url={targetImageURL} />
             )}
           </TouchableOpacity>
           <TextInput

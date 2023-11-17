@@ -132,21 +132,9 @@ const ItemInfo = () => {
     // ラジオボタンの初期値を設定するために必要
     setItemType(target.category);
 
-    if (target.uri.startsWith('items/') || target.uri.startsWith('images/')) {
-      // 既にFireStorageに保存されている場合
-      const get = async () => {
-        const uri = await storage().ref(target.uri).getDownloadURL();
-        setTargetImageURL(uri);
-        setIsSelectedImage(true);
-      };
-
-      get();
-    } else if (target.uri.startsWith('file://')) {
-      // まだFireStorageに保存されていない場合
-      setTargetImageURL(target.uri);
-      setIsSelectedImage(true);
-    }
-
+    setTargetImageURL(target.uri);
+    setIsSelectedImage(true);
+    
     // TODO: 画像が表示されるまで間隔があるので、それまで画像ピッカーが表示されないようにする
   }, []);
 

@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
   },
   text: {
     color: '#fff',
@@ -55,6 +55,9 @@ const styles = StyleSheet.create({
   tabText: {
     color: '#fff', // デザインに合わせて変更してください
     textAlign: 'center',
+  },
+  textBox: {
+    marginBottom: 40,
   },
 });
 

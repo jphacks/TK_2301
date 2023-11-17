@@ -1,3 +1,4 @@
+
 // Firestoreに格納するデータの型
 export type Scenario = {
   abstraction: Abstraction;
@@ -5,6 +6,7 @@ export type Scenario = {
   phases: Phase[];
   floorMaps: FloorMap[];
   items: Item[];
+  endings?: Ending[];
 };
 
 export type Abstraction = {
@@ -30,6 +32,18 @@ export type Character = {
     text: string;
   }[];
 };
+
+export type Serif = {
+  character: Character;
+  isStoryTeller?: boolean; // 語り部かどうか
+  textContent: string; 
+}
+
+export type Ending = {
+  character: Character;
+  storySerifLine: Serif[];
+  outline: string;
+}
 
 export enum CharacterType {
   Default,

@@ -60,6 +60,9 @@ const Header = ({navigation}: Props) => {
       case CreateState.Phase:
         setHeaderText('フェーズ');
         break;
+      case CreateState.EndingContent:
+        setHeaderText('エンディングシート');
+        break;
       default:
         setHeaderText('シナリオ作成');
         break;
