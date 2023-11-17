@@ -16,6 +16,7 @@ import ImageSelectModal from '../../../components/generics/ImageSelectModal';
 import {Item} from '../../../models/scenario';
 import {useCreateScenario} from '../createScenario';
 import {createScenarioFirestore} from '../../../api/firebase/firestore';
+import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {
   openModal: () => void;
@@ -46,6 +47,8 @@ const RoomPresenter = ({
 }: Props) => {
   const [currentPressedX, setCurrentPressedX] = useState(0);
   const [currentPressedY, setCurrentPressedY] = useState(0);
+  const [showItemDetailModal, setShowItemDetailModal] = useState(false);
+  const [focusedItem, setFocusedItem] = useState<Item | undefined>(undefined);
 
   const window = useWindowDimensions();
   const adjustedBackImageWidth = window.width;
@@ -56,6 +59,7 @@ const RoomPresenter = ({
 
   return (
     <View>
+      {/* ================ アイテム一覧モーダル ==================== */}
       {showModal && (
         <ImageSelectModal
           test={''}
@@ -63,6 +67,60 @@ const RoomPresenter = ({
           onPressImageWithAI={onPressImageWithAI}
           onPressImageFromStorage={onPressImageFromStorage}
         />
+      )}
+
+      {/* ================ アイテム詳細モーダル ==================== */}
+      {showItemDetailModal && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showItemDetailModal}>
+          <TouchableOpacity
+            style={styles.itemPinModalView}
+            onPress={() => {
+              setShowItemDetailModal(false);
+            }}>
+            <View style={styles.detailItemContainer}>
+              <TouchableOpacity
+                style={styles.iconContainer}
+                onPress={() => {
+                  if (focusedItem === undefined) return;
+                  focusedItem.mapId = '';
+                  focusedItem.coordinate = {
+                    x: -1,
+                    y: -1,
+                  };
+
+                  const newMap = new Map(items);
+                  newMap.set(focusedItem.itemId || '', focusedItem);
+                  setItems(newMap);
+                  setShowItemDetailModal(false);
+                }}>
+                <View style={styles.dummyWhite}></View>
+                <DeleteIcon name="delete-circle" color={'#db3030'} size={40} />
+              </TouchableOpacity>
+              <Image
+                source={{uri: focusedItem?.uri}}
+                style={styles.detailItemImage}
+              />
+              <Text style={styles.itemDetailTitle}>{focusedItem?.name}</Text>
+              <View style={styles.categoryWrapper}>
+                <Text style={[styles.textStyle]}>
+                  {focusedItem?.category !== ''
+                    ? focusedItem?.category === 'item'
+                      ? '物品'
+                      : '情報'
+                    : '未設定'}
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.itemDetailDescription}>
+                  {focusedItem?.description}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Modal>
       )}
       <LabeledTextInput
         labelName={'部屋の名前'}
@@ -120,7 +178,13 @@ const RoomPresenter = ({
                 }
 
                 return (
-                  <TouchableOpacity key={`pin.${index}.${item.itemId}`}>
+                  <TouchableOpacity
+                    key={`pin.${index}.${item.itemId}`}
+                    onPressIn={() => {
+                      console.log('Pressed');
+                      setShowItemDetailModal(true);
+                      setFocusedItem(item);
+                    }}>
                     <Image
                       source={require('./images/pin.png')}
                       style={{
@@ -155,9 +219,8 @@ const RoomPresenter = ({
               ) {
                 // 既にFireStorageに保存されている場合
                 const get = async () => {
-                  imageUrl = await createScenarioFirestore().getImageUrl(
-                    imageUrl,
-                  );
+                  imageUrl =
+                    await createScenarioFirestore().getImageUrl(imageUrl);
                 };
 
                 get();
@@ -179,9 +242,7 @@ const RoomPresenter = ({
 
                     reverseVisible();
                   }}>
-                  <Image
-                    source={{uri: imageUrl}}
-                    style={styles.cardImage}></Image>
+                  <Image source={{uri: imageUrl}} style={styles.cardImage} />
                   <View style={styles.cardTextContainer}>
                     <Text style={styles.cardText}>{item.name}</Text>
                     <Text style={styles.cardSubText}>{placedMapName}</Text>
