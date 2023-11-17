@@ -5,7 +5,6 @@ import SquareButton from '../SquareButton';
 import {useCreateScenario, CharacterType} from '../createScenario';
 import CharacterCard from '../CharacterCard';
 import PurpleButton from '../../../components/generics/PurpleButton';
-import PrimaryButton from '../../../components/generics/PrimaryButton';
 
 type Props = {
   onPress: (type: string) => void;
@@ -13,7 +12,8 @@ type Props = {
 };
 
 const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
-  const {criminal, otherCharacters} = useCreateScenario();
+  const {criminal, otherCharacters, setOtherCharacters, setCriminal} =
+    useCreateScenario();
   return (
     <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
@@ -24,6 +24,20 @@ const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
           id={criminal.id}
           character={criminal}
           type={CharacterType.Criminal}
+          deleteFunction={() => {
+            setCriminal({
+              name: '',
+              id: '',
+              icon: '',
+              age: 0,
+              profession: '',
+              public_info: '',
+              private_info: '',
+              purpose: '',
+              type: CharacterType.Criminal,
+              timeline: [],
+            });
+          }}
         />
       ) : (
         <SquareButton type="criminal" onPress={() => onPress('criminal')} />
@@ -44,6 +58,11 @@ const SelectCharacterTypePresenter = ({onPress, onPressAdd}: Props) => {
                 id={key}
                 character={item}
                 type={CharacterType.Other}
+                deleteFunction={() => {
+                  const newMap = new Map(otherCharacters);
+                  newMap.delete(key);
+                  setOtherCharacters(newMap);
+                }}
               />
             );
           })}
