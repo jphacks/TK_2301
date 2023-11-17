@@ -53,7 +53,7 @@ export const sampleEditingCharacter: Character = {
   id: 'character01',
   name: '山田太郎',
   age: 30,
-  icon: 'binary_data',
+  icon: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297',
   profession: 'Detective',
   public_info: 'A sharp-witted detective with a keen eye for detail.',
   private_info: 'Known for solving several high-profile cases.',
@@ -66,3 +66,60 @@ export const sampleEditingCharacter: Character = {
     },
   ],
 };
+
+export const sampleCharacters: Character[] = [
+  {
+    id: 'character01',
+    name: '山田太郎',
+    age: 30,
+    icon: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297',
+    profession: 'Detective',
+    public_info: 'A sharp-witted detective known for his analytical skills.',
+    private_info: 'Has a mysterious past that he keeps hidden.',
+    purpose: 'To solve the complex case that has baffled the police.',
+    type: CharacterType.Criminal,
+    timeline: [
+      { num: 1, text: 'Arrived at the crime scene.' },
+      { num: 2, text: 'Found a crucial piece of evidence.' }
+    ]
+  },
+  {
+    id: 'character02',
+    name: '鈴木一郎',
+    age: 45,
+    icon: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297',
+    profession: 'Scientist',
+    public_info: 'A renowned scientist famous for his groundbreaking research.',
+    private_info: 'Secretly working on a controversial experiment.',
+    purpose: 'To make a scientific breakthrough that will change the world.',
+    type: CharacterType.Other,
+    timeline: [
+      { num: 1, text: 'Published a significant research paper.' },
+      { num: 2, text: 'Received a prestigious award for his work.' }
+    ]
+  },
+  {
+    id: 'character03',
+    name: '鈴木一郎',
+    age: 65,
+    icon: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297',
+    profession: 'Scientist',
+    public_info: 'A renowned scientist famous for his groundbreaking research.',
+    private_info: 'Secretly working on a controversial experiment.',
+    purpose: 'To make a scientific breakthrough that will change the world.',
+    type: CharacterType.Other,
+    timeline: [
+      { num: 1, text: 'Published a significant research paper.' },
+      { num: 2, text: 'Received a prestigious award for his work.' }
+    ]
+  },
+];
+
+const sampleCharacterMapData = new Map<string, Character>();
+sampleCharacters.forEach((character) => {
+  sampleCharacterMapData.set(character.id, character);
+});
+
+export {
+  sampleCharacterMapData
+}

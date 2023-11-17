@@ -20,6 +20,8 @@ const CharacterSheet = () => {
     setTargetImageType,
     criminal,
     setOtherCharacters,
+    setEndings, 
+    endings
   } = useCreateScenario();
 
   const [showImageSelectModal, setShowImageSelectModal] = React.useState(false);
@@ -39,6 +41,16 @@ const CharacterSheet = () => {
     if (targetId === '') {
       const newId = uuid.v4().toString();
       setTargetId(newId);
+      
+      // エンディングの追加
+      endings.set(newId, {
+        characterId: '',
+        characterName: '',
+        storySerifLine: [],
+        outline: ''
+      }); 
+      setEndings(endings);
+
       console.log('----------');
       console.log(newId);
 
@@ -101,24 +113,6 @@ const CharacterSheet = () => {
       console.log(targetId);
       console.log(criminal);
       setEditingCharacter(criminal);
-    }
-
-    if (
-      editingCharacter?.icon &&
-      (editingCharacter.icon.startsWith('character_icons/') ||
-        editingCharacter.icon.startsWith('images/'))
-    ) {
-      // 既にFireStorageに保存されている場合
-      const get = async () => {
-        const uri = await storage()
-          .ref(editingCharacter?.icon)
-          .getDownloadURL();
-        setTargetImageURL(uri);
-      };
-
-      get();
-    } else {
-      setTargetImageURL(editingCharacter?.icon!);
     }
 
     setTargetImageURL(editingCharacter?.icon || '');
