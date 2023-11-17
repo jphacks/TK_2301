@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   container: {
-    width: "100%",
+    width: '100%',
     height: 100,
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -18,25 +18,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    borderRadius: 5, 
+    borderRadius: 5,
   },
   characterContainer: {
-    width: "100%",
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   mainText: {
-    marginLeft: 20,
+    marginLeft: 16,
     fontSize: 15,
     fontWeight: 'bold',
     color: 'white',
-    width: 270,
   },
   icon: {
     width: 40,
     height: 40,
   },
-  
+  characterInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

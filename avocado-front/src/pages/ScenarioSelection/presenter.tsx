@@ -1,29 +1,34 @@
-import React from "react"
-import IconScroll from "../../components/generics/IconScroll"
-import Tabbar from "../../components/generics/Tabbar"
-import { ScrollView, View } from "react-native"
-import TopHeader from "../../components/generics/TopHeader"
-import styles from "./style"
-import SearchBar from "./SearchBar"
-import ScenarioSelector from "../../components/generics/ScenarioSelector"
-import PurpleButton from "../../components/generics/PurpleButton"
+import React from 'react';
+import IconScroll from '../../components/generics/IconScroll';
+import Tabbar from '../../components/generics/Tabbar';
+import {ScrollView, View} from 'react-native';
+import TopHeader from '../../components/generics/TopHeader';
+import styles from './style';
+import SearchBar from './SearchBar';
+import ScenarioSelector from '../../components/generics/ScenarioSelector';
+import PurpleButton from '../../components/generics/PurpleButton';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootRoutesParamList} from '../../routes/Root';
 
 type Props = {
-  navigation: any
-}
+  navigation: NativeStackNavigationProp<
+    RootRoutesParamList,
+    'ScenarioSelectionPage',
+    undefined
+  >;
+};
 
-const ScenarioSelectionPresenter = ({ navigation }: Props) => {
+const ScenarioSelectionPresenter = ({navigation}: Props) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <TopHeader />
       <IconScroll />
 
       <View style={styles.searchBarContainer}>
         <SearchBar />
         <PurpleButton
-          title={"絞り込み"}
-          style={styles.purpleButton}
-        ></PurpleButton>
+          title={'絞り込み'}
+          style={styles.purpleButton}></PurpleButton>
       </View>
 
       <ScrollView style={styles.container}>
@@ -35,9 +40,9 @@ const ScenarioSelectionPresenter = ({ navigation }: Props) => {
         <ScenarioSelector title="ランキング" navigation={navigation} />
       </ScrollView>
 
-      <Tabbar isGame={false} />
+      <Tabbar isGame={false} navigation={navigation} />
     </View>
-  )
-}
+  );
+};
 
-export default ScenarioSelectionPresenter
+export default ScenarioSelectionPresenter;
