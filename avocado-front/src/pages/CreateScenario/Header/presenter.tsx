@@ -1,8 +1,10 @@
 import React from 'react';
-import {Image, Pressable, Text, View} from 'react-native';
+import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import styles from './style';
 import {useCreateScenario} from '../createScenario';
 import UploadingModal from '../UploadingModal';
+import BackIcon from 'react-native-vector-icons/Entypo';
+import UploadIcon from 'react-native-vector-icons/Ionicons';
 
 type Props = {
   back: () => void;
@@ -16,19 +18,15 @@ const HeaderPresenter = ({back, text, onPressUploadIcon}: Props) => {
   return (
     <View style={styles.header}>
       <UploadingModal textContent={'保存中...'} />
-      <Pressable onPress={back} style={styles.backContainer}>
-        <Image style={styles.backIcon} source={require('./back.png')} />
-      </Pressable>
+      <TouchableOpacity onPress={back}>
+        <BackIcon name="chevron-left" color={'white'} size={25} />
+      </TouchableOpacity>
 
       <Text style={styles.where}>{text}</Text>
 
-      <Pressable
-        onPress={() => {
-          setIsConfirm(true);
-        }}
-        style={styles.uploadIconContainer}>
-        <Image style={styles.backIcon} source={require('./upload.png')} />
-      </Pressable>
+      <TouchableOpacity onPress={back} style={styles.uploadIconContainer}>
+        <UploadIcon name="cloud-upload-outline" color={'white'} size={25} />
+      </TouchableOpacity>
     </View>
   );
 };
