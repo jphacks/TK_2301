@@ -6,10 +6,18 @@ export type Props = {
   phase: Phase;
   onPress: () => void;
   onPressDots?: () => void;
+  deleteFunction: () => void;
 };
 
-const PhaseCard = ({phase, onPress, onPressDots}: Props) => {
-  return <PhaseCardPresenter phase={phase} onPress={onPress} onPressDots={onPressDots} />;
+const PhaseCard = ({phase, onPress, onPressDots, deleteFunction}: Props) => {
+  return (
+    <PhaseCardPresenter
+      phase={phase}
+      onPress={onPress}
+      onPressDots={onPressDots}
+      deleteFunction={deleteFunction}
+    />
+  );
 };
 
 export default PhaseCard;
