@@ -18,6 +18,7 @@ import ImageCreate from './ImageCreate';
 import ConfirmModal from './ConfirmModal';
 import HintItem from './Hint/HintItem';
 import Ending from './Ending';
+import EndingContent from './EndingContent';
 
 type Props = {
   tabViewProps: {
@@ -75,8 +76,8 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
         return <Room />;
       case CreateState.Phase:
         return <Phase />;
-      case CreateState.Ending:
-        return <Ending />;
+      case CreateState.EndingContent:
+        return <EndingContent/>
       default:
         return (
           <TabView

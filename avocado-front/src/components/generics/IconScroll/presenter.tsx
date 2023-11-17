@@ -16,7 +16,7 @@ const IconScrollPresenter = () => {
           return (
             <InteractiveCircularIcon
               key={i}
-              url={{ image: require("./yamashita.png") }}
+              url={''}
               name={"yamashita"}
             />
           )

@@ -20,6 +20,8 @@ const CharacterSheet = () => {
     setTargetImageType,
     criminal,
     setOtherCharacters,
+    setEndings, 
+    endings
   } = useCreateScenario();
 
   const [showImageSelectModal, setShowImageSelectModal] = React.useState(false);
@@ -27,12 +29,30 @@ const CharacterSheet = () => {
   const closeImageSelectModal = () => setShowImageSelectModal(false);
   const openImageSelectModal = () => setShowImageSelectModal(true);
 
+  console.log('11111111111111111111111111111');
+  console.log(targetId);
+  console.log(nowCharacterType);
+  console.log(editingCharacter);
+  console.log(criminal);
+
   useEffect(() => {
     console.log('effected', targetId);
 
     if (targetId === '') {
       const newId = uuid.v4().toString();
       setTargetId(newId);
+      
+      // // エンディングの追加
+      // endings.set(newId, {
+      //   characterId: '',
+      //   characterName: '',
+      //   storySerifLine: [],
+      //   outline: ''
+      // }); 
+      // setEndings(endings);
+
+      console.log('----------');
+      console.log(newId);
 
       console.log('effected', editingCharacter);
       switch (nowCharacterType) {
@@ -82,7 +102,7 @@ const CharacterSheet = () => {
     }
 
     if (nowCharacterType === CharacterType.Other) {
-      const other = otherCharacters.get(targetId!);
+      const other = otherCharacters.get(targetId!)
       setEditingCharacter(other);
     }
 
@@ -90,6 +110,8 @@ const CharacterSheet = () => {
       nowCharacterType === CharacterType.Criminal &&
       editingCharacter === undefined
     ) {
+      console.log(targetId);
+      console.log(criminal);
       setEditingCharacter(criminal);
     }
 

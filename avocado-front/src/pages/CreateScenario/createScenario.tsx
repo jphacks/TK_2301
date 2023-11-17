@@ -10,9 +10,12 @@ import {
   Phase,
   ItemImageCandidate,
   ImageType,
+  Ending,
 } from '../../models/scenario';
 import {
   sampleAbstract,
+  sampleCharacterMapData,
+  sampleCharacters,
   sampleClueItems,
   sampleEditingCharacter,
 } from '../../models/samples';
@@ -31,7 +34,7 @@ export enum CreateState {
   Image,
   Room,
   Phase,
-  Ending,
+  EndingContent
 }
 
 const clueItemsMap = new Map<string, Item>();
@@ -137,6 +140,9 @@ type CreateScenarioContextType = {
 
   phaseData: Map<string, Phase>;
   setPhaseData: React.Dispatch<React.SetStateAction<Map<string, Phase>>>;
+  
+  endings: Map<string, Ending>;
+  setEndings: React.Dispatch<React.SetStateAction<Map<string, Ending>>>;
 
   // ================================ その他オリジナル関数 =============================
   transitNextState: (createState: CreateState, targetId?: string) => void;
@@ -206,7 +212,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   });
   const [otherCharacters, setOtherCharacters] = useState<
     Map<string, Character>
-  >(new Map());
+  >(sampleCharacterMapData);
   const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
   const [scenarioId, setScenarioId] = useState<string>('');
   const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
@@ -223,6 +229,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       timeLimit: 30,
     }),
   );
+  const [endings, setEndings] = useState<Map<string, Ending>>(new Map());
 
   // ================================ その他オリジナル関数 =============================
   // 第二引数は編集画面に遷移する際の対象要素の識別子
@@ -442,6 +449,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setIsUploading,
         isConfirm,
         setIsConfirm,
+        endings,
+        setEndings
       }}>
       {children}
     </CreateScenarioContext.Provider>

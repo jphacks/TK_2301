@@ -4,7 +4,6 @@ import {CreateState, useCreateScenario} from '../createScenario';
 import uuid from 'react-native-uuid';
 import {ImageType, Item, ItemCategory} from '../../../models/scenario';
 import {pickSingleImageFromLocalStorage} from '../utility';
-import {createScenarioFirestore} from '../../../api/firebase/firestore';
 
 const ItemInfo = () => {
   const [showModal, setShowModal] = useState(false);
@@ -132,21 +131,9 @@ const ItemInfo = () => {
     // ラジオボタンの初期値を設定するために必要
     setItemType(target.category);
 
-    if (target.uri.startsWith('items/') || target.uri.startsWith('images/')) {
-      // 既にFireStorageに保存されている場合
-      const get = async () => {
-        const uri = await createScenarioFirestore().getImageUrl(target.uri);
-        setTargetImageURL(uri);
-        setIsSelectedImage(true);
-      };
-
-      get();
-    } else if (target.uri.startsWith('file://')) {
-      // まだFireStorageに保存されていない場合
-      setTargetImageURL(target.uri);
-      setIsSelectedImage(true);
-    }
-
+    setTargetImageURL(target.uri);
+    setIsSelectedImage(true);
+    
     // TODO: 画像が表示されるまで間隔があるので、それまで画像ピッカーが表示されないようにする
   }, []);
 

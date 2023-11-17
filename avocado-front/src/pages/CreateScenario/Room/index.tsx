@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import RoomPresenter from './presenter';
 import {CreateState, useCreateScenario} from '../createScenario';
 import uuid from 'react-native-uuid';
-import {createScenarioFirestore} from '../../../api/firebase/firestore';
 import {FloorMap, ImageType} from '../../../models/scenario';
 import {pickSingleImageFromLocalStorage} from '../utility';
 
@@ -46,22 +45,9 @@ const Room = () => {
 
     const target = floorMaps.get(targetId || '')?.uri || '';
 
-    if (target.startsWith('floor_maps/') || target.startsWith('images/')) {
-      // 既にFireStorageに保存されている場合
-      const get = async () => {
-        const uri = await createScenarioFirestore().getImageUrl(target);
-        setTargetImageURL(uri);
-        setIsSelectedImage(true);
-      };
-
-      get();
-    } else if (target.startsWith('file://')) {
-      // まだFireStorageに保存されていない場合
-      setTargetUri(target);
-      setTargetImageURL(target);
-      setIsSelectedImage(true);
-    }
-
+    setTargetImageURL(target);
+    setIsSelectedImage(true);
+    
     // TODO: 画像が表示されるまで間隔があるので、それまで画像ピッカーが表示されないようにする
   }, []);
 
