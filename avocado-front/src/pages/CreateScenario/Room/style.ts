@@ -75,6 +75,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  itemDetailTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
   itemCard: {
     color: 'white',
     flexDirection: 'row',
@@ -90,6 +96,37 @@ const styles = StyleSheet.create({
     height: 60,
     marginLeft: 10,
     borderRadius: 5,
+  },
+  detailItemContainer: {
+    backgroundColor: '#323338',
+    paddingTop: 20,
+    padding: 30,
+  },
+  iconContainer: {
+    marginBottom: 10,
+  },
+  dummyWhite: {
+    backgroundColor: 'white',
+    left: 5,
+    top: 5,
+    position: 'absolute',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+  },
+  detailItemImage: {
+    width: 300,
+    height: 200,
+    marginLeft: 10,
+    borderRadius: 5,
+  },
+  categoryWrapper: {
+    width: 60,
+    borderRadius: 20,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    marginBottom: 8,
+    backgroundColor: '#2A2A2A',
   },
   cardTextContainer: {
     marginLeft: 20,
@@ -134,6 +171,24 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  itemDetailDescription: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  itemPinModalView: {
+    flex: 1,
+    justifyContent: 'center',
+    height: 500,
+    paddingTop: 0,
+    alignItems: 'center',
+    backgroundColor: 'rgba(50,51,56,0.7)',
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
 });
 
