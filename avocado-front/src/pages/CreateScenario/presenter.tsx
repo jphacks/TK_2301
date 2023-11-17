@@ -16,9 +16,8 @@ import Phase from './Phase';
 import uuid from 'react-native-uuid';
 import ImageCreate from './ImageCreate';
 import ConfirmModal from './ConfirmModal';
-import HintItem from './Hint/HintItem';
-import Ending from './Ending';
 import EndingContent from './EndingContent';
+import CompletedModal from './CompletedModal';
 
 type Props = {
   tabViewProps: {
@@ -113,6 +112,7 @@ const CreateScenarioPresenter = ({tabViewProps, navigation}: Props) => {
         buttonTextContent={'投稿する'}
         onPressConfirm={uploadScenarioData}
       />
+      <CompletedModal  />
       <Header navigation={navigation} />
       {renderContent()}
     </View>

@@ -11,20 +11,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#1E1F23",
-    paddingVertical: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 10,
+    height: 60,
   },
   where: {
     color: "#fff",
     fontSize: 16,
   },
-  backIcon: {},
-  backContainer: {
-    width: 30,
-    height: 45,
-    padding: 16,
-  },
   uploadIconContainer: {
-    marginRight: 10,
+    marginTop: 2,
+    marginRight: 1
   },
 });
 
