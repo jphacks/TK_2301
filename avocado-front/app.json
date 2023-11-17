@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "avocado-front",
+    "slug": "avocado-front",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Use the photo library to change your avatar.",
+        "NSCameraUsageDescription": "Use for video call.",
+        "NSMicrophoneUsageDescription": "Use for video call."
+      },
+      "bundleIdentifier": "com.ttaktt.avocadofront"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.ttaktt.avocadofront"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
