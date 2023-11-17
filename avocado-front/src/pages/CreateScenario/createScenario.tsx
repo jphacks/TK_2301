@@ -92,6 +92,10 @@ type CreateScenarioContextType = {
   setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
 
   // サーバとのやり取り中、ロード画面を表示させるために使う
+  isCompleteUpload: boolean;
+  setIsCompleteUpload: React.Dispatch<React.SetStateAction<boolean>>;
+
+  // サーバとのやり取り中、ロード画面を表示させるために使う
   isUploading: boolean;
   setIsUploading: React.Dispatch<React.SetStateAction<boolean>>;
 
@@ -184,6 +188,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   const [targetImageURL, setTargetImageURL] = useState<string>('');
   const [isFetching, setIsFetching] = useState<boolean>(false); // 生成中モーダル表示のために用いる
   const [isUploading, setIsUploading] = useState<boolean>(false); // TODO: 保存中モーダル表示のために用いる
+  const [isCompleteUpload, setIsCompleteUpload] = useState<boolean>(false);
   const [isConfirm, setIsConfirm] = useState<boolean>(false);
 
   const openConfirmModal = () => setIsConfirm(true);
@@ -387,6 +392,9 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       createScenarioFirestore().insert(scenarioId, data);
       setIsNewScenario(false);
     } else createScenarioFirestore().update(scenarioId, data);
+
+    setIsCompleteUpload(true);
+    console.log('complete upload');
   };
 
   return (
@@ -452,6 +460,8 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
         setIsUploading,
         isConfirm,
         setIsConfirm,
+        isCompleteUpload,
+        setIsCompleteUpload,
         endings,
         setEndings,
       }}>

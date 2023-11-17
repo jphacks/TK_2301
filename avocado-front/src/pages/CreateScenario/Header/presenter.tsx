@@ -11,7 +11,7 @@ type Props = {
 };
 
 const HeaderPresenter = ({back, text, onPressUploadIcon}: Props) => {
-  const {setIsConfirm, setIsUploading} = useCreateScenario();
+  const {setIsConfirm} = useCreateScenario();
 
   return (
     <View style={styles.header}>
