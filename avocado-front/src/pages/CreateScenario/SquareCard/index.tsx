@@ -6,10 +6,11 @@ export type Props = {
   label?: string;
   onPress: () => void;
   style?: any;
+  onPressDots?: () => void
 };
 
-const SquareCard = ({id, label, onPress, style}: Props) => {
-  return <SquareCardPresenter label={label} id={id} onPress={onPress} style={style} />;
+const SquareCard = ({id, label, onPress, style, onPressDots}: Props) => {
+  return <SquareCardPresenter label={label} id={id} onPress={onPress} style={style}  onPressDots={onPressDots}/>;
 };
 
 export default SquareCard;

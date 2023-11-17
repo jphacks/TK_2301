@@ -336,7 +336,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
           contentType: 'image/png',
         });
 
-        character.icon = await scenarioFirestore.getImageUrl(uploadPath);; // Firebaseに格納したURLで上書きする
+        character.icon = await scenarioFirestore.getImageUrl(uploadPath); // Firebaseに格納したURLで上書きする
       }
 
       bufOther.set(character.id, character);
@@ -383,8 +383,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
 
     closeUploadingModal();
 
-    if (isNewScenario) createScenarioFirestore().insert(scenarioId, data);
-    else createScenarioFirestore().update(scenarioId, data);
+    if (isNewScenario) {
+      createScenarioFirestore().insert(scenarioId, data);
+      setIsNewScenario(false);
+    } else createScenarioFirestore().update(scenarioId, data);
   };
 
   return (

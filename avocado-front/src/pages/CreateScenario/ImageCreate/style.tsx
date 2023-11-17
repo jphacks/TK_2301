@@ -6,6 +6,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
+  viewPager: {
+    flex: 1,
+    height: 500,
+  },
+  page: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   text: {
     textAlign: 'center',
     color: '#fff',
@@ -40,10 +48,19 @@ const styles = StyleSheet.create({
     width: 320,
     marginTop: 8,
   },
+  proposedImageForFloorMapContainer: {
+    alignItems: 'center',
+  },
   proposedImage: {
     height: 150,
     width: 150,
     margin: 5,
+    borderColor: '#3DD6DD',
+    borderWidth: 2,
+  },
+  proposedImageForFloorMap: {
+    height: '100%',
+    width: '100%',
     borderColor: '#3DD6DD',
     borderWidth: 2,
   },
@@ -72,6 +89,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 16,
     right: 16,
+  },
+  proposedImageDotsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  dot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: '#D9D9D9',
   },
 
   image: {

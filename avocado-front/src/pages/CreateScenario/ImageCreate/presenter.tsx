@@ -2,9 +2,9 @@ import React from 'react';
 import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import styles from './style';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
-import {ItemImageCandidate} from '../../../models/scenario';
-import Spinner from 'react-native-loading-spinner-overlay';
+import {ImageType, ItemImageCandidate} from '../../../models/scenario';
 import FetchingModal from '../FetchingModal';
+import PagerView from 'react-native-pager-view';
 
 type Props = {
   onChangeText: (text: string) => void;
@@ -17,6 +17,7 @@ type Props = {
   focusedImageUri: string;
   setFocusedImageUri: React.Dispatch<React.SetStateAction<string>>;
   onPressDecideImage: () => void;
+  targetImageType: ImageType;
 };
 
 const ImageCreatePresenter = ({
@@ -28,33 +29,86 @@ const ImageCreatePresenter = ({
   focusedImageUri,
   setFocusedImageUri,
   onPressDecideImage,
+  targetImageType,
 }: Props) => {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
   return (
     <View style={styles.container}>
       <FetchingModal textContent={'生成中...'} />
 
-      {fetchedImage && (
-        <View style={styles.proposedImageContainer}>
-          {candidateImageUri.map(uri => {
-            return (
-              <TouchableOpacity
-                key={uri}
-                onPress={() => {
-                  setFocusedImageUri(uri);
+      {fetchedImage &&
+        (targetImageType === ImageType.FloorMap ? (
+          <View style={styles.proposedImageForFloorMapContainer}>
+            <View style={styles.proposedImageContainer}>
+              <PagerView
+                style={styles.viewPager}
+                initialPage={0}
+                onPageSelected={event => {
+                  setFocusedImageUri('');
+                  const {position} = event.nativeEvent;
+                  setSelectedIndex(position);
                 }}>
-                <Image
+                {candidateImageUri.map(uri => {
+                  return (
+                    <TouchableOpacity
+                      key={uri}
+                      onPress={() => {
+                        setFocusedImageUri(uri);
+                      }}>
+                      <Image
+                        key={uri}
+                        style={[
+                          styles.proposedImageForFloorMap,
+                          {borderWidth: focusedImageUri === uri ? 2 : 0},
+                        ]}
+                        source={{uri}}
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
+              </PagerView>
+            </View>
+
+            <View style={styles.proposedImageDotsContainer}>
+              {candidateImageUri.map((uri, index) => {
+                return (
+                  <View
+                    style={[
+                      styles.dot,
+                      {
+                        marginRight:
+                          index === candidateImageUri.length - 1 ? 0 : 8,
+                        backgroundColor:
+                          selectedIndex === index ? 'white' : '#6e6d6d',
+                      },
+                    ]}></View>
+                );
+              })}
+            </View>
+          </View>
+        ) : (
+          <View style={styles.proposedImageContainer}>
+            {candidateImageUri.map(uri => {
+              return (
+                <TouchableOpacity
                   key={uri}
-                  style={[
-                    styles.proposedImage,
-                    {borderWidth: focusedImageUri === uri ? 2 : 0},
-                  ]}
-                  source={{uri}}
-                />
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      )}
+                  onPress={() => {
+                    setFocusedImageUri(uri);
+                  }}>
+                  <Image
+                    key={uri}
+                    style={[
+                      styles.proposedImage,
+                      {borderWidth: focusedImageUri === uri ? 2 : 0},
+                    ]}
+                    source={{uri}}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        ))}
 
       {focusedImageUri !== '' && (
         <View style={styles.button}>
