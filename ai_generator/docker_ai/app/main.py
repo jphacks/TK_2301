@@ -97,6 +97,8 @@ def create_scenario(reqBody: reqBody):
 		prompt = f.read()
 	chara = json.loads(generationSentence(prompt, timeline, param))
 
+
+	timeline = json.loads(timeline)
 	output = {
 		"name": chara["name"],
 		"age": chara["age"],
@@ -155,7 +157,7 @@ def create_scenario_test(reqBody: reqBody):
 def create_image_test(reqBody: reqBody):
 	message = reqBody.user_input
 	print(json.dumps(message, indent=2, ensure_ascii=False))
-	output = {"name": message,"image":["item/XXX1.png","item/XXX2.png","item/XXX3.png","item/XXX4.png"]}
+	output = {"name": message,"image":["http://XXX/item/XXX1.png","http://XXX/item/XXX2.png","http://XXX/item/XXX3.png","http://XXX/item/XXX4.png"]}
 	return output
 
 @app.get("/test/env")
