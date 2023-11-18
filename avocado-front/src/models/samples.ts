@@ -49,6 +49,14 @@ export const sampleAbstract = {
     'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/thumbnail%2Fthunderstorm-3625405_1920.jpg?alt=media&token=c06ffad1-3eb3-4504-a538-62fd07d1e039',
 };
 
+export const emptyAbstract = {
+  title: '',
+  outline: '',
+  requiredTime: 0,
+  numberOfPlayers: 0,
+  thumbnail: '',
+};
+
 export const sampleEditingCharacter: Character = {
   id: 'character01',
   name: '山田太郎',

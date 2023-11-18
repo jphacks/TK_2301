@@ -13,8 +13,8 @@ import {
   Ending,
 } from '../../models/scenario';
 import {
+  emptyAbstract,
   sampleAbstract,
-  sampleCharacterMapData,
   sampleClueItems,
 } from '../../models/samples';
 import {createScenarioFirestore} from '../../api/firebase/firestore';
@@ -215,10 +215,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   });
   const [otherCharacters, setOtherCharacters] = useState<
     Map<string, Character>
-  >(sampleCharacterMapData);
+  >(new Map());
   const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
   const [scenarioId, setScenarioId] = useState<string>('');
-  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
+  const [abstraction, setAbstraction] = useState<Abstraction>(emptyAbstract);
   const [items, setItems] = useState<Map<string, Item>>(new Map());
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
@@ -229,7 +229,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       name: '第１章 事件の始まり',
       phaseId: 'xxxx',
       numberOfSurveys: 2,
-      timeLimit: 30,
+      timeLimit: 15,
     }),
   );
   const [endings, setEndings] = useState<Map<string, Ending>>(new Map());

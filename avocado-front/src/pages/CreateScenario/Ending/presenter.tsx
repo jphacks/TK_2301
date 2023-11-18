@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import {CreateState, useCreateScenario} from '../createScenario';
 import CharacterVoteButton from '../../../components/generics/CharacterVoteButton';
 import styles from './style';
@@ -16,19 +16,22 @@ const EndingPresenter = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.text}>投票パターン</Text>
-      {characters.map((character, index) => (
-        <CharacterVoteButton
-          key={index}
-          character={character}
-          forPlayingGame={false}
-          style={styles.characterVoteButton}
-          onPress={() => {
-            setEditingCharacter(character);
-            setPhase(prev => prev + 1);
-            transitNextState(CreateState.EndingContent, character.id);
-          }}
-        />
-      ))}
+      {characters.map(
+        (character, index) =>
+          character.id !== '' && (
+            <CharacterVoteButton
+              key={index}
+              character={character}
+              forPlayingGame={false}
+              style={styles.characterVoteButton}
+              onPress={() => {
+                setEditingCharacter(character);
+                setPhase(prev => prev + 1);
+                transitNextState(CreateState.EndingContent, character.id);
+              }}
+            />
+          ),
+      )}
 
       <CharacterVoteButton
         isNone={true}
