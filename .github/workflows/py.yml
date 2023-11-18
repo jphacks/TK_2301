@@ -46,7 +46,7 @@ jobs:
         run: sudo apt-get install sshpass
 
       - name: Sync docker-compose.yml
-        run: cp ./docker-compose-prod.yml ./docker-compose.yml && sshpass -v -p ${{ secrets.SAKURA_PASSWORD }} scp -o StrictHostKeyChecking=no ./docker-compose.yml ${{ secrets.SAKURA_USERNAME }}@${{ secrets.SAKURA_IP_PYTHON }}:~ && scp -o StrictHostKeyChecking=no ./app/* ${{ secrets.SAKURA_USERNAME }}@${{ secrets.SAKURA_IP_PYTHON }}:~/app/
+        run: cp ./docker-compose-prod.yml ./docker-compose.yml && sshpass -v -p ${{ secrets.SAKURA_PASSWORD }} scp -o StrictHostKeyChecking=no ./docker-compose.yml ${{ secrets.SAKURA_USERNAME }}@${{ secrets.SAKURA_IP_PYTHON }}:~ && sshpass -v -p ${{ secrets.SAKURA_PASSWORD }} scp -o StrictHostKeyChecking=no ./app/* ${{ secrets.SAKURA_USERNAME }}@${{ secrets.SAKURA_IP_PYTHON }}:~/app/
 
       - name: Deploy
         uses: appleboy/ssh-action@master
