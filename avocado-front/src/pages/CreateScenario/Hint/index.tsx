@@ -15,7 +15,7 @@ const Hint = () => {
     transitNextState,
     world,
     targetId,
-    fetchDataFromServerWithInteract
+    fetchDataFromServerWithInteract,
   } = useCreateScenario();
 
   const addItem = (item: string) => {
@@ -31,23 +31,20 @@ const Hint = () => {
 
     const bodyData = JSON.stringify({
       world: world,
-      item: sendItems,
+      items: sendItems,
       trivia: sendPhenomena,
     }).toString();
 
     const data = {
       user_input: `${bodyData}`,
     };
-    
-
-    const res = await fetchDataFromServerWithInteract('test/trick/', data);
+    const res = await fetchDataFromServerWithInteract('prod/trick/', data);
 
     setItemTricks([...res.item]);
     setTriviaTricks([...res.trivia]);
 
     setPhase(prev => prev + 1);
     transitNextState(CreateState.Trick, targetId);
-
   };
   return <HintPresenter funcs={{addItem, addPhenomena}} next={next} />;
 };

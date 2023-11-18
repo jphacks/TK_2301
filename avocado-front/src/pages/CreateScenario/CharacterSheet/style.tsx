@@ -16,19 +16,16 @@ const styles = StyleSheet.create({
     borderColor: '#696969',
     padding: 16,
     color: '#fff',
-
   },
   nameInput: {
     height: 60,
     width: 300,
   },
-  openInput: {height: 96, marginBottom: 40},
+  openInput: {marginBottom: 40, paddingVertical: 16},
   privateInput: {
-    height: 60,
     marginBottom: 40,
   },
   timelineInput: {
-    height: 60,
     marginBottom: 40,
   },
   purposeInput: {

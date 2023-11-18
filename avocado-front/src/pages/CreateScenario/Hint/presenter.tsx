@@ -35,7 +35,7 @@ const HintPresenter = ({funcs, next}: Props) => {
           犯行に関わる現象を1~5個以上選んでください
         </Text>
         <View
-          style={{flexDirection: 'row', flexWrap: 'wrap', marginBottom: 110}}>
+          style={{flexDirection: 'row', flexWrap: 'wrap', marginBottom: 60}}>
           {recievedPhenomena?.map((phenomena, index) => (
             <HintItem
               key={index}
@@ -49,6 +49,7 @@ const HintPresenter = ({funcs, next}: Props) => {
           text="トリックの仕組みを生成"
           onPress={next}
           width={320}
+          style={{marginBottom: 40}}
         />
       </View>
     </ScrollView>

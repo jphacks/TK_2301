@@ -16,7 +16,12 @@ const TrickSelector = () => {
   } = useCreateScenario();
   const [selectedItemTricks, setSelectedItemTricks] = useState<Trick[]>([]);
   const [selectedTriviaTricks, setSelectedTriviaTricks] = useState<Trick[]>([]);
-  const {nowCharacterType, otherCharacters, setOtherCharacters, fetchDataFromServerWithInteract} = useCreateScenario();
+  const {
+    nowCharacterType,
+    otherCharacters,
+    setOtherCharacters,
+    fetchDataFromServerWithInteract,
+  } = useCreateScenario();
 
   const onPress = async () => {
     // fetchする
@@ -29,10 +34,25 @@ const TrickSelector = () => {
       user_input: `${bodyData}`,
     };
 
-    const res = await fetchDataFromServerWithInteract('test/criminal-character', data)
+    let res;
+
+    if (nowCharacterType === CharacterType.Criminal) {
+      res = await fetchDataFromServerWithInteract(
+        'prod/criminal-character',
+        data,
+      );
+    } else if (nowCharacterType === CharacterType.Other) {
+      res = await fetchDataFromServerWithInteract(
+        'prod/normal-character',
+        data,
+      );
+    }
 
     res.id = targetId;
     res.icon = ''; // iconが返ってくるようになるまでの仮
+
+    console.log('!!!!!gen!!!!!', res);
+
     setEditingCharacter(res);
     setItemImageCandidate(res.item);
 

@@ -68,7 +68,9 @@ const CharacterSheetPresenter = ({
         <Text style={styles.label}>キャラクターの公開情報</Text>
         <TextInput
           style={[styles.input, styles.openInput]}
+          
           placeholderTextColor="#888888"
+          multiline={true}
           defaultValue={editingCharacter?.public_info}
           onChangeText={text => {
             setEditingCharacter({
@@ -82,6 +84,7 @@ const CharacterSheetPresenter = ({
         <TextInput
           style={[styles.input, styles.privateInput]}
           placeholderTextColor="#888888"
+          multiline={true}
           defaultValue={editingCharacter?.private_info}
           onChangeText={text => {
             setEditingCharacter({
@@ -95,6 +98,8 @@ const CharacterSheetPresenter = ({
         <TextInput
           style={[styles.input, styles.timelineInput]}
           placeholderTextColor="#888888"
+          multiline={true}
+
           defaultValue={editingCharacter?.timeline.map(t => t.text).join('\n')}
           onChangeText={text => {
             setEditingCharacter({

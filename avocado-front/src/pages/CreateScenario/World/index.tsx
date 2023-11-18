@@ -40,7 +40,7 @@ const World = () => {
     };
 
     const res = await fetchDataFromServerWithInteract(
-      'test/item-and-trivia/',
+      'prod/item-and-trivia/',
       data,
     );
 

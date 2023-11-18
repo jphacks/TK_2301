@@ -84,7 +84,7 @@ export type ItemCategory = '' | 'item' | 'info';
 
 export type Trick = {
   name: string;
-  uncommonSense: string;
+  denialSense: string;
   principle: string;
   illusion: string;
 };
