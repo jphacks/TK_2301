@@ -74,7 +74,7 @@ const OtherSettingsPresenter = ({
 
       <Text style={styles.text}>あらすじ</Text>
       <TextInput
-        style={[styles.input, {height: 230}]}
+        style={[styles.input, {height: 230, marginBottom: 50}]}
         placeholderTextColor="#696969"
         multiline={true}
         defaultValue={targetAbstraction.outline}
