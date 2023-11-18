@@ -6,13 +6,15 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {Room} from '../type';
+import {Room, User} from '../type';
 import {useGame} from '../pages/Game/game.context';
 import {GameItem, Item} from '../models/scenario';
 
 type SocketContextType = {
   socketRef: React.MutableRefObject<WebSocket | undefined>;
   rooms: Room[];
+  sessionUsers: User[];
+  setSessionUsers: React.Dispatch<React.SetStateAction<User[]>>;
 };
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -27,6 +29,7 @@ export function useSocket() {
 
 export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [sessionUsers, setSessionUsers] = useState<User[]>([]);
   const [receivedMessage, setReceivedMessage] = useState<string>('');
   const socketRef = useRef<WebSocket>();
   const {
@@ -132,7 +135,8 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   };
 
   return (
-    <SocketContext.Provider value={{socketRef, rooms}}>
+    <SocketContext.Provider
+      value={{socketRef, rooms, sessionUsers, setSessionUsers}}>
       {children}
     </SocketContext.Provider>
   );

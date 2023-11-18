@@ -17,7 +17,7 @@ class ScenarioFirestore {
   async getAll() {
     const querySnapshot = await getDocs(collection(this.firestore, 'scenario'));
     querySnapshot.forEach(doc => {
-      console.log(doc.id, ' => ', doc.data());
+      // console.log(doc.id, ' => ', doc.data());
     });
     return querySnapshot;
   }
@@ -28,7 +28,7 @@ class ScenarioFirestore {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log(docId, '=>', docSnap.data());
+      // console.log(docId, '=>', docSnap.data());
     } else {
       console.log('No such document!');
     }
@@ -61,14 +61,11 @@ class ScenarioFirestore {
   async getUserIconUrl(userId: string): Promise<string> {
     const storage = getStorage();
     const storageRef = ref(storage, `user_icons/${userId}.png`);
+    
+    const url = await getDownloadURL(storageRef);
+    if (typeof(url) !== 'string') return 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297'
 
-    try {
-      const url = await getDownloadURL(storageRef);
-      return url;
-    } catch (error) {
-      console.error('Error getting image URL: ', error);
-      throw error; // またはエラーに応じた適切な処理を行う
-    }
+    return url;
   }
 }
 

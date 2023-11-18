@@ -4,6 +4,7 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 8,
     paddingTop: 8,
+    
     backgroundColor: "black"
   },
   bigBlue: {

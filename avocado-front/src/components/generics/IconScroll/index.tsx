@@ -1,11 +1,11 @@
 import React from "react"
 import IconScrollPresenter from "./presenter"
+import { User } from "../../../type"
 
 export type Props = {
-  test: string
 }
 
-const IconScroll = () => {
+const IconScroll = ({}: Props) => {
   return <IconScrollPresenter />
 }
 
