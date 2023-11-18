@@ -4,21 +4,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    left: 0,
-    marginBottom: 10,
-    height: 580,
+    alignItems: 'center',
     paddingVertical: 20,
     paddingHorizontal: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 23,
+    width: 317,
   },
   cancel: {
     width: 146,

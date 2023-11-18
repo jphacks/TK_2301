@@ -25,6 +25,12 @@ const styles = StyleSheet.create({
     height: 4,
     marginRight: 7,
   },
+  modalView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000080',
+  },
 });
 
 export default styles;

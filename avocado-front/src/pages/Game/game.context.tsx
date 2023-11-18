@@ -46,6 +46,8 @@ type GameContextType = {
   >;
   nowMapId: string;
   setNowMapId: React.Dispatch<React.SetStateAction<string>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -94,6 +96,7 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
   ] = useState<boolean>(false);
   const [transferableItem, setTransferableItem] = useState<GameItem>();
   const [nowMapId, setNowMapId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const updateItems = (items: Item[]) => {
     const newItems: GameItem[] = [];
@@ -144,6 +147,8 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
         setTransferableItem,
         nowMapId,
         setNowMapId,
+        isLoading,
+        setIsLoading,
       }}>
       {children}
     </GameContext.Provider>

@@ -14,7 +14,7 @@ export type Props = {
 
 const GameHeader = ({props}: Props) => {
   const {socketRef} = useSocket();
-  const {votedCharacterName} = useGame();
+  const {votedCharacterName, setIsLoading} = useGame();
   const {user} = useUser();
 
   const onClick = () => {
@@ -22,6 +22,7 @@ const GameHeader = ({props}: Props) => {
       socketRef.current?.send(`/vote ${votedCharacterName} ${user?.uid}`);
     } else {
       socketRef.current?.send(`/ack`);
+      setIsLoading(true);
     }
   };
   return <GameHaderPresenter props={props} onClick={onClick} />;
