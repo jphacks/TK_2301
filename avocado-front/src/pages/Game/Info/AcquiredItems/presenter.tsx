@@ -4,6 +4,8 @@ import {useGame} from '../../game.context';
 import {GameItem} from '../../../../models/scenario';
 import styles from './style';
 import ItemCard from './ItemCard';
+import CharacterList from './CharacterList';
+import {Props as ContainerProps} from './index';
 
 type Props = {
   onPress: (item: GameItem) => void;
@@ -11,7 +13,7 @@ type Props = {
   showMyItem: boolean;
   item: GameItem | undefined;
   setShowMyItem: React.Dispatch<React.SetStateAction<boolean>>;
-};
+} & ContainerProps;
 
 const AcquiredItemsPresenter = ({
   onPress,
@@ -19,8 +21,9 @@ const AcquiredItemsPresenter = ({
   showMyItem,
   item,
   setShowMyItem,
+  scenarioCharacters,
 }: Props) => {
-  const {usersOnTheFloor} = useGame();
+  const {usersOnTheFloor, isShowSelectTransferredCharacters} = useGame();
   return (
     <View>
       {reshapedMyItems.map((myItem, index) => {
@@ -39,6 +42,9 @@ const AcquiredItemsPresenter = ({
       })}
 
       {showMyItem && <ItemCard item={item} setShowMyItem={setShowMyItem} />}
+      {isShowSelectTransferredCharacters && (
+        <CharacterList scenarioCharacters={scenarioCharacters} />
+      )}
     </View>
   );
 };

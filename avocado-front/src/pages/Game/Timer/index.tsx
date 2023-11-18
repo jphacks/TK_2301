@@ -8,10 +8,13 @@ type Props = {
 
 const Timer = ({initialTime}: Props) => {
   const [time, setTime] = useState(initialTime * 60);
-  const {setNowPhase} = useGame();
+  const {setNowPhase, lockTimer} = useGame();
 
   useEffect(() => {
     if (time == 0) {
+      if (lockTimer) {
+        clearInterval(lockTimer);
+      }
       setNowPhase((prev: number) => prev + 1);
     }
     const timer = time > 0 && setInterval(() => setTime(time - 1), 1000);

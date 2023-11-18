@@ -28,6 +28,24 @@ type GameContextType = {
   >;
   votedCharacterName: string;
   setVotedCharacterName: React.Dispatch<React.SetStateAction<string>>;
+  mapMovementLock: boolean;
+  setMapMovementLock: React.Dispatch<React.SetStateAction<boolean>>;
+  isShowLockModal: boolean;
+  setIsShowLockModal: React.Dispatch<React.SetStateAction<boolean>>;
+  lockTime: number;
+  setLockTime: React.Dispatch<React.SetStateAction<number>>;
+  lockTimer: NodeJS.Timeout | null;
+  setLockTimer: React.Dispatch<React.SetStateAction<NodeJS.Timeout | null>>;
+  isShowSelectTransferredCharacters: boolean;
+  setIsShowSelectTransferredCharacters: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
+  transferableItem: GameItem | undefined;
+  setTransferableItem: React.Dispatch<
+    React.SetStateAction<GameItem | undefined>
+  >;
+  nowMapId: string;
+  setNowMapId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -66,6 +84,16 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
     new Map(),
   );
   const [votedCharacterName, setVotedCharacterName] = useState<string>('');
+  const [mapMovementLock, setMapMovementLock] = useState<boolean>(false);
+  const [isShowLockModal, setIsShowLockModal] = useState<boolean>(false);
+  const [lockTimer, setLockTimer] = useState<NodeJS.Timeout | null>(null);
+  const [lockTime, setLockTime] = useState<number>(60);
+  const [
+    isShowSelectTransferredCharacters,
+    setIsShowSelectTransferredCharacters,
+  ] = useState<boolean>(false);
+  const [transferableItem, setTransferableItem] = useState<GameItem>();
+  const [nowMapId, setNowMapId] = useState<string>('');
 
   const updateItems = (items: Item[]) => {
     const newItems: GameItem[] = [];
@@ -102,6 +130,20 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
         setUsersOnTheFloor,
         votedCharacterName,
         setVotedCharacterName,
+        mapMovementLock,
+        setMapMovementLock,
+        isShowLockModal,
+        setIsShowLockModal,
+        lockTime,
+        setLockTime,
+        lockTimer,
+        setLockTimer,
+        isShowSelectTransferredCharacters,
+        setIsShowSelectTransferredCharacters,
+        transferableItem,
+        setTransferableItem,
+        nowMapId,
+        setNowMapId,
       }}>
       {children}
     </GameContext.Provider>

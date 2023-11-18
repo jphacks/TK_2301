@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import VotePresenter from './presenter';
 import {Character} from '../../../models/scenario';
 import {useGame} from '../game.context';
@@ -9,13 +9,13 @@ export type Props = {
 
 const Vote = ({characters}: Props) => {
   // falseの配列を作成
-  const [isSelected, setIsSelected] = React.useState<boolean[]>(
+  const [isSelected, setIsSelected] = useState<boolean[]>(
     new Array(characters.length).fill(false),
   );
   const {setVotedCharacterName} = useGame();
 
   const onPress = (index: number) => {
-    const newIsSelected = isSelected;
+    const newIsSelected = isSelected.slice();
     newIsSelected.map((_, i) => {
       if (i !== index) {
         newIsSelected[i] = false;

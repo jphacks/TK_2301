@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import ItemCardPresenter from './presenter';
 import {useFloor} from '../floor.context';
 import {GameItem, Item} from '../../../../models/scenario';
-import scenarioCollection from '../../../../api/firebase/firestore';
+import {createScenarioFirestore} from '../../../../api/firebase/firestore';
 import {useGame} from '../../game.context';
 import {useSocket} from '../../../../context/socket.context';
 import {useUser} from '../../../../context/user.context';
@@ -21,7 +21,7 @@ const ItemCard = ({item, minusSurveysCount}: Props) => {
   useEffect(() => {
     const getUri = async () => {
       if (item && !item.uri.startsWith('https://')) {
-        item.uri = await scenarioCollection.getImageUrl(item.uri);
+        item.uri = await createScenarioFirestore().getImageUrl(item.uri);
       }
     };
     getUri();

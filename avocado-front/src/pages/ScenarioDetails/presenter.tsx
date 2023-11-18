@@ -14,6 +14,8 @@ import ServerCard from '../../components/generics/ServerCard';
 import {colorCode} from '../../styles/general';
 import Characters from '../../components/generics/Characters';
 import {Scenario} from '../../models/scenario';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootRoutesParamList} from '../../routes/Root';
 
 type Props = {
   scenario: Scenario;
@@ -26,7 +28,11 @@ type Props = {
     comment: string;
   }[];
   isCapacity: boolean;
-  navigation: any;
+  navigation: NativeStackNavigationProp<
+    RootRoutesParamList,
+    'ScenarioDetailsPage',
+    undefined
+  >;
   nowPlay: () => void;
 };
 
@@ -145,7 +151,7 @@ const ScenarioDetailsPresenter: FC<Props> = ({
         </View>
       </ScrollView>
 
-      <Tabbar isGame={false} />
+      <Tabbar isGame={false} navigation={navigation} />
     </View>
   );
 };

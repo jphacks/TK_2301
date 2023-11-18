@@ -1,11 +1,14 @@
 import React from 'react';
-import {Image, ImageBackground, Text, View} from 'react-native';
-import {Props} from './index';
+import {Image, ImageBackground, Pressable, Text, View} from 'react-native';
 import styles from './style';
 import QuestionIcon from './QuesctionIcon';
 import {useFloor} from './floor.context';
 import SurveyCard from './SurveyCard';
 import ItemCard from './ItemCard';
+import {useGame} from '../game.context';
+import {Props as ContainerProps} from './index';
+
+type Props = {} & ContainerProps;
 
 const FloorPresenter = ({
   floor,
