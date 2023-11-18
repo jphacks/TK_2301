@@ -64,10 +64,10 @@ def create_scenario(reqBody: reqBody):
 	param = parameters[0]
 
 	print("generation item and trivia...")
-	item_prompt_filename = "./prompt_step0_item.txt"
+	item_prompt_filename = "./prompt/prompt_step0_item.txt"
 	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
 		item_prompt = f.read()
-	trivium_prompt_filename = "./prompt_step0_trivium.txt"
+	trivium_prompt_filename = "./prompt/prompt_step0_trivium.txt"
 	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
 		trivium_prompt = f.read()
 
@@ -97,10 +97,10 @@ def create_scenario(reqBody: reqBody):
 
 	# 常識(commonSense)の生成
 	print("generation common sense...")
-	item_prompt_filename = "./prompt_step1_item.txt"
+	item_prompt_filename = "./prompt/prompt_step1_item.txt"
 	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
 		item_prompt = f.read()
-	trivium_prompt_filename = "./prompt_step1_trivium.txt"
+	trivium_prompt_filename = "./prompt/prompt_step1_trivium.txt"
 	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
 		trivium_prompt = f.read()
 	
@@ -113,10 +113,10 @@ def create_scenario(reqBody: reqBody):
 
 	# 反常識(denialSense)の生成
 	print("generation uncommon sense...")
-	item_prompt_filename = "./prompt_step2_item.txt"
+	item_prompt_filename = "./prompt/prompt_step2_item.txt"
 	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
 		item_prompt = f.read()
-	trivium_prompt_filename = "./prompt_step2_trivium.txt"
+	trivium_prompt_filename = "./prompt/prompt_step2_trivium.txt"
 	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
 		trivium_prompt = f.read()
 	
@@ -129,10 +129,10 @@ def create_scenario(reqBody: reqBody):
 
 	# トリックの種の生成
 	print("generation principle and illusion...")
-	item_prompt_filename = "./prompt_step3_item.txt"
+	item_prompt_filename = "./prompt/prompt_step3_item.txt"
 	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
 		item_prompt = f.read()
-	trivium_prompt_filename = "./prompt_step3_trivium.txt"
+	trivium_prompt_filename = "./prompt/prompt_step3_trivium.txt"
 	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
 		trivium_prompt = f.read()
 	if len(message["items"]) == 0:
