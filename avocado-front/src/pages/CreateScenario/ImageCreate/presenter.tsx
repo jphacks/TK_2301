@@ -1,5 +1,12 @@
 import React from 'react';
-import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import styles from './style';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
 import {ImageType, ItemImageCandidate} from '../../../models/scenario';
@@ -34,7 +41,7 @@ const ImageCreatePresenter = ({
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <FetchingModal textContent={'生成中...'} />
 
       {fetchedImage &&
@@ -146,7 +153,7 @@ const ImageCreatePresenter = ({
       <View style={styles.button}>
         <PrimaryButton width={320} onPress={onPress} text={'画像を生成'} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

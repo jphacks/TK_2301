@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     borderColor: '#696969',
     marginTop: 16,
     marginBottom: 40,
+    color: 'white',
   },
   sm: {
     color: '#fff',
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   button: {
-    paddingVertical: 20,
+    paddingVertical: 50,
   },
   proposedImageContainer: {
     alignItems: 'center',
