@@ -67,6 +67,19 @@ export const sampleEditingCharacter: Character = {
   ],
 };
 
+export const sampleEditingCharacterForReset: Character = {
+  id: '',
+  name: '',
+  age: 0,
+  icon: '',
+  profession: '',
+  public_info: '',
+  private_info: '',
+  purpose: '',
+  type: CharacterType.Default,
+  timeline: [],
+};
+
 export const sampleCharacters: Character[] = [
   {
     id: 'character01',
@@ -79,9 +92,9 @@ export const sampleCharacters: Character[] = [
     purpose: 'To solve the complex case that has baffled the police.',
     type: CharacterType.Criminal,
     timeline: [
-      { num: 1, text: 'Arrived at the crime scene.' },
-      { num: 2, text: 'Found a crucial piece of evidence.' }
-    ]
+      {num: 1, text: 'Arrived at the crime scene.'},
+      {num: 2, text: 'Found a crucial piece of evidence.'},
+    ],
   },
   {
     id: 'character02',
@@ -94,9 +107,9 @@ export const sampleCharacters: Character[] = [
     purpose: 'To make a scientific breakthrough that will change the world.',
     type: CharacterType.Other,
     timeline: [
-      { num: 1, text: 'Published a significant research paper.' },
-      { num: 2, text: 'Received a prestigious award for his work.' }
-    ]
+      {num: 1, text: 'Published a significant research paper.'},
+      {num: 2, text: 'Received a prestigious award for his work.'},
+    ],
   },
   {
     id: 'character03',
@@ -109,17 +122,15 @@ export const sampleCharacters: Character[] = [
     purpose: 'To make a scientific breakthrough that will change the world.',
     type: CharacterType.Other,
     timeline: [
-      { num: 1, text: 'Published a significant research paper.' },
-      { num: 2, text: 'Received a prestigious award for his work.' }
-    ]
+      {num: 1, text: 'Published a significant research paper.'},
+      {num: 2, text: 'Received a prestigious award for his work.'},
+    ],
   },
 ];
 
 const sampleCharacterMapData = new Map<string, Character>();
-sampleCharacters.forEach((character) => {
+sampleCharacters.forEach(character => {
   sampleCharacterMapData.set(character.id, character);
 });
 
-export {
-  sampleCharacterMapData
-}
+export {sampleCharacterMapData};

@@ -19,9 +19,6 @@ const CharacterVoteButton = ({
   isNone,
   onPress,
 }: Props) => {
-  useEffect(() => {
-    console.log('CharacterVoteButton');
-  }, [isSelected]);
   return (
     <CharacterVoteButtonPresenter
       character={character}
