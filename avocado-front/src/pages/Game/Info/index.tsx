@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import InfoPresenter from './presenter';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {useTabbar} from '../../../context/tabbar.context';
@@ -26,7 +26,8 @@ export type Props = {
   scenario: Scenario;
 };
 
-const Info = ({scenario}: Props) => {
+const Info: FC<Props> = React.memo(props => {
+  const {scenario} = props;
   const layout = useWindowDimensions();
 
   const [index, setIndex] = useState(0);
@@ -44,7 +45,7 @@ const Info = ({scenario}: Props) => {
   const renderScene = SceneMap({
     first: () => <Characters characters={scenario.characters} />,
     second: () => <About characters={scenario.characters} />,
-    third: () => <Purpose />,
+    third: () => <Purpose characters={scenario.characters} />,
     fourth: () => <AcquiredItems scenarioCharacters={scenario.characters} />,
   });
 
@@ -62,6 +63,6 @@ const Info = ({scenario}: Props) => {
       scenario={scenario}
     />
   );
-};
+});
 
 export default Info;

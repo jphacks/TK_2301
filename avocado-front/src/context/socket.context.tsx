@@ -35,6 +35,7 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setNowPhase,
     setMyItems,
     setUsersOnTheFloor,
+    setIsLoading,
   } = useGame();
 
   useEffect(() => {
@@ -73,6 +74,7 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           setSelectedCharacters(prev => [...prev, characterInfo]);
           console.log('setSelectedCharacters');
         } else if (dataArray[0] === '!confirm_ack') {
+          setIsLoading(false);
           setNowPhase((prev: number) => prev + 1);
         } else if (dataArray[0] === '!someone_get') {
           setItems(prev => {

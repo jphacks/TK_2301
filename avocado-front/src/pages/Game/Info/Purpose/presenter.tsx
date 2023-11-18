@@ -1,8 +1,17 @@
-import React from "react"
-import { Text } from "react-native"
+import React from 'react';
+import {Text, View} from 'react-native';
+import styles from './style';
 
-const PurposePresenter = () => {
-  return <Text>Purpose</Text>
-}
+type Props = {
+  purpose: string;
+};
 
-export default PurposePresenter
+const PurposePresenter = ({purpose}: Props) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{purpose}</Text>
+    </View>
+  );
+};
+
+export default PurposePresenter;

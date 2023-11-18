@@ -18,11 +18,8 @@ const SelectCharacterCard = ({character}: Props) => {
   const [isSelect, setIsSelect] = useState<boolean>(false);
 
   const onPress = (characterName: string) => {
-    selectedCharacters?.map(selectedCharacter => {
-      if (isSelect) {
-        return;
-      }
-    });
+    if (isSelect) return;
+    if (myCharacter) return; // 理想はキャラクター変更できるようにしたいけど一旦
     socketRef.current?.send(`/select ${characterName}`);
     const uid = user?.uid ?? null;
     setMyCharacter({

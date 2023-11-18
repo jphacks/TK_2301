@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     height: 500,
     paddingTop: 0,
     alignItems: 'center',
-    marginHorizontal: 20,
     marginTop: 100,
     paddingBottom: 100,
     backgroundColor: '#323338',

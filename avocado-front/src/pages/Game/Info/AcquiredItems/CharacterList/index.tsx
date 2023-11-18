@@ -27,6 +27,7 @@ const CharacterList = ({scenarioCharacters}: Props) => {
 
   useEffect(() => {
     const users = usersOnTheFloor.get(nowMapId)?.filter(u => u !== user?.uid);
+    console.log(usersOnTheFloor);
     selectedCharacters?.map(selectedCharacter => {
       if (users?.includes(selectedCharacter.uid!)) {
         const character = scenarioCharacters.find(
@@ -63,6 +64,7 @@ const CharacterList = ({scenarioCharacters}: Props) => {
       `/hand ${transferableItem?.itemId} ${targetUserid}`,
     );
     setMyItems(prev => prev.filter(item => item !== transferableItem?.itemId));
+    setIsShowSelectTransferredCharacters(false);
   };
 
   return (

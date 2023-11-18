@@ -13,6 +13,8 @@ import {useTabbar} from '../../context/tabbar.context';
 import Info from './Info';
 import Vote from './Vote';
 import {GameItem, Phase} from '../../models/scenario';
+import {useGame} from './game.context';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 type Props = {
   nowPhase: number;
@@ -22,6 +24,7 @@ type Props = {
 
 const GamePresenter = ({scenario, nowPhase, navigation, phases}: Props) => {
   const {showInfo} = useTabbar();
+  const {isLoading} = useGame();
   const renderContent = () => {
     switch (phases[nowPhase].phaseId) {
       case 'character':
@@ -88,7 +91,13 @@ const GamePresenter = ({scenario, nowPhase, navigation, phases}: Props) => {
         <Info scenario={scenario} />
       </Modal>
       <Tabbar isGame={true} />
-      {/*showInfo && <Info />*/}
+      {isLoading && (
+        <Spinner
+          visible={isLoading}
+          textContent={'待機中'}
+          textStyle={styles.text}
+        />
+      )}
     </View>
   );
 };

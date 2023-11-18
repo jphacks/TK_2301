@@ -28,10 +28,12 @@ const SelectCharacterCardPresenter = ({
           {name}({age})
         </Text>
         {selectedUserId && (
-          <CircularIcon
-            url={{uri: selectedUserId}}
-            styles={styles.selectedUserIcon}
-          />
+          <View>
+            <CircularIcon
+              url={{uri: selectedUserId}}
+              styles={styles.selectedUserIcon}
+            />
+          </View>
         )}
       </View>
       <View style={styles.descriptionContainer}>

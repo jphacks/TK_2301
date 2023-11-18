@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Pressable, Text, View} from 'react-native';
+import {Image, Modal, Pressable, Text, View} from 'react-native';
 import {useGame} from '../../game.context';
 import {GameItem} from '../../../../models/scenario';
 import styles from './style';
@@ -41,9 +41,19 @@ const AcquiredItemsPresenter = ({
         );
       })}
 
-      {showMyItem && <ItemCard item={item} setShowMyItem={setShowMyItem} />}
+      {showMyItem && (
+        <Modal animationType="slide" transparent={true}>
+          <View style={styles.modalView}>
+            <ItemCard item={item} setShowMyItem={setShowMyItem} />
+          </View>
+        </Modal>
+      )}
       {isShowSelectTransferredCharacters && (
-        <CharacterList scenarioCharacters={scenarioCharacters} />
+        <Modal animationType="slide" transparent={true}>
+          <View style={styles.modalView}>
+            <CharacterList scenarioCharacters={scenarioCharacters} />
+          </View>
+        </Modal>
       )}
     </View>
   );
