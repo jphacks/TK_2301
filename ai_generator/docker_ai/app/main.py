@@ -77,7 +77,7 @@ def create_scenario(reqBody: reqBody):
 	response_trivium = json.loads(response_trivium)
 
 	response = {"world": response_item["world"], "item": response_item["items"], "trivia": response_trivium["trivia"]}
-	response = json.dumps(response, ensure_ascii = False, indent=4)
+	#response = json.loads(response)
 	return response
 
 @app.post("/prod/trick")
@@ -85,8 +85,9 @@ def create_scenario(reqBody: reqBody):
 	
 	# ユーザ入力をitemとtriviaに分ける
 	message = reqBody.user_input
-	item_input = message
-	trivium_input = message
+	message = json.loads(message)
+	item_input = {"world": message["world"], "items": message["items"]}
+	trivium_input = {"world": message["world"], "trivia": message["trivia"]}
 
 	# パラメータの読み込み	
 	with open("./parameters.json", mode = "r") as f:
@@ -102,7 +103,13 @@ def create_scenario(reqBody: reqBody):
 	trivium_prompt_filename = "./prompt_step1_trivium.txt"
 	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
 		trivium_prompt = f.read()
-	step1_item, step1_trivium = parallel_generate(item_prompt, trivium_prompt, item_input, trivium_input, param)
+	
+	if len(message["items"]) == 0:
+		step1_trivium = generationSentence(trivium_prompt, trivium_input, param)
+	elif len(message["trivia"]) == 0:
+		step1_item = generationSentence(item_prompt, item_input, param)
+	else:
+		step1_item, step1_trivium = parallel_generate(item_prompt, trivium_prompt, item_input, trivium_input, param)
 
 	# 反常識(denialSense)の生成
 	print("generation uncommon sense...")
@@ -112,7 +119,13 @@ def create_scenario(reqBody: reqBody):
 	trivium_prompt_filename = "./prompt_step2_trivium.txt"
 	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
 		trivium_prompt = f.read()
-	step2_item, step2_trivium = parallel_generate(item_prompt, trivium_prompt, step1_item, step1_trivium, param)
+	
+	if len(message["items"]) == 0:
+		step2_trivium = generationSentence(trivium_prompt, step1_trivium, param)
+	elif len(message["trivia"]) == 0:
+		step2_item = generationSentence(item_prompt, step1_item, param)
+	else:
+		step2_item, step2_trivium = parallel_generate(item_prompt, trivium_prompt, step1_item, step1_trivium, param)
 
 	# トリックの種の生成
 	print("generation principle and illusion...")
@@ -122,13 +135,25 @@ def create_scenario(reqBody: reqBody):
 	trivium_prompt_filename = "./prompt_step3_trivium.txt"
 	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
 		trivium_prompt = f.read()
-	step3_item, step3_trivium = parallel_generate(item_prompt, trivium_prompt, step2_item, step2_trivium, param)
+	if len(message["items"]) == 0:
+		step3_trivium = generationSentence(trivium_prompt, step2_trivium, param)
+	elif len(message["trivia"]) == 0:
+		step3_item = generationSentence(item_prompt, step2_item, param)
+	else:
+		step3_item, step3_trivium = parallel_generate(item_prompt, trivium_prompt, step2_item, step2_trivium, param)
 
 	# レスポンスの生成
-	step3_item = json.loads(step3_item)
-	step3_trivium = json.loads(step3_trivium)
-	response = {"world": step3_item["world"], "item": step3_item["items"], "trivia": step3_trivium["trivia"]}
-	response = json.loads(response)
+
+	if len(message["items"]) == 0:
+		step3_trivium = json.loads(step3_trivium)
+		response = {"world": message["world"], "item": [], "trivia": step3_trivium["trivia"]}
+	elif len(message["trivia"]) == 0:
+		step3_item = json.loads(step3_item)
+		response = {"world": message["world"], "item": step3_item["items"], "trivia":[]}
+	else:
+		step3_item = json.loads(step3_item)
+		step3_trivium = json.loads(step3_trivium)
+		response = {"world": message["world"], "item": step3_item["items"], "trivia": step3_trivium["trivia"]}
 
 	return response
 
