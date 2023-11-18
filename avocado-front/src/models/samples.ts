@@ -49,6 +49,14 @@ export const sampleAbstract = {
     'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/thumbnail%2Fthunderstorm-3625405_1920.jpg?alt=media&token=c06ffad1-3eb3-4504-a538-62fd07d1e039',
 };
 
+export const emptyAbstract = {
+  title: '',
+  outline: '',
+  requiredTime: 0,
+  numberOfPlayers: 0,
+  thumbnail: '',
+};
+
 export const sampleEditingCharacter: Character = {
   id: 'character01',
   name: '山田太郎',
@@ -67,6 +75,19 @@ export const sampleEditingCharacter: Character = {
   ],
 };
 
+export const sampleEditingCharacterForReset: Character = {
+  id: '',
+  name: '',
+  age: 0,
+  icon: '',
+  profession: '',
+  public_info: '',
+  private_info: '',
+  purpose: '',
+  type: CharacterType.Default,
+  timeline: [],
+};
+
 export const sampleCharacters: Character[] = [
   {
     id: 'character01',
@@ -79,9 +100,9 @@ export const sampleCharacters: Character[] = [
     purpose: 'To solve the complex case that has baffled the police.',
     type: CharacterType.Criminal,
     timeline: [
-      { num: 1, text: 'Arrived at the crime scene.' },
-      { num: 2, text: 'Found a crucial piece of evidence.' }
-    ]
+      {num: 1, text: 'Arrived at the crime scene.'},
+      {num: 2, text: 'Found a crucial piece of evidence.'},
+    ],
   },
   {
     id: 'character02',
@@ -94,9 +115,9 @@ export const sampleCharacters: Character[] = [
     purpose: 'To make a scientific breakthrough that will change the world.',
     type: CharacterType.Other,
     timeline: [
-      { num: 1, text: 'Published a significant research paper.' },
-      { num: 2, text: 'Received a prestigious award for his work.' }
-    ]
+      {num: 1, text: 'Published a significant research paper.'},
+      {num: 2, text: 'Received a prestigious award for his work.'},
+    ],
   },
   {
     id: 'character03',
@@ -109,17 +130,15 @@ export const sampleCharacters: Character[] = [
     purpose: 'To make a scientific breakthrough that will change the world.',
     type: CharacterType.Other,
     timeline: [
-      { num: 1, text: 'Published a significant research paper.' },
-      { num: 2, text: 'Received a prestigious award for his work.' }
-    ]
+      {num: 1, text: 'Published a significant research paper.'},
+      {num: 2, text: 'Received a prestigious award for his work.'},
+    ],
   },
 ];
 
 const sampleCharacterMapData = new Map<string, Character>();
-sampleCharacters.forEach((character) => {
+sampleCharacters.forEach(character => {
   sampleCharacterMapData.set(character.id, character);
 });
 
-export {
-  sampleCharacterMapData
-}
+export {sampleCharacterMapData};

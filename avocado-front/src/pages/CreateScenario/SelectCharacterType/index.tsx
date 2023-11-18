@@ -1,16 +1,17 @@
 import React from 'react';
 import SelectCharacterTypePresenter from './presenter';
 import {CreateState, CharacterType, useCreateScenario} from '../createScenario';
-import {sampleEditingCharacter} from '../../../models/samples';
+import {sampleEditingCharacter, sampleEditingCharacterForReset} from '../../../models/samples';
 
 const SelectCharacterType = () => {
   const {setPhase, transitNextState, setNowCharacterType, setEditingCharacter} =
     useCreateScenario();
 
   const addOtherCharacter = () => {
-    sampleEditingCharacter.type = CharacterType.Other;
-    
-    setEditingCharacter(sampleEditingCharacter);
+    // 前のキャラクタ情報のキャッシュをリセットすることで、キャラクターシート移行時のちらつきをなくす
+    sampleEditingCharacterForReset.type = CharacterType.Other;
+    setEditingCharacter(sampleEditingCharacterForReset);
+
     transitNextState(CreateState.OtherCharacter);
     setNowCharacterType(CharacterType.Other);
 
@@ -19,9 +20,10 @@ const SelectCharacterType = () => {
 
   const onPress = (type: string) => {
     if (type === 'criminal') {
-      sampleEditingCharacter.type = CharacterType.Criminal;
+      // 前のキャラクタ情報のキャッシュをリセットすることで、キャラクターシート移行時のちらつきをなくす
+      sampleEditingCharacterForReset.type = CharacterType.Criminal;
+      setEditingCharacter(sampleEditingCharacterForReset);
 
-      setEditingCharacter(sampleEditingCharacter);
       transitNextState(CreateState.CriminalsCharacter);
       setNowCharacterType(CharacterType.Criminal);
 

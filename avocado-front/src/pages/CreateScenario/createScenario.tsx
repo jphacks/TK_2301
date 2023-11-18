@@ -13,8 +13,8 @@ import {
   Ending,
 } from '../../models/scenario';
 import {
+  emptyAbstract,
   sampleAbstract,
-  sampleCharacterMapData,
   sampleClueItems,
 } from '../../models/samples';
 import {createScenarioFirestore} from '../../api/firebase/firestore';
@@ -215,10 +215,10 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
   });
   const [otherCharacters, setOtherCharacters] = useState<
     Map<string, Character>
-  >(sampleCharacterMapData);
+  >(new Map());
   const [isNewScenario, setIsNewScenario] = useState<boolean>(false);
   const [scenarioId, setScenarioId] = useState<string>('');
-  const [abstraction, setAbstraction] = useState<Abstraction>(sampleAbstract);
+  const [abstraction, setAbstraction] = useState<Abstraction>(emptyAbstract);
   const [items, setItems] = useState<Map<string, Item>>(new Map());
   const [floorMaps, setFloorMaps] = useState<Map<string, FloorMap>>(new Map());
   const [phenomena, setPhenomena] = useState<string[]>([]);
@@ -229,7 +229,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
       name: '第１章 事件の始まり',
       phaseId: 'xxxx',
       numberOfSurveys: 2,
-      timeLimit: 30,
+      timeLimit: 15,
     }),
   );
   const [endings, setEndings] = useState<Map<string, Ending>>(new Map());
@@ -364,6 +364,25 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     setCriminal(criminal);
   };
 
+  const preprocessAbstractionForUpload = async () => {
+    const storage = getStorage();
+    const scenarioFirestore = createScenarioFirestore();
+
+    if (abstraction?.thumbnail.startsWith('file://')) {
+      const uploadPath = `thumbnail/${scenarioId}.png`;
+      const file = await fetch(abstraction.thumbnail).then(r => r.blob()); // ローカルファイルを Blob に変換
+      const storageReference = storageRef(storage, uploadPath);
+      await uploadBytes(storageReference, file, {
+        contentType: 'image/png',
+      });
+
+      setAbstraction({
+        ...abstraction,
+        thumbnail: await scenarioFirestore.getImageUrl(uploadPath),
+      });
+    }
+  };
+
   // ヘッダーのアップロードボタン押下時に発火
   const uploadScenarioData = async () => {
     openUploadingModal();
@@ -372,6 +391,7 @@ export const CreateScenarioProvider: React.FC<{children: ReactNode}> = ({
     await preprocessItemsForUpload();
     await preprocessMapFloorForUpload();
     await preprocessCharacterForUpload();
+    await preprocessAbstractionForUpload();
 
     console.log(abstraction);
 

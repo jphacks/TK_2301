@@ -11,27 +11,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  icon: {
-    marginRight: 16,
-  },
   input: {
     borderWidth: 1,
     borderColor: '#696969',
     padding: 16,
     color: '#fff',
-
   },
   nameInput: {
-    height: 48,
-    width: 260,
-  },
-  openInput: {height: 96, marginBottom: 40},
-  privateInput: {
     height: 60,
+    width: 300,
+  },
+  openInput: {marginBottom: 40, paddingVertical: 16},
+  privateInput: {
     marginBottom: 40,
   },
   timelineInput: {
-    height: 60,
     marginBottom: 40,
   },
   purposeInput: {

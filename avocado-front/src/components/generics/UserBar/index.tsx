@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import UserBarPresenter from './presenter';
-import scenarioCollection from '../../../api/firebase/firestore';
+import {createScenarioFirestore} from '../../../api/firebase/firestore';
 import {User} from '../../../type';
 
 export type Props = {
@@ -15,7 +15,7 @@ const UserBar = ({user}: Props) => {
       `gs://avocado-test-5e236.appspot.com/user_icons/${user.user_id}.png`,
     );
     const getUrl = async () => {
-      setIcon(await scenarioCollection.getUserIconUrl(user.user_id));
+      setIcon(await createScenarioFirestore().getUserIconUrl(user.user_id));
     };
     getUrl();
   }, [user]);

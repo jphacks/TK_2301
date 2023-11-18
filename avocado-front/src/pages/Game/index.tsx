@@ -17,11 +17,7 @@ const Game: FC<NavigationProps> = ({navigation, route}) => {
     useTabbar();
   const {nowPhase, updateItems} = useGame();
   const {scenario} = route.params;
-
-  /*useEffect(() => {
-    console.log('selectedCharacters');
-    console.log(selectedCharacters);
-  }, [selectedCharacters]);*/
+  const {socketRef, rooms} = useSocket();
 
   // 初期フェーズの設定
   const initialPhases: Phase[] = [
