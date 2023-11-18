@@ -17,5 +17,3 @@ RUN pip install fastapi
 RUN pip install uvicorn
 
 EXPOSE 8080
-
-COPY ./app/ .
