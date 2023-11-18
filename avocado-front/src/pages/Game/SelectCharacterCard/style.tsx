@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
   profession: {color: '#fff'},
   description: {color: '#fff'},
   selectedUserIcon: {
-    width: 16,
-    height: 16,
-    marginLeft: 16,
+    width: 20,
+    height: 20,
+    marginLeft: 20,
   },
 });
 

@@ -1,6 +1,7 @@
 export type User = {
   user_id: string;
   user_name: string;
+  icon?: string;
 };
 
 export type Room = {

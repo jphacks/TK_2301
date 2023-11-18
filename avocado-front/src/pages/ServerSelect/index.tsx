@@ -8,6 +8,7 @@ import {AuthError} from '../../api/firebase/error';
 import {useUser} from '../../context/user.context';
 import {Room} from '../../type';
 import {useSocket} from '../../context/socket.context';
+import {createScenarioFirestore} from '../../api/firebase/firestore';
 
 export type Props = NativeStackScreenProps<RootRoutesParamList, 'ServerSelect'>;
 export const ServerSelectPage: FC<Props> = ({navigation}) => {
@@ -26,10 +27,14 @@ export const ServerSelectPage: FC<Props> = ({navigation}) => {
           'test@gmail.com',
           'testtest',
         );
+
         setUser({
           name: userCredential.user.displayName,
           email: userCredential.user.email,
           uid: userCredential.user.uid,
+          iconUrl: await createScenarioFirestore().getUserIconUrl(
+            userCredential.user.uid,
+          ),
         });
       } catch (error) {
         console.error(error);

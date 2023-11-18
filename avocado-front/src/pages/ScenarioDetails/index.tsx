@@ -62,19 +62,19 @@ const ScenarioDetails: FC<Props> = ({navigation, route}) => {
 
   const impressions = [
     {
-      icon: require('./testIcon.png'),
-      name: '竹下波瑠 （たけした はる）(52)',
+      icon: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fa.png?alt=media&token=281ceb12-1f18-4be7-a354-b8df20419a80',
+      name: 'ぽむぽむ',
+      comment: 'ハラハラドキドキな物語でした',
+    },
+    {
+      icon: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fd.png?alt=media&token=f8408269-bcee-4e1f-816f-3d4cea1efd69',
+      name: 'うさぎさん',
       comment: 'とても楽しかった！！！',
     },
     {
-      icon: require('./testIcon.png'),
-      name: '竹下波瑠 （たけした はる）(52)',
-      comment: 'とても楽しかった！！！',
-    },
-    {
-      icon: require('./testIcon.png'),
-      name: '竹下波瑠 （たけした はる）(52)',
-      comment: 'とても楽しかった！！！',
+      icon: 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fc.png?alt=media&token=784fd5d7-b986-430e-9bc6-390f87513126',
+      name: 'やまたろ',
+      comment: '記憶を消してもう一回やりたいな！',
     },
   ];
 

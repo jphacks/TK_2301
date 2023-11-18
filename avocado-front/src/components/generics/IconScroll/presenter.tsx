@@ -21,6 +21,7 @@ const IconScrollPresenter = () => {
               key={index}
               id={user.user_id}
               name={user.user_name}
+              isCirculated={true}
             />
           );
         })}
