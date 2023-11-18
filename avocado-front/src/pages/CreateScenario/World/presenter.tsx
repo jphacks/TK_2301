@@ -4,6 +4,7 @@ import styles from './style';
 import WorldItem from './WorldItem';
 import PrimaryButton from '../../../components/generics/PrimaryButton';
 import FetchingModal from '../FetchingModal';
+import {useCreateScenario} from '../createScenario';
 
 type Props = {
   onPress: (type: string) => void;
@@ -12,6 +13,8 @@ type Props = {
 };
 
 const WorldPresenter = ({onPress, next, value}: Props) => {
+  const {setWorld} = useCreateScenario();
+
   const items = [
     '吹雪の中の山小屋',
     '放課後の教室',
@@ -29,7 +32,10 @@ const WorldPresenter = ({onPress, next, value}: Props) => {
         style={styles.input}
         placeholder="舞台の世界観"
         placeholderTextColor="#888888"
-        value={value}
+        defaultValue={value}
+        onChangeText={text => {
+          setWorld(text);
+        }}
       />
 
       <Text style={styles.text}>世界観の例</Text>
