@@ -184,7 +184,7 @@ def create_scenario(reqBody: reqBody):
 		"public_info": chara["public_info"],
 		"private_info": chara["private_info"],
 		"timeline": timeline["timeline"],
-		"purpose": "犯人であるを隠し通す。"
+		"purpose": "犯人であることを隠し通す。"
 	}
 	return output
 
