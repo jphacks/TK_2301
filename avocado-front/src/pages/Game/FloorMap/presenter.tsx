@@ -4,6 +4,7 @@ import {Props as ContainerProps, FloorProps} from './index';
 import styles from './style';
 import Floor from '../Floor';
 import {FloorMap, GameItem, Item} from '../../../models/scenario';
+import {useGame} from '../game.context';
 
 type Props = {
   enter: (floorInfo: FloorMap) => void;
@@ -25,16 +26,28 @@ const FloorMapPresenter = ({
   surveysCount,
   minusSurveysCount,
 }: Props) => {
+  const {mapMovementLock, lockTime} = useGame();
+  const renderContent = () => {
+    if (isFloorEntered && mapMovementLock) {
+      return (
+        <View>
+          <Text style={styles.time}>移動可能まで{lockTime}秒</Text>
+        </View>
+      );
+    } else if (isFloorEntered) {
+      return (
+        <Pressable
+          onPress={() => floor && exit(floor)}
+          style={styles.backContainer}>
+          <Image style={styles.backIcon} source={require('./back.png')} />
+        </Pressable>
+      );
+    }
+  };
   return (
     <View>
       <View style={styles.header}>
-        {isFloorEntered && (
-          <Pressable
-            onPress={() => floor && exit(floor)}
-            style={styles.backContainer}>
-            <Image style={styles.backIcon} source={require('./back.png')} />
-          </Pressable>
-        )}
+        {renderContent()}
         <Text style={styles.where}>
           {isFloorEntered && floor ? floor?.name : 'フロアマップ'}
         </Text>

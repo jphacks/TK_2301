@@ -45,7 +45,7 @@ const Info = ({scenario}: Props) => {
     first: () => <Characters characters={scenario.characters} />,
     second: () => <About characters={scenario.characters} />,
     third: () => <Purpose />,
-    fourth: () => <AcquiredItems />,
+    fourth: () => <AcquiredItems scenarioCharacters={scenario.characters} />,
   });
 
   const tabViewProps = {

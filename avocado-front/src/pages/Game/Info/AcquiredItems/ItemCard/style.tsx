@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     position: 'absolute',
     top: 10,
-    left: 28,
+    left: 20,
   },
   close: {
     position: 'absolute',

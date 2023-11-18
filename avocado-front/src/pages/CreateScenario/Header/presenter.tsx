@@ -24,7 +24,9 @@ const HeaderPresenter = ({back, text, onPressUploadIcon}: Props) => {
 
       <Text style={styles.where}>{text}</Text>
 
-      <TouchableOpacity onPress={back} style={styles.uploadIconContainer}>
+      <TouchableOpacity
+        onPress={() => setIsConfirm(true)}
+        style={styles.uploadIconContainer}>
         <UploadIcon name="cloud-upload-outline" color={'white'} size={25} />
       </TouchableOpacity>
     </View>

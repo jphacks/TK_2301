@@ -110,6 +110,8 @@ export const SocketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           });
         } else if (dataArray[0] === '!confirm_vote') {
           setNowPhase((prev: number) => prev + 1);
+        } else if (dataArray[0] === '!hand_recv') {
+          setMyItems(prev => [...prev, dataArray[1]]);
         }
       } catch (error) {
         throw new Error('Failed to parse the second element as JSON');

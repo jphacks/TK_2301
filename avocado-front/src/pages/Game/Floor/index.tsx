@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import FloorPresenter from './presenter';
 import {FloorProvider} from './floor.context';
 import {FloorMap, GameItem, Item} from '../../../models/scenario';
-import scenarioCollection from '../../../api/firebase/firestore';
+import {createScenarioFirestore} from '../../../api/firebase/firestore';
 import {useGame} from '../game.context';
 
 export type Props = {
@@ -15,7 +15,7 @@ export type Props = {
 const Floor = ({floor, itemList, surveysCount, minusSurveysCount}: Props) => {
   useEffect(() => {
     const getUri = async () => {
-      floor.uri = await scenarioCollection.getImageUrl(floor.uri);
+      floor.uri = await createScenarioFirestore().getImageUrl(floor.uri);
     };
     getUri();
   }, [floor]);

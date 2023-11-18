@@ -8,11 +8,17 @@ import {RootRoutesParamList} from '../../../routes/Root';
 
 type Props = {
   isGame: boolean;
-  navigation?: NativeStackNavigationProp<
-    RootRoutesParamList,
-    'ScenarioSelectionPage',
-    undefined
-  >;
+  navigation?:
+    | NativeStackNavigationProp<
+        RootRoutesParamList,
+        'ScenarioSelectionPage',
+        undefined
+      >
+    | NativeStackNavigationProp<
+        RootRoutesParamList,
+        'ScenarioDetailsPage',
+        undefined
+      >;
 };
 const Tabbar: FC<Props> = ({isGame, navigation}) => {
   const {user} = useUser();

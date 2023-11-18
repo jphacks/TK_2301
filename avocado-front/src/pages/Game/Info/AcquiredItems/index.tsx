@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import AcquiredItemsPresenter from './presenter';
 import {useGame} from '../../game.context';
-import scenarioCollection from '../../../../api/firebase/firestore';
 import Game from '../..';
-import {GameItem} from '../../../../models/scenario';
+import {Character, GameItem} from '../../../../models/scenario';
 
-const AcquiredItems = () => {
+export type Props = {
+  scenarioCharacters: Character[];
+};
+
+const AcquiredItems = ({scenarioCharacters}: Props) => {
   console.log('AcquiredItems rendering');
   const {myItems, items} = useGame();
   const [reshapedMyItems, setReshapedMyItems] = useState<GameItem[]>([]);
@@ -32,6 +35,7 @@ const AcquiredItems = () => {
       showMyItem={showMyItem}
       item={item}
       setShowMyItem={setShowMyItem}
+      scenarioCharacters={scenarioCharacters}
     />
   );
 };
