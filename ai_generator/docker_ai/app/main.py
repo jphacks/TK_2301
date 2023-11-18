@@ -7,13 +7,15 @@ from typing import Union
 from pydantic import BaseModel
 from fastapi import FastAPI
 
+# 並列化
+import concurrent.futures
+
 class reqBody(BaseModel):
 	user_input: str
 
 def generationSentence(prompt, user_input, param):
 	message_list = [{"role": "system", "content": "あなたはマーダーミステリーのシナリオ作家です。\n" + prompt}]
 	message_list.append({"role": "user", "content": str(user_input)})
-	start = time.time()
 	response = client.chat.completions.create(
 		messages = message_list,
 		model = param["model"],
@@ -22,9 +24,20 @@ def generationSentence(prompt, user_input, param):
 		stop = param["stop"],
 		response_format = {"type": "json_object"}  # 必ずjsonとして出力してくれる新機能！
 	)
-	end = time.time()
-	print("response time:", end - start)
 	return response.choices[0].message.content
+
+# 2つの異なるpromptを並列生成, 2つのresponseを返す
+def parallel_generate(item_prompt, trivium_prompt, item_input, trivium_input, param):
+	start = time.time()
+	with concurrent.futures.ThreadPoolExecutor() as executor:
+		future_item = executor.submit(generationSentence, item_prompt, item_input, param)
+		future_trivium = executor.submit(generationSentence, trivium_prompt, trivium_input, param)
+		response_item = future_item.result()
+		response_trivium = future_trivium.result()
+	end = time.time()
+	print(f"elapsed time: {end - start}")
+
+	return response_item, response_trivium
 
 app = FastAPI()
 client = OpenAI(api_key = os.environ["OPENAI_API_KEY"])
@@ -39,7 +52,11 @@ def read_root():
 """
 @app.post("/prod/item-and-trivia")
 def create_scenario(reqBody: reqBody):
+	
+	# ユーザ入力をitemとtriviaに分ける
 	message = reqBody.user_input
+	item_input = message
+	trivium_input = message
 
 	with open("./parameters.json", mode = "r") as f:
 		json_parameters = f.read()
@@ -47,36 +64,73 @@ def create_scenario(reqBody: reqBody):
 	param = parameters[0]
 
 	print("generation item and trivia...")
-	with open("prompt_step0.txt", mode = "r", encoding="utf-8") as f:
-		prompt = f.read()
-	output = json.loads(generationSentence(prompt, message, param))
-	return output
+	item_prompt_filename = "./prompt_step0_item.txt"
+	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
+		item_prompt = f.read()
+	trivium_prompt_filename = "./prompt_step0_trivium.txt"
+	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
+		trivium_prompt = f.read()
+
+	# 並列に生成
+	response_item, response_trivium = parallel_generate(item_prompt, trivium_prompt, item_input, trivium_input, param)
+	response_item = json.loads(response_item)
+	response_trivium = json.loads(response_trivium)
+
+	response = {"world": response_item["world"], "item": response_item["items"], "trivia": response_trivium["trivia"]}
+	response = json.dumps(response, ensure_ascii = False, indent=4)
+	return response
 
 @app.post("/prod/trick")
 def create_scenario(reqBody: reqBody):
-	message = reqBody.user_input
 	
+	# ユーザ入力をitemとtriviaに分ける
+	message = reqBody.user_input
+	item_input = message
+	trivium_input = message
+
+	# パラメータの読み込み	
 	with open("./parameters.json", mode = "r") as f:
 		json_parameters = f.read()
 	parameters = json.loads(json_parameters)
 	param = parameters[1]
 
+	# 常識(commonSense)の生成
 	print("generation common sense...")
-	with open("prompt_step1.txt", mode = "r", encoding="utf-8") as f:
-		prompt = f.read()
-	step1 = generationSentence(prompt, message, param)
+	item_prompt_filename = "./prompt_step1_item.txt"
+	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
+		item_prompt = f.read()
+	trivium_prompt_filename = "./prompt_step1_trivium.txt"
+	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
+		trivium_prompt = f.read()
+	step1_item, step1_trivium = parallel_generate(item_prompt, trivium_prompt, item_input, trivium_input, param)
 
+	# 反常識(denialSense)の生成
 	print("generation uncommon sense...")
-	with open("prompt_step2.txt", mode = "r", encoding="utf-8") as f:
-		prompt = f.read()
-	step2 = generationSentence(prompt, step1, param)
+	item_prompt_filename = "./prompt_step2_item.txt"
+	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
+		item_prompt = f.read()
+	trivium_prompt_filename = "./prompt_step2_trivium.txt"
+	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
+		trivium_prompt = f.read()
+	step2_item, step2_trivium = parallel_generate(item_prompt, trivium_prompt, step1_item, step1_trivium, param)
 
+	# トリックの種の生成
 	print("generation principle and illusion...")
-	with open("prompt_step3.txt", mode = "r", encoding="utf-8") as f:
-		prompt = f.read()
-	output = json.loads(generationSentence(prompt, step2, param))
+	item_prompt_filename = "./prompt_step3_item.txt"
+	with open(item_prompt_filename, mode = "r", encoding="utf-8") as f:
+		item_prompt = f.read()
+	trivium_prompt_filename = "./prompt_step3_trivium.txt"
+	with open( trivium_prompt_filename, mode = "r", encoding="utf-8") as f:
+		trivium_prompt = f.read()
+	step3_item, step3_trivium = parallel_generate(item_prompt, trivium_prompt, step2_item, step2_trivium, param)
 
-	return output
+	# レスポンスの生成
+	step3_item = json.loads(step3_item)
+	step3_trivium = json.loads(step3_trivium)
+	response = {"world": step3_item["world"], "item": step3_item["items"], "trivia": step3_trivium["trivia"]}
+	response = json.loads(response)
+
+	return response
 
 @app.post("/prod/criminal-character")
 def create_scenario(reqBody: reqBody):
@@ -96,7 +150,6 @@ def create_scenario(reqBody: reqBody):
 	with open("prompt_step5.txt", mode = "r", encoding="utf-8") as f:
 		prompt = f.read()
 	chara = json.loads(generationSentence(prompt, timeline, param))
-
 
 	timeline = json.loads(timeline)
 	output = {
@@ -134,7 +187,7 @@ def create_scenario_test(reqBody: reqBody):
 	message = reqBody.user_input
 	message = json.loads(message)
 	print(json.dumps(message, indent=2, ensure_ascii=False))
-	output = {"world":"testWorld","item":[{"name":"testName","uncommonSense":"testUncommonSense","principle":"testPrinciple","illusion":"testIllusion"}],"trivia":[{"name":"testName","uncommonSense":"testUncommonSense","principle":"testPrinciple","illusion":"testIllusion"}]}
+	output = {"world":"testWorld","item":[{"name":"testName","denial":"testDenial","principle":"testPrinciple","illusion":"testIllusion"}],"trivia":[{"name":"testName","denial":"testDenial","principle":"testPrinciple","illusion":"testIllusion"}]}
 	return output
 
 @app.post("/test/criminal-character")
