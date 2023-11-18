@@ -44,18 +44,18 @@ const CharacterSheetPresenter = ({
       <SquareButton type="ai" onPress={onPress} />
       <ScrollView>
         <View style={styles.characterNameForm}>
-          <TouchableOpacity onPress={openImageSelectModal} style={styles.icon}>
+          <TouchableOpacity onPress={openImageSelectModal}>
             {targetImageURL === '' ? (
               <Image source={require('./cameraIcon.png')} />
             ) : (
-              <CircularIcon url={{uri: targetImageURL}} />
+              <CircularIcon url={targetImageURL} />
             )}
           </TouchableOpacity>
           <TextInput
             style={[styles.input, styles.nameInput]}
             placeholder="キャラクター名"
             placeholderTextColor="#888888"
-            value={editingCharacter?.name}
+            defaultValue={editingCharacter?.name}
             onChangeText={text => {
               setEditingCharacter({
                 ...editingCharacter!,
@@ -69,7 +69,7 @@ const CharacterSheetPresenter = ({
         <TextInput
           style={[styles.input, styles.openInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.public_info}
+          defaultValue={editingCharacter?.public_info}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
@@ -82,7 +82,7 @@ const CharacterSheetPresenter = ({
         <TextInput
           style={[styles.input, styles.privateInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.private_info}
+          defaultValue={editingCharacter?.private_info}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
@@ -95,7 +95,7 @@ const CharacterSheetPresenter = ({
         <TextInput
           style={[styles.input, styles.timelineInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.timeline.map(t => t.text).join('\n')}
+          defaultValue={editingCharacter?.timeline.map(t => t.text).join('\n')}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
@@ -108,7 +108,7 @@ const CharacterSheetPresenter = ({
         <TextInput
           style={[styles.input, styles.purposeInput]}
           placeholderTextColor="#888888"
-          value={editingCharacter?.purpose}
+          defaultValue={editingCharacter?.purpose}
           onChangeText={text => {
             setEditingCharacter({
               ...editingCharacter!,
@@ -116,8 +116,6 @@ const CharacterSheetPresenter = ({
             });
           }}
         />
-        {/* <View style={styles.dummyMargin}/> */}
-
       </ScrollView>
     </View>
   );

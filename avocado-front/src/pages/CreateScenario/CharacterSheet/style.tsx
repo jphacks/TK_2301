@@ -11,9 +11,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  icon: {
-    marginRight: 16,
-  },
   input: {
     borderWidth: 1,
     borderColor: '#696969',
@@ -22,8 +19,8 @@ const styles = StyleSheet.create({
 
   },
   nameInput: {
-    height: 48,
-    width: 260,
+    height: 60,
+    width: 300,
   },
   openInput: {height: 96, marginBottom: 40},
   privateInput: {
