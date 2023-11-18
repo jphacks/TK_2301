@@ -167,12 +167,12 @@ def create_scenario(reqBody: reqBody):
 	param = parameters[2]
 
 	print("generation character timeline...")
-	with open("prompt_step4.txt", mode = "r", encoding="utf-8") as f:
+	with open("./prompt/prompt_step4.txt", mode = "r", encoding="utf-8") as f:
 		prompt = f.read()
 	timeline = generationSentence(prompt, message, param)
 
 	print("generation character info...")
-	with open("prompt_step5.txt", mode = "r", encoding="utf-8") as f:
+	with open("./prompt/prompt_step5.txt", mode = "r", encoding="utf-8") as f:
 		prompt = f.read()
 	chara = json.loads(generationSentence(prompt, timeline, param))
 
