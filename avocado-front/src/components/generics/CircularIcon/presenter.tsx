@@ -8,13 +8,16 @@ type Props = {
 };
 
 const CircularIconPresenter = (props: Props) => {
-
   return (
     <Image
       source={{
         uri:
-          (typeof(props.url) === 'string' && !!props.url) ? props.url :
-          'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297' ,
+          props.url !== undefined &&
+          props.url !== null &&
+          typeof props.url === 'string' &&
+          props.url !== ''
+            ? props.url
+            : 'https://firebasestorage.googleapis.com/v0/b/avocado-test-5e236.appspot.com/o/character_icons%2Fb.png?alt=media&token=038841ca-6718-4acc-bc2b-5bb943cb9297',
       }}
       style={[styles.circularImage, props.styles]}
     />
