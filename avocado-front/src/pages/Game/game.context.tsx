@@ -7,6 +7,11 @@ type CharacterInfo = {
   uid: string | null;
 };
 
+type Chat = {
+  userId: string;
+  text: string;
+};
+
 type GameContextType = {
   myCharacter?: CharacterInfo;
   setMyCharacter: React.Dispatch<
@@ -48,6 +53,8 @@ type GameContextType = {
   setNowMapId: React.Dispatch<React.SetStateAction<string>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  chatTexts: Chat[];
+  setChatTexts: React.Dispatch<React.SetStateAction<Chat[]>>;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -97,6 +104,7 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [transferableItem, setTransferableItem] = useState<GameItem>();
   const [nowMapId, setNowMapId] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [chatTexts, setChatTexts] = useState<Chat[]>([]);
 
   const updateItems = (items: Item[]) => {
     const newItems: GameItem[] = [];
@@ -149,6 +157,8 @@ export const GameProvider: React.FC<{children: ReactNode}> = ({children}) => {
         setNowMapId,
         isLoading,
         setIsLoading,
+        chatTexts,
+        setChatTexts,
       }}>
       {children}
     </GameContext.Provider>

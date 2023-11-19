@@ -7,7 +7,8 @@ type Props = {
 };
 
 const Timer = ({initialTime}: Props) => {
-  const [time, setTime] = useState(initialTime * 60);
+  //const [time, setTime] = useState(initialTime * 60);
+  const [time, setTime] = useState(20);
   const {setNowPhase, lockTimer} = useGame();
 
   useEffect(() => {
