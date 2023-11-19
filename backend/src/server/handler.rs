@@ -269,11 +269,6 @@ impl Handler<Ack> for ChatServer {
             return;
         }
 
-        if room.ack_stack.contains(&user_id) {
-            log::warn!("[ACK] {}: already acked, cancel push", user_name);
-            return;
-        }
-
         self.rooms.entry(room_id).and_modify(|e| {
             e.ack_stack.insert(user_id.clone());
         });
@@ -601,7 +596,7 @@ impl Handler<Get> for ChatServer {
     type Result = ();
 
     fn handle(
-        &mut self, 
+        &mut self,
         Get {
             src: Src {room_id, user_id: _, user_name},
             item_id,
@@ -623,7 +618,7 @@ impl Handler<Entry> for ChatServer {
     type Result = ();
 
     fn handle(
-        &mut self, 
+        &mut self,
         Entry {
             src: Src {room_id, user_id, user_name},
             map_id,
@@ -645,7 +640,7 @@ impl Handler<Exit> for ChatServer {
     type Result = ();
 
     fn handle(
-        &mut self, 
+        &mut self,
         Exit {
             src: Src {room_id, user_id, user_name},
             map_id,
