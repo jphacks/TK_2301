@@ -2,6 +2,7 @@
 ![Slide 16_9 - 1](https://github.com/jphacks/TK_2301/assets/81950820/ada805ca-cd58-4ff6-ac29-87814d9b8ad2)
 
 ## 発表資料・DEMO動画
+紹介スライド: https://docs.google.com/presentation/d/1tCoYFBcrf41JzTUOwREaWhuh8eCS6cRs/edit#slide=id.p1
 https://drive.google.com/drive/folders/1AxAQkUPbmNPqh5k57mtvJrdPFYpYXSQ1
 
 ## 製品概要
